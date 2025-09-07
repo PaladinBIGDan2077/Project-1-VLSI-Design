@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Title:                           Clock Divider
-// Filename:                        clk_divider.v
+// Title:                           Clock Multiplier
+// Filename:                        clk_multiplier.v
 // Version:                         1
 // Author:                          Daniel J. Lomis, Sammy Craypoff
 // Date:                            9/7/2025  
@@ -12,26 +12,32 @@
 // Hardware Description Language:   Verilog 2001 (IEEE 1364-2001)  
 // Simulation Tool:                 ModelSim: Intel FPGA Starter Edition 21.1 
 // 
-// Description:                     Simple clock generator module that produces a clock signal,
-//                                  with adjustable frequency, when enabled. Default frequency is 20 MHz.
+// Description:                     Simple clock generator module that produces a multiplied varient of the clk_in clock signal,
+//                                  with adjustable scale, when enabled. Default frequency is 10 Hz.
 // Modification History:  
 //                                  Date        By   Version  Change Description  
 //                                  ============================================  
 //                                  9/7/2025    DJL  1        Original Code
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 `timescale 1ns/1ns
-module clk(enable, clock_output);
-    input                enable;		        
-    output               clock_output;		
-    reg                  clock_output;
+module clk_divider(clk_in, enable, clock_slow_output);
+    input                   clk_in;           // Input clock (not used in this version)
+    input                   enable;           // Enable signal
+    output                  clock_slow_output;
+    reg                     clock_slow_output; // 100ms period output clock
 
-    parameter FREQ = 50; // Clock period in nanoseconds
+    parameter FREQUENCY = 100000000; // Clock period in nanoseconds (100ms)
 
-    initial clock_output = 0; // Initial value of the clock
-
-    // Toggle the clock every half period if enabled
-    always begin
-        #(FREQ/2); 
-        clock_output = enable ? ~clock_output : clock_output;
+    initial begin
+        clock_slow_output = 0;
     end
+
+    // Toggle the clock every 50ms (half of 100ms period) if enabled
+    always(posedge clk_in) begin
+        #(FREQUENCY/2); // 50ms delay (half of 100ms period)
+        if (enable) begin
+            clock_slow_output = ~clock_slow_output;
+        end
+    end
+
 endmodule
