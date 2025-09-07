@@ -20,8 +20,8 @@
 //                                  ============================================  
 //                                  9/7/2025    DJL  1        Original Code
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-module elevator_fsm(clock, init, operation_code, execute, control_output);
-    input                                                     clock;     
+module elevator_fsm(clock_slower, init, operation_code, execute, control_output);
+    input                                                     clock_slower;     
 	input                                                     init; // Active-low reset (KEY[1])
     input                       [3:0]                         elevator_floor_selector; // Elevator Floor Selector (4 bits for 11 floors) Comes from floor_logic.v
     input                                                     emergency_stop;
@@ -83,8 +83,7 @@ module elevator_fsm(clock, init, operation_code, execute, control_output);
 	
     // Operation code register
     // 
-    assign operation_code = counter_state;
-    always @(posedge clock or negedge init) begin
+    always @(posedge clock_slower or negedge init) begin
 		if (!init) begin
 			counter_state <= STOP_FL1; // Reset to initial state
         end
