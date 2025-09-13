@@ -47,7 +47,6 @@ module elevator_top_tb;
 
     initial begin
         // Initialize inputs
-        clock = 0;
         reset_n = 0;
         raw_floor_call_buttons = 11'b0;
         raw_panel_buttons = 11'b0;
