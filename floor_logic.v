@@ -23,7 +23,7 @@
 //                                  9/13/2025   DJL  3        Converted to SystemVerilog
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_buttons, door_open_btn, door_close_btn, emergency_btn, power_switch, current_floor_state, elevator_state, elevator_moving, elevator_direction, elevator_floor_selector, direction_selector, activate_elevator, power_switch_override, call_button_lights, panel_button_lights, door_open_light, door_close_light);
+module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_buttons, door_open_btn, door_close_btn, emergency_btn, power_switch, current_floor_state, elevator_state, elevator_moving, elevator_direction, elevator_floor_selector, direction_selector, activate_elevator, call_button_lights, panel_button_lights, door_open_light, door_close_light);
     input                                   clock;
     input                                   reset_n;
     // Button inputs (active high when pressed)
@@ -42,7 +42,6 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
     output              [3:0]               elevator_floor_selector;
     output                                  direction_selector;
     output                                  activate_elevator;
-    output                                  power_switch_override;     // Signal to FSM for power switch handling
     // Button status outputs (for illumination)
     output              [10:0]              call_button_lights;
     output              [10:0]              panel_button_lights;
@@ -51,7 +50,6 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
     reg                 [3:0]               elevator_floor_selector;
     reg                                     direction_selector;
     reg                                     activate_elevator;
-    reg                                     power_switch_override;     // Signal to FSM for power switch handling
     // Button status outputs (for illumination)
     reg                 [10:0]              call_button_lights;
     reg                 [10:0]              panel_button_lights;
@@ -61,73 +59,54 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
     reg                 [10:0]              up_requests;       // External calls for upward direction
     reg                 [10:0]              down_requests;     // External calls for downward direction  
     reg                 [10:0]              panel_requests;    // Internal destination requests
-    reg                                     power_switch_active;      // Power switch state
-    reg                 [3:0]               nearest_floor;      // Nearest floor for power switch shutdown
     // Internal Variables
     integer                                 i;
-    // Floor parameters matching FSM
-    parameter                               FLOOR_1  = 4'h0, 
-                                            FLOOR_2  = 4'h1, 
-                                            FLOOR_3  = 4'h2, 
-                                            FLOOR_4  = 4'h3, 
-                                            FLOOR_5  = 4'h4,
-                                            FLOOR_6  = 4'h5, 
-                                            FLOOR_7  = 4'h6, 
-                                            FLOOR_8  = 4'h7, 
-                                            FLOOR_9  = 4'h8, 
-                                            FLOOR_10 = 4'h9, 
-                                            FLOOR_11 = 4'hA;
-    // Floor stop states
-    parameter                               STOP_FL1   = 5'h0, 
-                                            STOP_FL2   = 5'h1, 
-                                            STOP_FL3   = 5'h2, 
-                                            STOP_FL4   = 5'h3, 
-                                            STOP_FL5   = 5'h4,
-                                            STOP_FL6   = 5'h5, 
-                                            STOP_FL7   = 5'h6, 
-                                            STOP_FL8   = 5'h7, 
-                                            STOP_FL9   = 5'h8, 
-                                            STOP_FL10  = 5'h9, 
-                                            STOP_FL11  = 5'hA;
-    // Elevator moving up states (transition between floors)
-    parameter                               UP_F1_F2   = 5'hB, 
-                                            UP_F2_F3   = 5'hC, 
-                                            UP_F3_F4   = 5'hD, 
-                                            UP_F4_F5   = 5'hE, 
-                                            UP_F5_F6   = 5'hF,
-                                            UP_F6_F7   = 5'h10, 
-                                            UP_F7_F8   = 5'h11, 
-                                            UP_F8_F9   = 5'h12, 
-                                            UP_F9_F10  = 5'h13, 
-                                            UP_F10_F11 = 5'h14;
 
-    // Elevator moving down states (transition between floors)
-    parameter                               DOWN_F2_F1 = 5'h15, 
-                                            DOWN_F3_F2 = 5'h16, 
-                                            DOWN_F4_F3 = 5'h17, 
-                                            DOWN_F5_F4 = 5'h18, 
-                                            DOWN_F6_F5 = 5'h19,
-                                            DOWN_F7_F6 = 5'h1A, 
-                                            DOWN_F8_F7 = 5'h1B, 
-                                            DOWN_F9_F8 = 5'h1C, 
-                                            DOWN_F10_F9 = 5'h1D, 
-                                            DOWN_F11_F10 = 5'h1E;
-
-    // Special states (if needed)
-    parameter                               IDLE       = 5'h1F,
-                                            EMERGENCY  = 5'h20;
-
-// Power switch handling - detect rising edge
-always @(posedge clock or negedge reset_n) begin
-    if (!reset_n) begin
-        power_switch_active <= 1'b0;
-    end 
-    else begin
-        power_switch_active <= power_switch;
-    end
-end
-
-wire power_switch_trigger = power_switch && !power_switch_active;
+    parameter                   STOP_FL1                      = 6'h00,      
+                                STOP_FL2                      = 6'h01,      
+                                STOP_FL3                      = 6'h02,     
+                                STOP_FL4                      = 6'h03,
+                                STOP_FL5                      = 6'h04,
+                                STOP_FL6                      = 6'h05,
+                                STOP_FL7                      = 6'h06, 
+                                STOP_FL8                      = 6'h07,
+                                STOP_FL9                      = 6'h08,      
+                                STOP_FL10                     = 6'h09,
+                                STOP_FL11                     = 6'h0A, 
+                                UP_F1_F2                      = 6'h0B,
+                                UP_F2_F3                      = 6'h0C,
+                                UP_F3_F4                      = 6'h0D,
+                                UP_F4_F5                      = 6'h0E,
+                                UP_F5_F6                      = 6'h0F,
+                                UP_F6_F7                      = 6'h10,
+                                UP_F7_F8                      = 6'h11,
+                                UP_F8_F9                      = 6'h12,
+                                UP_F9_F10                     = 6'h13,
+                                UP_F10_F11                    = 6'h14,
+                                DOWN_F11_F10                  = 6'h15,
+                                DOWN_F10_F9                   = 6'h16,
+                                DOWN_F9_F8                    = 6'h17,
+                                DOWN_F8_F7                    = 6'h18,
+                                DOWN_F7_F6                    = 6'h19,
+                                DOWN_F6_F5                    = 6'h1A,
+                                DOWN_F5_F4                    = 6'h1B,
+                                DOWN_F4_F3                    = 6'h1C,
+                                DOWN_F3_F2                    = 6'h1D,
+                                DOWN_F2_F1                    = 6'h1E,
+                                EMERGENCY                     = 6'h1F;
+    
+    parameter                   FLOOR_1                       = 4'h0,
+                                FLOOR_2                       = 4'h1,
+                                FLOOR_3                       = 4'h2,
+                                FLOOR_4                       = 4'h3,
+                                FLOOR_5                       = 4'h4,
+                                FLOOR_6                       = 4'h5,
+                                FLOOR_7                       = 4'h6,
+                                FLOOR_8                       = 4'h7,
+                                FLOOR_9                       = 4'h8,
+                                FLOOR_10                      = 4'h9,
+                                FLOOR_11                      = 4'hA;
+	
 
 // Function to check if state is a STOP state
 function is_stop_state;
@@ -142,39 +121,6 @@ function is_stop_state;
     end
 endfunction
 
-// Find nearest floor for power shutdown
-always @(*) begin
-    nearest_floor = current_floor_state;
-    
-    if (power_switch_trigger) begin
-        // If already at a floor, stay there
-        if (is_stop_state(elevator_state)) begin
-            nearest_floor = current_floor_state;
-        end
-        // If moving between floors, find closest floor
-        else begin
-            if (elevator_direction) begin
-                // Moving up - go to next floor up
-                if (current_floor_state < FLOOR_11) begin
-                    nearest_floor = current_floor_state + 1;
-                end 
-                else begin
-                    nearest_floor = FLOOR_11;
-                end
-            end 
-            else begin
-                // Moving down - go to next floor down
-                if (current_floor_state > FLOOR_1) begin
-                    nearest_floor = current_floor_state - 1;
-                end 
-                else begin
-                    nearest_floor = FLOOR_1;
-                end
-            end
-        end
-    end
-end
-
 // Button processing - capture new requests
 always @(posedge clock or negedge reset_n) begin
     if (!reset_n) begin
@@ -184,15 +130,7 @@ always @(posedge clock or negedge reset_n) begin
         call_button_lights <= 11'b0;
         panel_button_lights <= 11'b0;
     end 
-    else if (power_switch_trigger) begin
-        // Power switch triggered - clear all queues immediately
-        up_requests <= 11'b0;
-        down_requests <= 11'b0;
-        panel_requests <= 11'b0;
-        call_button_lights <= 11'b0;
-        panel_button_lights <= 11'b0;
-    end
-    else if (!power_switch) begin
+    else if (power_switch) begin
         // Normal operation - process buttons (manual unrolling of for loops)
         // Floor 1
         if (floor_call_buttons[0]) begin
@@ -206,7 +144,7 @@ always @(posedge clock or negedge reset_n) begin
         end
         // Floor 2
         if (floor_call_buttons[1]) begin
-            if (1 >= current_floor_state) begin
+            if (1 >current_floor_state) begin
                 up_requests[1] <= 1'b1;
             end 
             else if (1 < current_floor_state) begin
@@ -216,7 +154,7 @@ always @(posedge clock or negedge reset_n) begin
         end
         // Floor 3
         if (floor_call_buttons[2]) begin
-            if (2 >= current_floor_state) begin
+            if (2 > current_floor_state) begin
                 up_requests[2] <= 1'b1;
             end 
             else if (2 < current_floor_state) begin
@@ -226,7 +164,7 @@ always @(posedge clock or negedge reset_n) begin
         end
         // Floor 4
         if (floor_call_buttons[3]) begin
-            if (3 >= current_floor_state) begin
+            if (3 > current_floor_state) begin
                 up_requests[3] <= 1'b1;
             end 
             else if (3 < current_floor_state) begin
@@ -236,7 +174,7 @@ always @(posedge clock or negedge reset_n) begin
         end
         // Floor 5
         if (floor_call_buttons[4]) begin
-            if (4 >= current_floor_state) begin
+            if (4 > current_floor_state) begin
                 up_requests[4] <= 1'b1;
             end 
             else if (4 < current_floor_state) begin
@@ -246,7 +184,7 @@ always @(posedge clock or negedge reset_n) begin
         end
         // Floor 6
         if (floor_call_buttons[5]) begin
-            if (5 >= current_floor_state) begin
+            if (5 > current_floor_state) begin
                 up_requests[5] <= 1'b1;
             end 
             else if (5 < current_floor_state) begin
@@ -256,7 +194,7 @@ always @(posedge clock or negedge reset_n) begin
         end
         // Floor 7
         if (floor_call_buttons[6]) begin
-            if (6 >= current_floor_state) begin
+            if (6 > current_floor_state) begin
                 up_requests[6] <= 1'b1;
             end 
             else if (6 < current_floor_state) begin
@@ -266,7 +204,7 @@ always @(posedge clock or negedge reset_n) begin
         end
         // Floor 8
         if (floor_call_buttons[7]) begin
-            if (7 >= current_floor_state) begin
+            if (7 > current_floor_state) begin
                 up_requests[7] <= 1'b1;
             end 
             else if (7 < current_floor_state) begin
@@ -276,7 +214,7 @@ always @(posedge clock or negedge reset_n) begin
         end
         // Floor 9
         if (floor_call_buttons[8]) begin
-            if (8 >= current_floor_state) begin
+            if (8 > current_floor_state) begin
                 up_requests[8] <= 1'b1;
             end 
             else if (8 < current_floor_state) begin
@@ -286,7 +224,7 @@ always @(posedge clock or negedge reset_n) begin
         end
         // Floor 10
         if (floor_call_buttons[9]) begin
-            if (9 >= current_floor_state) begin
+            if (9 > current_floor_state) begin
                 up_requests[9] <= 1'b1;
             end 
             else if (9 < current_floor_state) begin
@@ -296,7 +234,7 @@ always @(posedge clock or negedge reset_n) begin
         end
         // Floor 11
         if (floor_call_buttons[10]) begin
-            if (10 >= current_floor_state) begin
+            if (10 > current_floor_state) begin
                 up_requests[10] <= 1'b1;
             end 
             else if (10 < current_floor_state) begin
@@ -357,7 +295,7 @@ always @(posedge clock or negedge reset_n) begin
     if (!reset_n) begin
         // Keep existing reset
     end 
-    else if (!power_switch) begin
+    else if (power_switch) begin
         if (is_stop_state(elevator_state)) begin
             up_requests[current_floor_state] <= 1'b0;
             down_requests[current_floor_state] <= 1'b0;
@@ -372,20 +310,9 @@ end
 always @(*) begin
     activate_elevator = 1'b0;
     elevator_floor_selector = current_floor_state;
-    direction_selector = elevator_direction;
-    power_switch_override = 1'b0;
-    
-
-    
-    // Power switch takes highest priority
-    if (power_switch_trigger) begin
-        activate_elevator = 1'b1;
-        power_switch_override = 1'b1;
-        elevator_floor_selector = nearest_floor;
-        direction_selector = (nearest_floor > current_floor_state) ? 1'b1 : 1'b0;
-    end
+    direction_selector = elevator_direction;    
     // Normal operation when power is on and no emergency
-    else if (!power_switch && !emergency_btn) begin
+    if (power_switch && !emergency_btn) begin
         // Only process requests when elevator is stopped
         if (is_stop_state(elevator_state)) begin
             // Check if there are any pending requests
@@ -500,7 +427,7 @@ always @(*) begin
     door_close_light = 1'b0;
     
     // Door control only active when elevator is stopped and power is on
-    if (is_stop_state(elevator_state) && !emergency_btn && !power_switch) begin
+    if (is_stop_state(elevator_state) && power_switch) begin
         door_open_light = door_open_btn;
         door_close_light = door_close_btn;
     end

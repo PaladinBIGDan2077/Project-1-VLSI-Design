@@ -44,7 +44,7 @@ module button_debouncer (clk, rst_n, btn_n_in, pulse_out);
     reg [7:0] pulse_counter; // Counter for pulse duration
     reg       pulse_trigger; // Internal trigger signal
     
-    parameter PULSE_CYCLES = 10; // Number of clock cycles to keep pulse high
+    parameter PULSE_CYCLES = 1; // Number of clock cycles to keep pulse high
 
     // Sequential Logic: State Register with Asynchronous Reset
     always @(posedge clk or negedge rst_n) begin

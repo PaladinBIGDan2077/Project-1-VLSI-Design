@@ -56,7 +56,6 @@ module elevator_top(reset_n, raw_floor_call_buttons, raw_panel_buttons, raw_door
     wire                    [3:0]                   elevator_floor_selector;
     wire                                            direction_selector;
     wire                                            activate_elevator;
-    wire                                            power_switch_override;
     wire                    [5:0]                   elevator_state;
     wire                                            elevator_moving;
     wire                                            elevator_direction;
@@ -104,49 +103,12 @@ module elevator_top(reset_n, raw_floor_call_buttons, raw_panel_buttons, raw_door
     assign power_switch = raw_power_switch; // No debouncing for power switch
 
     // Floor logic controller
-    floor_logic_control_unit floor_logic_inst (clock, reset_n, floor_call_buttons, panel_buttons, door_open_btn, door_close_btn, emergency_btn, power_switch, current_floor_state, elevator_state, elevator_moving, elevator_direction, elevator_floor_selector, direction_selector, activate_elevator, power_switch_override, call_button_lights, panel_button_lights, door_open_light, door_close_light);
-
-    // Extract current floor from elevator state for feedback
-    assign current_floor_state = 
-        (elevator_state == 6'h00) ? 4'h0 :  // STOP_FL1
-        (elevator_state == 6'h01) ? 4'h1 :  // STOP_FL2
-        (elevator_state == 6'h02) ? 4'h2 :  // STOP_FL3
-        (elevator_state == 6'h03) ? 4'h3 :  // STOP_FL4
-        (elevator_state == 6'h04) ? 4'h4 :  // STOP_FL5
-        (elevator_state == 6'h05) ? 4'h5 :  // STOP_FL6
-        (elevator_state == 6'h06) ? 4'h6 :  // STOP_FL7
-        (elevator_state == 6'h07) ? 4'h7 :  // STOP_FL8
-        (elevator_state == 6'h08) ? 4'h8 :  // STOP_FL9
-        (elevator_state == 6'h09) ? 4'h9 :  // STOP_FL10
-        (elevator_state == 6'h0A) ? 4'hA :  // STOP_FL11
-        4'h0;                              // Default to floor 1
+    floor_logic_control_unit floor_logic_inst (clock, reset_n, floor_call_buttons, panel_buttons, door_open_btn, door_close_btn, emergency_btn, power_switch, elevator_control_output[10:7], elevator_state, elevator_control_output[0], elevator_control_output[1], elevator_floor_selector, direction_selector, activate_elevator, call_button_lights, panel_button_lights, door_open_light, door_close_light);
     
-    // Determine if elevator is moving
-    assign elevator_moving = !(
-        (elevator_state == 6'h00) ||  // STOP_FL1
-        (elevator_state == 6'h01) ||  // STOP_FL2
-        (elevator_state == 6'h02) ||  // STOP_FL3
-        (elevator_state == 6'h03) ||  // STOP_FL4
-        (elevator_state == 6'h04) ||  // STOP_FL5
-        (elevator_state == 6'h05) ||  // STOP_FL6
-        (elevator_state == 6'h06) ||  // STOP_FL7
-        (elevator_state == 6'h07) ||  // STOP_FL8
-        (elevator_state == 6'h08) ||  // STOP_FL9
-        (elevator_state == 6'h09) ||  // STOP_FL10
-        (elevator_state == 6'h0A)     // STOP_FL11
-    );
     
-    // Determine elevator direction (1 = up, 0 = down)
-    assign elevator_direction = (
-        (elevator_state >= 6'h0B && elevator_state <= 6'h14) ? 1'b1 :  // UP states
-        1'b0  // DOWN states or stopped
-    );
     
     // Elevator finite state machine
     elevator_fsm elevator_fsm_inst (clock, reset_n, elevator_floor_selector, emergency_btn, activate_elevator, weight_sensor, power_switch, direction_selector, elevator_state, elevator_control_output);
 
-    // Display outputs for debugging
-    assign current_state_display = elevator_state;
-    assign current_floor_display = current_floor_state;
 
 endmodule

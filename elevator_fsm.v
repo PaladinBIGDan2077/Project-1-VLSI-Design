@@ -132,7 +132,7 @@ module elevator_fsm(clock_slower, init, elevator_floor_selector, emergency_stop,
 
 	always @(counter_state) begin
         case(counter_state)
-            // Upcounting states                      xxxxACODUMS
+            // Upcounting states                     xxxxACODUMS
             STOP_FL1:           control_output = 11'b00000010001;
             UP_F1_F2:           control_output = 11'b00010100110;
             DOWN_F2_F1:         control_output = 11'b00000101010;
