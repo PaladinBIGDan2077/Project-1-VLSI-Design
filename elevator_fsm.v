@@ -20,7 +20,7 @@
 //                                  ============================================  
 //                                  9/7/2025    DJL  1        Original Code
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-module elevator_fsm(clock_slower, init, operation_code, execute, control_output);
+module elevator_fsm(clock_slower, init, elevator_floor_selector, emergency_stop, activate_elevator, weight_sensor, power_switch, direction_selector, counter_state, control_output);
     input                                                     clock_slower;     
 	input                                                     init; // Active-low reset (KEY[1])
     input                       [3:0]                         elevator_floor_selector; // Elevator Floor Selector (4 bits for 11 floors) Comes from floor_logic.v
@@ -29,12 +29,12 @@ module elevator_fsm(clock_slower, init, operation_code, execute, control_output)
     input                                                     weight_sensor;
     input                                                     power_switch;
     input                                                     direction_selector; // 1 bit for up / 0 for down
-	output                      [7:0]                         control_output;    
+	output                      [10:0]                         control_output;    
     output                      [5:0]                         counter_state;         
 
 	reg                         [5:0]                         counter_state;
     reg                         [5:0]                         next_counter_state;
-    reg                         [7:0]                         control_output;      
+    reg                         [10:0]                         control_output;      
 
     parameter                   STOP_FL1                      = 6'h00,      
                                 STOP_FL2                      = 6'h01,      
@@ -133,39 +133,39 @@ module elevator_fsm(clock_slower, init, operation_code, execute, control_output)
 	always @(counter_state) begin
         case(counter_state)
             // Upcounting states                      xxxxACODUMS
-            STOP_FL1:           control_output = 11'bx00000010001;
-            UP_F1_F2:           control_output = 11'bx00010100110;
-            DOWN_F2_F1:         control_output = 11'bx00000101010;
-            STOP_FL2:           control_output = 11'bx00010010001;
-            UP_F2_F3:           control_output = 11'bx00100100110;
-            DOWN_F3_F2:         control_output = 11'bx00010101010;
-            STOP_FL3:           control_output = 11'bx00100010001;
-            UP_F3_F4:           control_output = 11'bx00110100110;
-            DOWN_F4_F3:         control_output = 11'bx00100101010;
-            STOP_FL4:           control_output = 11'bx00110010001;
-            UP_F4_F5:           control_output = 11'bx01000100110;
-            DOWN_F5_F4:         control_output = 11'bx00110101010;
-            STOP_FL5:           control_output = 11'bx01000010001;
-            UP_F5_F6:           control_output = 11'bx01010100110;
-            DOWN_F6_F5:         control_output = 11'bx01000101010;
-            STOP_FL6:           control_output = 11'bx01010010001;
-            UP_F6_F7:           control_output = 11'bx01100100110;
-            DOWN_F7_F6:         control_output = 11'bx01010101010;
-            STOP_FL7:           control_output = 11'bx01100010001;
-            UP_F7_F8:           control_output = 11'bx01110100110;
-            DOWN_F8_F7:         control_output = 11'bx01100101010;
-            STOP_FL8:           control_output = 11'bx01110010001;
-            UP_F8_F9:           control_output = 11'bx10000100110;
-            DOWN_F9_F8:         control_output = 11'bx01110101010;
-            STOP_FL9:           control_output = 11'bx10000010001;
-            UP_F9_F10:          control_output = 11'bx10010100110;
-            DOWN_F10_F9:        control_output = 11'bx10000101010;
-            STOP_FL10:          control_output = 11'bx10010010001;
-            UP_F10_F11:         control_output = 11'bx10100100110;
-            DOWN_F11_F10:       control_output = 11'bx10010101010;
-            STOP_FL11:          control_output = 11'bx10100010001;
-            EMERGENCY:          control_output = 11'bx00001010001;  
-            default:            control_output = 11'bxxxxxxxxxxxx;
+            STOP_FL1:           control_output = 11'b00000010001;
+            UP_F1_F2:           control_output = 11'b00010100110;
+            DOWN_F2_F1:         control_output = 11'b00000101010;
+            STOP_FL2:           control_output = 11'b00010010001;
+            UP_F2_F3:           control_output = 11'b00100100110;
+            DOWN_F3_F2:         control_output = 11'b00010101010;
+            STOP_FL3:           control_output = 11'b00100010001;
+            UP_F3_F4:           control_output = 11'b00110100110;
+            DOWN_F4_F3:         control_output = 11'b00100101010;
+            STOP_FL4:           control_output = 11'b00110010001;
+            UP_F4_F5:           control_output = 11'b01000100110;
+            DOWN_F5_F4:         control_output = 11'b00110101010;
+            STOP_FL5:           control_output = 11'b01000010001;
+            UP_F5_F6:           control_output = 11'b01010100110;
+            DOWN_F6_F5:         control_output = 11'b01000101010;
+            STOP_FL6:           control_output = 11'b01010010001;
+            UP_F6_F7:           control_output = 11'b01100100110;
+            DOWN_F7_F6:         control_output = 11'b01010101010;
+            STOP_FL7:           control_output = 11'b01100010001;
+            UP_F7_F8:           control_output = 11'b01110100110;
+            DOWN_F8_F7:         control_output = 11'b01100101010;
+            STOP_FL8:           control_output = 11'b01110010001;
+            UP_F8_F9:           control_output = 11'b10000100110;
+            DOWN_F9_F8:         control_output = 11'b01110101010;
+            STOP_FL9:           control_output = 11'b10000010001;
+            UP_F9_F10:          control_output = 11'b10010100110;
+            DOWN_F10_F9:        control_output = 11'b10000101010;
+            STOP_FL10:          control_output = 11'b10010010001;
+            UP_F10_F11:         control_output = 11'b10100100110;
+            DOWN_F11_F10:       control_output = 11'b10010101010;
+            STOP_FL11:          control_output = 11'b10100010001;
+            EMERGENCY:          control_output = 11'b00001010001;  
+            default:            control_output = 11'bxxxxxxxxxxx;
         endcase
     end
 endmodule
