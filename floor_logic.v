@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Title:                           Elevator Floor Logic Controller
 // Filename:                        floor_logic.v
-// Version:                         1
+// Version:                         3
 // Author:                          Daniel J. Lomis, Sammy Craypoff
 // Date:                            9/7/2025 
 // Location:                        Blacksburg, Virginia 
@@ -9,7 +9,7 @@
 // Course:                          ECE 4540 - VLSI Circuit Design
 // Instructor:                      Doctor Jeffrey Walling 
 //  
-// Hardware Description Language:   Verilog 2001 (IEEE 1364-2001)  
+// Hardware Description Language:   SystemVerilog 2023 (IEEE 1800-2023)  
 // Simulation Tool:                 ModelSim: Intel FPGA Starter Edition 21.1 
 // 
 // Description:                     Floor request logic controller that manages elevator call buttons,
@@ -19,7 +19,8 @@
 //                                  Date        By   Version  Change Description  
 //                                  ============================================  
 //                                  9/7/2025    DJL  1        Original Code
-//                                  9/13/2025   DJL  2        Revised logic for 
+//                                  9/13/2025   DJL  2        Revised logic for elevator calls
+//                                  9/13/2025   DJL  3        Converted to SystemVerilog
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_buttons, door_open_btn, door_close_btn, emergency_btn, power_switch, current_floor_state, elevator_state, elevator_moving, elevator_direction, elevator_floor_selector, direction_selector, activate_elevator, power_switch_override, call_button_lights, panel_button_lights, door_open_light, door_close_light);
@@ -205,7 +206,7 @@ always @(posedge clock or negedge reset_n) begin
         end
         // Floor 2
         if (floor_call_buttons[1]) begin
-            if (1 > current_floor_state) begin
+            if (1 >= current_floor_state) begin
                 up_requests[1] <= 1'b1;
             end 
             else if (1 < current_floor_state) begin
@@ -215,7 +216,7 @@ always @(posedge clock or negedge reset_n) begin
         end
         // Floor 3
         if (floor_call_buttons[2]) begin
-            if (2 > current_floor_state) begin
+            if (2 >= current_floor_state) begin
                 up_requests[2] <= 1'b1;
             end 
             else if (2 < current_floor_state) begin
@@ -225,7 +226,7 @@ always @(posedge clock or negedge reset_n) begin
         end
         // Floor 4
         if (floor_call_buttons[3]) begin
-            if (3 > current_floor_state) begin
+            if (3 >= current_floor_state) begin
                 up_requests[3] <= 1'b1;
             end 
             else if (3 < current_floor_state) begin
@@ -235,7 +236,7 @@ always @(posedge clock or negedge reset_n) begin
         end
         // Floor 5
         if (floor_call_buttons[4]) begin
-            if (4 > current_floor_state) begin
+            if (4 >= current_floor_state) begin
                 up_requests[4] <= 1'b1;
             end 
             else if (4 < current_floor_state) begin
@@ -245,7 +246,7 @@ always @(posedge clock or negedge reset_n) begin
         end
         // Floor 6
         if (floor_call_buttons[5]) begin
-            if (5 > current_floor_state) begin
+            if (5 >= current_floor_state) begin
                 up_requests[5] <= 1'b1;
             end 
             else if (5 < current_floor_state) begin
@@ -255,7 +256,7 @@ always @(posedge clock or negedge reset_n) begin
         end
         // Floor 7
         if (floor_call_buttons[6]) begin
-            if (6 > current_floor_state) begin
+            if (6 >= current_floor_state) begin
                 up_requests[6] <= 1'b1;
             end 
             else if (6 < current_floor_state) begin
@@ -265,7 +266,7 @@ always @(posedge clock or negedge reset_n) begin
         end
         // Floor 8
         if (floor_call_buttons[7]) begin
-            if (7 > current_floor_state) begin
+            if (7 >= current_floor_state) begin
                 up_requests[7] <= 1'b1;
             end 
             else if (7 < current_floor_state) begin
@@ -275,7 +276,7 @@ always @(posedge clock or negedge reset_n) begin
         end
         // Floor 9
         if (floor_call_buttons[8]) begin
-            if (8 > current_floor_state) begin
+            if (8 >= current_floor_state) begin
                 up_requests[8] <= 1'b1;
             end 
             else if (8 < current_floor_state) begin
@@ -285,7 +286,7 @@ always @(posedge clock or negedge reset_n) begin
         end
         // Floor 10
         if (floor_call_buttons[9]) begin
-            if (9 > current_floor_state) begin
+            if (9 >= current_floor_state) begin
                 up_requests[9] <= 1'b1;
             end 
             else if (9 < current_floor_state) begin
@@ -295,7 +296,7 @@ always @(posedge clock or negedge reset_n) begin
         end
         // Floor 11
         if (floor_call_buttons[10]) begin
-            if (10 > current_floor_state) begin
+            if (10 >= current_floor_state) begin
                 up_requests[10] <= 1'b1;
             end 
             else if (10 < current_floor_state) begin

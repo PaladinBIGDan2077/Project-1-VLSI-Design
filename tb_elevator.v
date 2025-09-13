@@ -57,27 +57,30 @@ module elevator_top_tb;
         weight_sensor = 0;
 
         // Apply reset
-        #20;
+        #50
         reset_n = 1;
         $display("=== Reset complete ===");
 
         // Request Floor 3
-        #50;
+        #500
         raw_floor_call_buttons[2] = 1;
         $display("Floor 3 call button pressed @ %t", $time);
-        #20 raw_floor_call_buttons[2] = 0; // release button
+        #200 
+        raw_floor_call_buttons[2] = 0; // release button
 
         // Request Floor 7
-        #200;
+        #500
         raw_floor_call_buttons[6] = 1;
         $display("Floor 7 call button pressed @ %t", $time);
-        #20 raw_floor_call_buttons[6] = 0;
+        #200 
+        raw_floor_call_buttons[6] = 0;
 
         // Request Floor 1
-        #300;
+        #500
         raw_floor_call_buttons[0] = 1;
         $display("Floor 1 call button pressed @ %t", $time);
-        #20 raw_floor_call_buttons[0] = 0;
+        #200 
+        raw_floor_call_buttons[0] = 0;
 
         // Run for a while
         #1000;

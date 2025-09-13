@@ -22,18 +22,17 @@
 //                                  9/7/2025    DJL  1        Original Code
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-module button_debouncer (clk,rst_n, btn_n_in, pulse_out);
+module button_debouncer (clk, rst_n, btn_n_in, pulse_out);
 
     input                            clk;        // System clock
     input                            rst_n;      // Active-low asynchronous reset
     input                            btn_n_in;  // Active-low button input
-    output                           pulse_out;   // Single-cycle pulse output
+    output                           pulse_out;   // Extended pulse output
 
-
-    wire                             clk;        // System clock
-    wire                             rst_n;      // Active-low asynchronous reset
-    wire                             btn_n_in;  // Active-low button input
-    reg                              pulse_out;   // Single-cycle pulse output
+    wire                             clk;        
+    wire                             rst_n;      
+    wire                             btn_n_in;  
+    reg                              pulse_out;   
 
     // One-Hot State Encoding Parameters
     localparam [2:0] STATE_IDLE    = 3'b001;
@@ -42,21 +41,40 @@ module button_debouncer (clk,rst_n, btn_n_in, pulse_out);
 
     // State Registers
     reg [2:0] current_state, next_state;
+    reg [7:0] pulse_counter; // Counter for pulse duration
+    reg       pulse_trigger; // Internal trigger signal
+    
+    parameter PULSE_CYCLES = 10; // Number of clock cycles to keep pulse high
 
     // Sequential Logic: State Register with Asynchronous Reset
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             current_state <= STATE_IDLE;
-        end else begin
+            pulse_counter <= 8'b0;
+            pulse_out <= 1'b0;
+        end 
+        else begin
             current_state <= next_state;
+            
+            // Pulse counter logic
+            if (pulse_trigger) begin
+                pulse_out <= 1'b1;
+                pulse_counter <= PULSE_CYCLES;
+            end 
+            else if (pulse_counter > 0) begin
+                pulse_counter <= pulse_counter - 1;
+            end 
+            else begin
+                pulse_out <= 1'b0;
+            end
         end
     end
 
     // Combinational Logic: Next State and Output Logic
     always @(*) begin
-        // Default assignments to avoid latches
+        // Default assignments
         next_state = current_state;
-        pulse_out  = 1'b0;
+        pulse_trigger = 1'b0;
 
         case (current_state)
             STATE_IDLE: begin
@@ -72,11 +90,11 @@ module button_debouncer (clk,rst_n, btn_n_in, pulse_out);
             end
 
             STATE_RELEASE: begin
-                pulse_out = 1'b1;               // Generate the output pulse
+                pulse_trigger = 1'b1;           // Trigger the pulse
                 next_state = STATE_IDLE;
             end
 
-            default: begin                      // Catch undefined states
+            default: begin
                 next_state = STATE_IDLE;
             end
         endcase
