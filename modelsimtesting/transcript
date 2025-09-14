@@ -375,3 +375,5 @@ run -all
 # ** Note: $stop    : D:/VLSI/Project-1-VLSI-Design/tb_elevator.v(239)
 #    Time: 20970 ns  Iteration: 0  Instance: /elevator_top_tb
 # Break in Module elevator_top_tb at D:/VLSI/Project-1-VLSI-Design/tb_elevator.v line 239
+# End time: 15:37:11 on Sep 14,2025, Elapsed time: 0:17:57
+# Errors: 0, Warnings: 1
