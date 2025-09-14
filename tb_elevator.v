@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Title:                           Elevator System Top Module Testbench
 // Filename:                        elevator_top_tb.v
-// Version:                         1
+// Version:                         2
 // Author:                          Daniel J. Lomis, Sammy Craypoff
 // Date:                            9/13/2025  
 // Location:                        Blacksburg, Virginia 
@@ -20,6 +20,7 @@
 //                                  Date        By   Version  Change Description  
 //                                  ============================================  
 //                                  9/13/2025   DJL  1        Original Testbench Code
+//                                  9/14/2025   DJL  2        Added additional testing
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 `timescale 1ns/1ns
 module elevator_top_tb;
@@ -51,8 +52,8 @@ module elevator_top_tb;
 
     initial begin
 	// Dump sim files
-	$dumpfile("elevator_control_system.vcd");
-	$dumpvars(0,elevator_top_tb);
+	    $dumpfile("elevator_control_system.vcd");
+	    $dumpvars(0,elevator_top_tb);
 
         // Initialize inputs
         reset_n = 0;
@@ -100,20 +101,20 @@ module elevator_top_tb;
         // Call to Floor 10
       #500
         raw_panel_buttons[9] = 1;
-        $display("Floor 5 call button pressed @ %t", $time);
+        $display("Floor 10 call button pressed @ %t", $time);
         #200
         raw_panel_buttons[9] = 0;
         // Call to Floor 8
         #500
         raw_panel_buttons[7] = 1;
-        $display("Floor 5 call button pressed @ %t", $time);
+        $display("Floor 8 call button pressed @ %t", $time);
         #200
         raw_panel_buttons[7] = 0;
 
         // Return to first floor
         #500
         raw_panel_buttons[0] = 1;
-        $display("Floor 0 call button pressed @ %t", $time);
+        $display("Floor 1 call button pressed @ %t", $time);
         #200
         raw_panel_buttons[0] = 0;
 
@@ -235,7 +236,37 @@ module elevator_top_tb;
         #200
         raw_door_close_btn = 0;
         $display("Door Close button released @ %t", $time);
-        #1000;
+        #500;
+
+        // Power Switch Functionaility
+        // Reset for final test
+        reset_n = 0;
+        #50
+        reset_n = 1;
+        $display("=== Reset complete ===");
+        // Test Power Switch Button
+        #500
+        raw_panel_buttons[5] = 1;
+        $display("Floor 6 call button pressed @ %t", $time);
+        #200
+        raw_panel_buttons[5] = 0;
+        #500
+        raw_power_switch = 0;
+        $display("Power switched off @ %t", $time);
+        #100
+        // Attempt to open doors
+        raw_door_open_btn = 1;
+        // Attempt to move floors
+        raw_panel_buttons[8] = 1;
+        $display("Floor 9 call button pressed @ %t", $time);
+        #200
+        raw_door_open_btn = 0;
+        raw_panel_buttons[8] = 0;
+        #500
+        raw_power_switch = 1;
+        $display("Power switched on @ %t", $time);
+        #1000; // Wait to observe door behavior
+        
 
         // Run for a while
         #1000;
