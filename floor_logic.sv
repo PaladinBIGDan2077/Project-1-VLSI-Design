@@ -312,8 +312,6 @@ end
 // Target floor selection logic
 always @(*) begin
     activate_elevator = 1'b0;
-    // elevator_floor_selector = current_floor_state;
-   // direction_selector = elevator_direction;    
     // Normal operation when power is on and no emergency
     if (power_switch && !emergency_btn) begin
         // Only process requests when elevator is stopped

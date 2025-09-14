@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Title:                           Elevator State Machine
 // Filename:                        elevator_fsm.v
-// Version:                         1
+// Version:                         2
 // Author:                          Daniel J. Lomis, Sammy Craypoff
 // Date:                            9/7/2025  
 // Location:                        Blacksburg, Virginia 
@@ -19,6 +19,7 @@
 //                                  Date        By   Version  Change Description  
 //                                  ============================================  
 //                                  9/7/2025    DJL  1        Original Code
+//                                  9/14/2025   DJL  2        Added Weight Sensor Logic
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 module elevator_fsm(clock_slower, init, elevator_floor_selector, emergency_stop, activate_elevator, weight_sensor, power_switch, direction_selector, counter_state, control_output);
     input                                                     clock_slower;     
