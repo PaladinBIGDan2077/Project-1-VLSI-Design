@@ -38,7 +38,6 @@ module elevator_top_tb;
     wire                        [10:0]                          call_button_lights;
     wire                        [10:0]                          panel_button_lights;
     wire                                                        door_open;
-    wire                                                        door_close;
     wire                        [10:0]                          elevator_control_output;
     wire                        [3:0]                           floor_indicator_lamps;
     wire                                                        safety_interlock;

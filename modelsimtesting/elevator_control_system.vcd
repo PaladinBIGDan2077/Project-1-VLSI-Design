@@ -1,0 +1,6821 @@
+$date
+	Sun Sep 14 18:00:22 2025
+$end
+$version
+	ModelSim Version 2020.1
+$end
+$timescale
+	1ns
+$end
+
+$scope module elevator_top_tb $end
+$var reg 1 ! reset_n $end
+$var reg 11 " raw_floor_call_buttons [10:0] $end
+$var reg 11 # raw_panel_buttons [10:0] $end
+$var reg 1 $ raw_door_open_btn $end
+$var reg 1 % raw_door_close_btn $end
+$var reg 1 & raw_emergency_btn $end
+$var reg 1 ' raw_power_switch $end
+$var reg 1 ( weight_sensor $end
+$var wire 1 ) call_button_lights [10] $end
+$var wire 1 * call_button_lights [9] $end
+$var wire 1 + call_button_lights [8] $end
+$var wire 1 , call_button_lights [7] $end
+$var wire 1 - call_button_lights [6] $end
+$var wire 1 . call_button_lights [5] $end
+$var wire 1 / call_button_lights [4] $end
+$var wire 1 0 call_button_lights [3] $end
+$var wire 1 1 call_button_lights [2] $end
+$var wire 1 2 call_button_lights [1] $end
+$var wire 1 3 call_button_lights [0] $end
+$var wire 1 4 panel_button_lights [10] $end
+$var wire 1 5 panel_button_lights [9] $end
+$var wire 1 6 panel_button_lights [8] $end
+$var wire 1 7 panel_button_lights [7] $end
+$var wire 1 8 panel_button_lights [6] $end
+$var wire 1 9 panel_button_lights [5] $end
+$var wire 1 : panel_button_lights [4] $end
+$var wire 1 ; panel_button_lights [3] $end
+$var wire 1 < panel_button_lights [2] $end
+$var wire 1 = panel_button_lights [1] $end
+$var wire 1 > panel_button_lights [0] $end
+$var wire 1 ? door_open $end
+$var wire 1 @ elevator_control_output [10] $end
+$var wire 1 A elevator_control_output [9] $end
+$var wire 1 B elevator_control_output [8] $end
+$var wire 1 C elevator_control_output [7] $end
+$var wire 1 D elevator_control_output [6] $end
+$var wire 1 E elevator_control_output [5] $end
+$var wire 1 F elevator_control_output [4] $end
+$var wire 1 G elevator_control_output [3] $end
+$var wire 1 H elevator_control_output [2] $end
+$var wire 1 I elevator_control_output [1] $end
+$var wire 1 J elevator_control_output [0] $end
+$var wire 1 K floor_indicator_lamps [3] $end
+$var wire 1 L floor_indicator_lamps [2] $end
+$var wire 1 M floor_indicator_lamps [1] $end
+$var wire 1 N floor_indicator_lamps [0] $end
+$var wire 1 O safety_interlock $end
+$var wire 1 P elevator_upward_indicator_lamp $end
+$var wire 1 Q elevator_downward_indicator_lamp $end
+$var wire 1 R alarm $end
+$var wire 1 S weight_overload_lamp $end
+
+$scope module dut $end
+$var wire 1 T reset_n $end
+$var wire 1 U raw_floor_call_buttons [10] $end
+$var wire 1 V raw_floor_call_buttons [9] $end
+$var wire 1 W raw_floor_call_buttons [8] $end
+$var wire 1 X raw_floor_call_buttons [7] $end
+$var wire 1 Y raw_floor_call_buttons [6] $end
+$var wire 1 Z raw_floor_call_buttons [5] $end
+$var wire 1 [ raw_floor_call_buttons [4] $end
+$var wire 1 \ raw_floor_call_buttons [3] $end
+$var wire 1 ] raw_floor_call_buttons [2] $end
+$var wire 1 ^ raw_floor_call_buttons [1] $end
+$var wire 1 _ raw_floor_call_buttons [0] $end
+$var wire 1 ` raw_panel_buttons [10] $end
+$var wire 1 a raw_panel_buttons [9] $end
+$var wire 1 b raw_panel_buttons [8] $end
+$var wire 1 c raw_panel_buttons [7] $end
+$var wire 1 d raw_panel_buttons [6] $end
+$var wire 1 e raw_panel_buttons [5] $end
+$var wire 1 f raw_panel_buttons [4] $end
+$var wire 1 g raw_panel_buttons [3] $end
+$var wire 1 h raw_panel_buttons [2] $end
+$var wire 1 i raw_panel_buttons [1] $end
+$var wire 1 j raw_panel_buttons [0] $end
+$var wire 1 k raw_door_open_btn $end
+$var wire 1 l raw_door_close_btn $end
+$var wire 1 m raw_emergency_btn $end
+$var wire 1 n raw_power_switch $end
+$var wire 1 o weight_sensor $end
+$var wire 1 ) call_button_lights [10] $end
+$var wire 1 * call_button_lights [9] $end
+$var wire 1 + call_button_lights [8] $end
+$var wire 1 , call_button_lights [7] $end
+$var wire 1 - call_button_lights [6] $end
+$var wire 1 . call_button_lights [5] $end
+$var wire 1 / call_button_lights [4] $end
+$var wire 1 0 call_button_lights [3] $end
+$var wire 1 1 call_button_lights [2] $end
+$var wire 1 2 call_button_lights [1] $end
+$var wire 1 3 call_button_lights [0] $end
+$var wire 1 4 panel_button_lights [10] $end
+$var wire 1 5 panel_button_lights [9] $end
+$var wire 1 6 panel_button_lights [8] $end
+$var wire 1 7 panel_button_lights [7] $end
+$var wire 1 8 panel_button_lights [6] $end
+$var wire 1 9 panel_button_lights [5] $end
+$var wire 1 : panel_button_lights [4] $end
+$var wire 1 ; panel_button_lights [3] $end
+$var wire 1 < panel_button_lights [2] $end
+$var wire 1 = panel_button_lights [1] $end
+$var wire 1 > panel_button_lights [0] $end
+$var wire 1 ? door_open $end
+$var wire 1 @ elevator_control_output [10] $end
+$var wire 1 A elevator_control_output [9] $end
+$var wire 1 B elevator_control_output [8] $end
+$var wire 1 C elevator_control_output [7] $end
+$var wire 1 D elevator_control_output [6] $end
+$var wire 1 E elevator_control_output [5] $end
+$var wire 1 F elevator_control_output [4] $end
+$var wire 1 G elevator_control_output [3] $end
+$var wire 1 H elevator_control_output [2] $end
+$var wire 1 I elevator_control_output [1] $end
+$var wire 1 J elevator_control_output [0] $end
+$var wire 1 K floor_indicator_lamps [3] $end
+$var wire 1 L floor_indicator_lamps [2] $end
+$var wire 1 M floor_indicator_lamps [1] $end
+$var wire 1 N floor_indicator_lamps [0] $end
+$var wire 1 O safety_interlock $end
+$var wire 1 P elevator_upward_indicator_lamp $end
+$var wire 1 Q elevator_downward_indicator_lamp $end
+$var wire 1 S weight_overload_lamp $end
+$var wire 1 R alarm $end
+$var wire 1 p floor_call_buttons [10] $end
+$var wire 1 q floor_call_buttons [9] $end
+$var wire 1 r floor_call_buttons [8] $end
+$var wire 1 s floor_call_buttons [7] $end
+$var wire 1 t floor_call_buttons [6] $end
+$var wire 1 u floor_call_buttons [5] $end
+$var wire 1 v floor_call_buttons [4] $end
+$var wire 1 w floor_call_buttons [3] $end
+$var wire 1 x floor_call_buttons [2] $end
+$var wire 1 y floor_call_buttons [1] $end
+$var wire 1 z floor_call_buttons [0] $end
+$var wire 1 { panel_buttons [10] $end
+$var wire 1 | panel_buttons [9] $end
+$var wire 1 } panel_buttons [8] $end
+$var wire 1 ~ panel_buttons [7] $end
+$var wire 1 !! panel_buttons [6] $end
+$var wire 1 "! panel_buttons [5] $end
+$var wire 1 #! panel_buttons [4] $end
+$var wire 1 $! panel_buttons [3] $end
+$var wire 1 %! panel_buttons [2] $end
+$var wire 1 &! panel_buttons [1] $end
+$var wire 1 '! panel_buttons [0] $end
+$var wire 1 (! door_open_btn $end
+$var wire 1 )! door_close_btn $end
+$var wire 1 *! emergency_btn $end
+$var wire 1 +! power_switch $end
+$var wire 1 ,! elevator_floor_selector [3] $end
+$var wire 1 -! elevator_floor_selector [2] $end
+$var wire 1 .! elevator_floor_selector [1] $end
+$var wire 1 /! elevator_floor_selector [0] $end
+$var wire 1 0! direction_selector $end
+$var wire 1 1! activate_elevator $end
+$var wire 1 2! elevator_state [5] $end
+$var wire 1 3! elevator_state [4] $end
+$var wire 1 4! elevator_state [3] $end
+$var wire 1 5! elevator_state [2] $end
+$var wire 1 6! elevator_state [1] $end
+$var wire 1 7! elevator_state [0] $end
+$var wire 1 8! elevator_moving $end
+$var wire 1 9! elevator_direction $end
+$var wire 1 :! current_floor_state [3] $end
+$var wire 1 ;! current_floor_state [2] $end
+$var wire 1 <! current_floor_state [1] $end
+$var wire 1 =! current_floor_state [0] $end
+$var wire 1 >! clock $end
+$var wire 1 ?! door_close $end
+$var wire 1 @! elevator_movement $end
+$var wire 1 A! door_open_logic_check $end
+$var wire 1 B! door_close_logic_check $end
+
+$scope module clk_inst $end
+$var parameter 32 C! FREQ $end
+$var wire 1 D! enable $end
+$var reg 1 E! clock_output $end
+$upscope $end
+
+$scope module floor_call_debouncer0 $end
+$var parameter 3 F! STATE_IDLE $end
+$var parameter 3 G! STATE_PRESSED $end
+$var parameter 3 H! STATE_RELEASE $end
+$var parameter 32 I! PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 J! btn_n_in $end
+$var reg 1 K! pulse_out $end
+$var reg 3 L! current_state [2:0] $end
+$var reg 3 M! next_state [2:0] $end
+$var reg 8 N! pulse_counter [7:0] $end
+$var reg 1 O! pulse_trigger $end
+$upscope $end
+
+$scope module floor_call_debouncer1 $end
+$var parameter 3 P! STATE_IDLE $end
+$var parameter 3 Q! STATE_PRESSED $end
+$var parameter 3 R! STATE_RELEASE $end
+$var parameter 32 S! PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 T! btn_n_in $end
+$var reg 1 U! pulse_out $end
+$var reg 3 V! current_state [2:0] $end
+$var reg 3 W! next_state [2:0] $end
+$var reg 8 X! pulse_counter [7:0] $end
+$var reg 1 Y! pulse_trigger $end
+$upscope $end
+
+$scope module floor_call_debouncer2 $end
+$var parameter 3 Z! STATE_IDLE $end
+$var parameter 3 [! STATE_PRESSED $end
+$var parameter 3 \! STATE_RELEASE $end
+$var parameter 32 ]! PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 ^! btn_n_in $end
+$var reg 1 _! pulse_out $end
+$var reg 3 `! current_state [2:0] $end
+$var reg 3 a! next_state [2:0] $end
+$var reg 8 b! pulse_counter [7:0] $end
+$var reg 1 c! pulse_trigger $end
+$upscope $end
+
+$scope module floor_call_debouncer3 $end
+$var parameter 3 d! STATE_IDLE $end
+$var parameter 3 e! STATE_PRESSED $end
+$var parameter 3 f! STATE_RELEASE $end
+$var parameter 32 g! PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 h! btn_n_in $end
+$var reg 1 i! pulse_out $end
+$var reg 3 j! current_state [2:0] $end
+$var reg 3 k! next_state [2:0] $end
+$var reg 8 l! pulse_counter [7:0] $end
+$var reg 1 m! pulse_trigger $end
+$upscope $end
+
+$scope module floor_call_debouncer4 $end
+$var parameter 3 n! STATE_IDLE $end
+$var parameter 3 o! STATE_PRESSED $end
+$var parameter 3 p! STATE_RELEASE $end
+$var parameter 32 q! PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 r! btn_n_in $end
+$var reg 1 s! pulse_out $end
+$var reg 3 t! current_state [2:0] $end
+$var reg 3 u! next_state [2:0] $end
+$var reg 8 v! pulse_counter [7:0] $end
+$var reg 1 w! pulse_trigger $end
+$upscope $end
+
+$scope module floor_call_debouncer5 $end
+$var parameter 3 x! STATE_IDLE $end
+$var parameter 3 y! STATE_PRESSED $end
+$var parameter 3 z! STATE_RELEASE $end
+$var parameter 32 {! PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 |! btn_n_in $end
+$var reg 1 }! pulse_out $end
+$var reg 3 ~! current_state [2:0] $end
+$var reg 3 !" next_state [2:0] $end
+$var reg 8 "" pulse_counter [7:0] $end
+$var reg 1 #" pulse_trigger $end
+$upscope $end
+
+$scope module floor_call_debouncer6 $end
+$var parameter 3 $" STATE_IDLE $end
+$var parameter 3 %" STATE_PRESSED $end
+$var parameter 3 &" STATE_RELEASE $end
+$var parameter 32 '" PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 (" btn_n_in $end
+$var reg 1 )" pulse_out $end
+$var reg 3 *" current_state [2:0] $end
+$var reg 3 +" next_state [2:0] $end
+$var reg 8 ," pulse_counter [7:0] $end
+$var reg 1 -" pulse_trigger $end
+$upscope $end
+
+$scope module floor_call_debouncer7 $end
+$var parameter 3 ." STATE_IDLE $end
+$var parameter 3 /" STATE_PRESSED $end
+$var parameter 3 0" STATE_RELEASE $end
+$var parameter 32 1" PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 2" btn_n_in $end
+$var reg 1 3" pulse_out $end
+$var reg 3 4" current_state [2:0] $end
+$var reg 3 5" next_state [2:0] $end
+$var reg 8 6" pulse_counter [7:0] $end
+$var reg 1 7" pulse_trigger $end
+$upscope $end
+
+$scope module floor_call_debouncer8 $end
+$var parameter 3 8" STATE_IDLE $end
+$var parameter 3 9" STATE_PRESSED $end
+$var parameter 3 :" STATE_RELEASE $end
+$var parameter 32 ;" PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 <" btn_n_in $end
+$var reg 1 =" pulse_out $end
+$var reg 3 >" current_state [2:0] $end
+$var reg 3 ?" next_state [2:0] $end
+$var reg 8 @" pulse_counter [7:0] $end
+$var reg 1 A" pulse_trigger $end
+$upscope $end
+
+$scope module floor_call_debouncer9 $end
+$var parameter 3 B" STATE_IDLE $end
+$var parameter 3 C" STATE_PRESSED $end
+$var parameter 3 D" STATE_RELEASE $end
+$var parameter 32 E" PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 F" btn_n_in $end
+$var reg 1 G" pulse_out $end
+$var reg 3 H" current_state [2:0] $end
+$var reg 3 I" next_state [2:0] $end
+$var reg 8 J" pulse_counter [7:0] $end
+$var reg 1 K" pulse_trigger $end
+$upscope $end
+
+$scope module floor_call_debouncer10 $end
+$var parameter 3 L" STATE_IDLE $end
+$var parameter 3 M" STATE_PRESSED $end
+$var parameter 3 N" STATE_RELEASE $end
+$var parameter 32 O" PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 P" btn_n_in $end
+$var reg 1 Q" pulse_out $end
+$var reg 3 R" current_state [2:0] $end
+$var reg 3 S" next_state [2:0] $end
+$var reg 8 T" pulse_counter [7:0] $end
+$var reg 1 U" pulse_trigger $end
+$upscope $end
+
+$scope module panel_debouncer0 $end
+$var parameter 3 V" STATE_IDLE $end
+$var parameter 3 W" STATE_PRESSED $end
+$var parameter 3 X" STATE_RELEASE $end
+$var parameter 32 Y" PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 Z" btn_n_in $end
+$var reg 1 [" pulse_out $end
+$var reg 3 \" current_state [2:0] $end
+$var reg 3 ]" next_state [2:0] $end
+$var reg 8 ^" pulse_counter [7:0] $end
+$var reg 1 _" pulse_trigger $end
+$upscope $end
+
+$scope module panel_debouncer1 $end
+$var parameter 3 `" STATE_IDLE $end
+$var parameter 3 a" STATE_PRESSED $end
+$var parameter 3 b" STATE_RELEASE $end
+$var parameter 32 c" PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 d" btn_n_in $end
+$var reg 1 e" pulse_out $end
+$var reg 3 f" current_state [2:0] $end
+$var reg 3 g" next_state [2:0] $end
+$var reg 8 h" pulse_counter [7:0] $end
+$var reg 1 i" pulse_trigger $end
+$upscope $end
+
+$scope module panel_debouncer2 $end
+$var parameter 3 j" STATE_IDLE $end
+$var parameter 3 k" STATE_PRESSED $end
+$var parameter 3 l" STATE_RELEASE $end
+$var parameter 32 m" PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 n" btn_n_in $end
+$var reg 1 o" pulse_out $end
+$var reg 3 p" current_state [2:0] $end
+$var reg 3 q" next_state [2:0] $end
+$var reg 8 r" pulse_counter [7:0] $end
+$var reg 1 s" pulse_trigger $end
+$upscope $end
+
+$scope module panel_debouncer3 $end
+$var parameter 3 t" STATE_IDLE $end
+$var parameter 3 u" STATE_PRESSED $end
+$var parameter 3 v" STATE_RELEASE $end
+$var parameter 32 w" PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 x" btn_n_in $end
+$var reg 1 y" pulse_out $end
+$var reg 3 z" current_state [2:0] $end
+$var reg 3 {" next_state [2:0] $end
+$var reg 8 |" pulse_counter [7:0] $end
+$var reg 1 }" pulse_trigger $end
+$upscope $end
+
+$scope module panel_debouncer4 $end
+$var parameter 3 ~" STATE_IDLE $end
+$var parameter 3 !# STATE_PRESSED $end
+$var parameter 3 "# STATE_RELEASE $end
+$var parameter 32 ## PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 $# btn_n_in $end
+$var reg 1 %# pulse_out $end
+$var reg 3 &# current_state [2:0] $end
+$var reg 3 '# next_state [2:0] $end
+$var reg 8 (# pulse_counter [7:0] $end
+$var reg 1 )# pulse_trigger $end
+$upscope $end
+
+$scope module panel_debouncer5 $end
+$var parameter 3 *# STATE_IDLE $end
+$var parameter 3 +# STATE_PRESSED $end
+$var parameter 3 ,# STATE_RELEASE $end
+$var parameter 32 -# PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 .# btn_n_in $end
+$var reg 1 /# pulse_out $end
+$var reg 3 0# current_state [2:0] $end
+$var reg 3 1# next_state [2:0] $end
+$var reg 8 2# pulse_counter [7:0] $end
+$var reg 1 3# pulse_trigger $end
+$upscope $end
+
+$scope module panel_debouncer6 $end
+$var parameter 3 4# STATE_IDLE $end
+$var parameter 3 5# STATE_PRESSED $end
+$var parameter 3 6# STATE_RELEASE $end
+$var parameter 32 7# PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 8# btn_n_in $end
+$var reg 1 9# pulse_out $end
+$var reg 3 :# current_state [2:0] $end
+$var reg 3 ;# next_state [2:0] $end
+$var reg 8 <# pulse_counter [7:0] $end
+$var reg 1 =# pulse_trigger $end
+$upscope $end
+
+$scope module panel_debouncer7 $end
+$var parameter 3 ># STATE_IDLE $end
+$var parameter 3 ?# STATE_PRESSED $end
+$var parameter 3 @# STATE_RELEASE $end
+$var parameter 32 A# PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 B# btn_n_in $end
+$var reg 1 C# pulse_out $end
+$var reg 3 D# current_state [2:0] $end
+$var reg 3 E# next_state [2:0] $end
+$var reg 8 F# pulse_counter [7:0] $end
+$var reg 1 G# pulse_trigger $end
+$upscope $end
+
+$scope module panel_debouncer8 $end
+$var parameter 3 H# STATE_IDLE $end
+$var parameter 3 I# STATE_PRESSED $end
+$var parameter 3 J# STATE_RELEASE $end
+$var parameter 32 K# PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 L# btn_n_in $end
+$var reg 1 M# pulse_out $end
+$var reg 3 N# current_state [2:0] $end
+$var reg 3 O# next_state [2:0] $end
+$var reg 8 P# pulse_counter [7:0] $end
+$var reg 1 Q# pulse_trigger $end
+$upscope $end
+
+$scope module panel_debouncer9 $end
+$var parameter 3 R# STATE_IDLE $end
+$var parameter 3 S# STATE_PRESSED $end
+$var parameter 3 T# STATE_RELEASE $end
+$var parameter 32 U# PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 V# btn_n_in $end
+$var reg 1 W# pulse_out $end
+$var reg 3 X# current_state [2:0] $end
+$var reg 3 Y# next_state [2:0] $end
+$var reg 8 Z# pulse_counter [7:0] $end
+$var reg 1 [# pulse_trigger $end
+$upscope $end
+
+$scope module panel_debouncer10 $end
+$var parameter 3 \# STATE_IDLE $end
+$var parameter 3 ]# STATE_PRESSED $end
+$var parameter 3 ^# STATE_RELEASE $end
+$var parameter 32 _# PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 `# btn_n_in $end
+$var reg 1 a# pulse_out $end
+$var reg 3 b# current_state [2:0] $end
+$var reg 3 c# next_state [2:0] $end
+$var reg 8 d# pulse_counter [7:0] $end
+$var reg 1 e# pulse_trigger $end
+$upscope $end
+
+$scope module door_open_debouncer $end
+$var parameter 3 f# STATE_IDLE $end
+$var parameter 3 g# STATE_PRESSED $end
+$var parameter 3 h# STATE_RELEASE $end
+$var parameter 32 i# PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 j# btn_n_in $end
+$var reg 1 k# pulse_out $end
+$var reg 3 l# current_state [2:0] $end
+$var reg 3 m# next_state [2:0] $end
+$var reg 8 n# pulse_counter [7:0] $end
+$var reg 1 o# pulse_trigger $end
+$upscope $end
+
+$scope module door_close_debouncer $end
+$var parameter 3 p# STATE_IDLE $end
+$var parameter 3 q# STATE_PRESSED $end
+$var parameter 3 r# STATE_RELEASE $end
+$var parameter 32 s# PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 t# btn_n_in $end
+$var reg 1 u# pulse_out $end
+$var reg 3 v# current_state [2:0] $end
+$var reg 3 w# next_state [2:0] $end
+$var reg 8 x# pulse_counter [7:0] $end
+$var reg 1 y# pulse_trigger $end
+$upscope $end
+
+$scope module emergency_debouncer $end
+$var parameter 3 z# STATE_IDLE $end
+$var parameter 3 {# STATE_PRESSED $end
+$var parameter 3 |# STATE_RELEASE $end
+$var parameter 32 }# PULSE_CYCLES $end
+$var wire 1 >! clk $end
+$var wire 1 T rst_n $end
+$var wire 1 ~# btn_n_in $end
+$var reg 1 !$ pulse_out $end
+$var reg 3 "$ current_state [2:0] $end
+$var reg 3 #$ next_state [2:0] $end
+$var reg 8 $$ pulse_counter [7:0] $end
+$var reg 1 %$ pulse_trigger $end
+$upscope $end
+
+$scope module floor_logic_inst $end
+$var parameter 6 &$ STOP_FL1 $end
+$var parameter 6 '$ STOP_FL2 $end
+$var parameter 6 ($ STOP_FL3 $end
+$var parameter 6 )$ STOP_FL4 $end
+$var parameter 6 *$ STOP_FL5 $end
+$var parameter 6 +$ STOP_FL6 $end
+$var parameter 6 ,$ STOP_FL7 $end
+$var parameter 6 -$ STOP_FL8 $end
+$var parameter 6 .$ STOP_FL9 $end
+$var parameter 6 /$ STOP_FL10 $end
+$var parameter 6 0$ STOP_FL11 $end
+$var parameter 6 1$ UP_F1_F2 $end
+$var parameter 6 2$ UP_F2_F3 $end
+$var parameter 6 3$ UP_F3_F4 $end
+$var parameter 6 4$ UP_F4_F5 $end
+$var parameter 6 5$ UP_F5_F6 $end
+$var parameter 6 6$ UP_F6_F7 $end
+$var parameter 6 7$ UP_F7_F8 $end
+$var parameter 6 8$ UP_F8_F9 $end
+$var parameter 6 9$ UP_F9_F10 $end
+$var parameter 6 :$ UP_F10_F11 $end
+$var parameter 6 ;$ DOWN_F11_F10 $end
+$var parameter 6 <$ DOWN_F10_F9 $end
+$var parameter 6 =$ DOWN_F9_F8 $end
+$var parameter 6 >$ DOWN_F8_F7 $end
+$var parameter 6 ?$ DOWN_F7_F6 $end
+$var parameter 6 @$ DOWN_F6_F5 $end
+$var parameter 6 A$ DOWN_F5_F4 $end
+$var parameter 6 B$ DOWN_F4_F3 $end
+$var parameter 6 C$ DOWN_F3_F2 $end
+$var parameter 6 D$ DOWN_F2_F1 $end
+$var parameter 6 E$ EMERGENCY $end
+$var parameter 4 F$ FLOOR_1 $end
+$var parameter 4 G$ FLOOR_2 $end
+$var parameter 4 H$ FLOOR_3 $end
+$var parameter 4 I$ FLOOR_4 $end
+$var parameter 4 J$ FLOOR_5 $end
+$var parameter 4 K$ FLOOR_6 $end
+$var parameter 4 L$ FLOOR_7 $end
+$var parameter 4 M$ FLOOR_8 $end
+$var parameter 4 N$ FLOOR_9 $end
+$var parameter 4 O$ FLOOR_10 $end
+$var parameter 4 P$ FLOOR_11 $end
+$var wire 1 >! clock $end
+$var wire 1 T reset_n $end
+$var wire 1 p floor_call_buttons [10] $end
+$var wire 1 q floor_call_buttons [9] $end
+$var wire 1 r floor_call_buttons [8] $end
+$var wire 1 s floor_call_buttons [7] $end
+$var wire 1 t floor_call_buttons [6] $end
+$var wire 1 u floor_call_buttons [5] $end
+$var wire 1 v floor_call_buttons [4] $end
+$var wire 1 w floor_call_buttons [3] $end
+$var wire 1 x floor_call_buttons [2] $end
+$var wire 1 y floor_call_buttons [1] $end
+$var wire 1 z floor_call_buttons [0] $end
+$var wire 1 { panel_buttons [10] $end
+$var wire 1 | panel_buttons [9] $end
+$var wire 1 } panel_buttons [8] $end
+$var wire 1 ~ panel_buttons [7] $end
+$var wire 1 !! panel_buttons [6] $end
+$var wire 1 "! panel_buttons [5] $end
+$var wire 1 #! panel_buttons [4] $end
+$var wire 1 $! panel_buttons [3] $end
+$var wire 1 %! panel_buttons [2] $end
+$var wire 1 &! panel_buttons [1] $end
+$var wire 1 '! panel_buttons [0] $end
+$var wire 1 (! door_open_btn $end
+$var wire 1 )! door_close_btn $end
+$var wire 1 *! emergency_btn $end
+$var wire 1 +! power_switch $end
+$var wire 1 K current_floor_state [3] $end
+$var wire 1 L current_floor_state [2] $end
+$var wire 1 M current_floor_state [1] $end
+$var wire 1 N current_floor_state [0] $end
+$var wire 1 2! elevator_state [5] $end
+$var wire 1 3! elevator_state [4] $end
+$var wire 1 4! elevator_state [3] $end
+$var wire 1 5! elevator_state [2] $end
+$var wire 1 6! elevator_state [1] $end
+$var wire 1 7! elevator_state [0] $end
+$var wire 1 @! elevator_moving $end
+$var wire 1 9! elevator_direction $end
+$var reg 4 Q$ elevator_floor_selector [3:0] $end
+$var reg 1 R$ direction_selector $end
+$var reg 1 S$ activate_elevator $end
+$var reg 1 T$ door_open_allowed $end
+$var reg 1 U$ door_close_allowed $end
+$var reg 11 V$ call_button_lights [10:0] $end
+$var reg 11 W$ panel_button_lights [10:0] $end
+$var reg 11 X$ up_requests [10:0] $end
+$var reg 11 Y$ down_requests [10:0] $end
+$var reg 11 Z$ panel_requests [10:0] $end
+$var integer 32 [$ i $end
+
+$scope function is_stop_state $end
+$var reg 1 \$ is_stop_state $end
+$var reg 6 ]$ state [5:0] $end
+$upscope $end
+
+$scope begin panel_request_up_direction_moving_up $end
+$upscope $end
+
+$scope begin panel_request_down_direction_moving_up $end
+$upscope $end
+
+$scope begin panel_request_down_direction_moving_down $end
+$upscope $end
+
+$scope begin panel_request_up_direction_moving_down $end
+$upscope $end
+
+$scope begin elevator_call_moving_up $end
+$upscope $end
+
+$scope begin elevator_call_moving_down $end
+$upscope $end
+
+$scope begin elevator_remaining_direction_up_moving_up $end
+$upscope $end
+
+$scope begin elevator_remaining_direction_up_moving_down $end
+$upscope $end
+
+$scope begin elevator_remaining_direction_down_moving_down $end
+$upscope $end
+
+$scope begin elevator_remaining_direction_down_moving_up $end
+$upscope $end
+$upscope $end
+
+$scope module elevator_fsm_inst $end
+$var parameter 6 ^$ STOP_FL1 $end
+$var parameter 6 _$ STOP_FL2 $end
+$var parameter 6 `$ STOP_FL3 $end
+$var parameter 6 a$ STOP_FL4 $end
+$var parameter 6 b$ STOP_FL5 $end
+$var parameter 6 c$ STOP_FL6 $end
+$var parameter 6 d$ STOP_FL7 $end
+$var parameter 6 e$ STOP_FL8 $end
+$var parameter 6 f$ STOP_FL9 $end
+$var parameter 6 g$ STOP_FL10 $end
+$var parameter 6 h$ STOP_FL11 $end
+$var parameter 6 i$ UP_F1_F2 $end
+$var parameter 6 j$ UP_F2_F3 $end
+$var parameter 6 k$ UP_F3_F4 $end
+$var parameter 6 l$ UP_F4_F5 $end
+$var parameter 6 m$ UP_F5_F6 $end
+$var parameter 6 n$ UP_F6_F7 $end
+$var parameter 6 o$ UP_F7_F8 $end
+$var parameter 6 p$ UP_F8_F9 $end
+$var parameter 6 q$ UP_F9_F10 $end
+$var parameter 6 r$ UP_F10_F11 $end
+$var parameter 6 s$ DOWN_F11_F10 $end
+$var parameter 6 t$ DOWN_F10_F9 $end
+$var parameter 6 u$ DOWN_F9_F8 $end
+$var parameter 6 v$ DOWN_F8_F7 $end
+$var parameter 6 w$ DOWN_F7_F6 $end
+$var parameter 6 x$ DOWN_F6_F5 $end
+$var parameter 6 y$ DOWN_F5_F4 $end
+$var parameter 6 z$ DOWN_F4_F3 $end
+$var parameter 6 {$ DOWN_F3_F2 $end
+$var parameter 6 |$ DOWN_F2_F1 $end
+$var parameter 6 }$ EMERGENCY $end
+$var parameter 4 ~$ FLOOR_1 $end
+$var parameter 4 !% FLOOR_2 $end
+$var parameter 4 "% FLOOR_3 $end
+$var parameter 4 #% FLOOR_4 $end
+$var parameter 4 $% FLOOR_5 $end
+$var parameter 4 %% FLOOR_6 $end
+$var parameter 4 &% FLOOR_7 $end
+$var parameter 4 '% FLOOR_8 $end
+$var parameter 4 (% FLOOR_9 $end
+$var parameter 4 )% FLOOR_10 $end
+$var parameter 4 *% FLOOR_11 $end
+$var wire 1 >! clock_slower $end
+$var wire 1 T init $end
+$var wire 1 ,! elevator_floor_selector [3] $end
+$var wire 1 -! elevator_floor_selector [2] $end
+$var wire 1 .! elevator_floor_selector [1] $end
+$var wire 1 /! elevator_floor_selector [0] $end
+$var wire 1 *! emergency_stop $end
+$var wire 1 1! activate_elevator $end
+$var wire 1 o weight_sensor $end
+$var wire 1 +! power_switch $end
+$var wire 1 0! direction_selector $end
+$var reg 11 +% control_output [10:0] $end
+$var reg 6 ,% counter_state [5:0] $end
+$var reg 6 -% next_counter_state [5:0] $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+0!
+b0 "
+b0 #
+0$
+0%
+0&
+1'
+0(
+0E!
+0K!
+b1 L!
+b1 M!
+b0 N!
+0O!
+0U!
+b1 V!
+b1 W!
+b0 X!
+0Y!
+0_!
+b1 `!
+b1 a!
+b0 b!
+0c!
+0i!
+b1 j!
+b1 k!
+b0 l!
+0m!
+0s!
+b1 t!
+b1 u!
+b0 v!
+0w!
+0}!
+b1 ~!
+b1 !"
+b0 ""
+0#"
+0)"
+b1 *"
+b1 +"
+b0 ,"
+0-"
+03"
+b1 4"
+b1 5"
+b0 6"
+07"
+0="
+b1 >"
+b1 ?"
+b0 @"
+0A"
+0G"
+b1 H"
+b1 I"
+b0 J"
+0K"
+0Q"
+b1 R"
+b1 S"
+b0 T"
+0U"
+0["
+b1 \"
+b1 ]"
+b0 ^"
+0_"
+0e"
+b1 f"
+b1 g"
+b0 h"
+0i"
+0o"
+b1 p"
+b1 q"
+b0 r"
+0s"
+0y"
+b1 z"
+b1 {"
+b0 |"
+0}"
+0%#
+b1 &#
+b1 '#
+b0 (#
+0)#
+0/#
+b1 0#
+b1 1#
+b0 2#
+03#
+09#
+b1 :#
+b1 ;#
+b0 <#
+0=#
+0C#
+b1 D#
+b1 E#
+b0 F#
+0G#
+0M#
+b1 N#
+b1 O#
+b0 P#
+0Q#
+0W#
+b1 X#
+b1 Y#
+b0 Z#
+0[#
+0a#
+b1 b#
+b1 c#
+b0 d#
+0e#
+0k#
+b1 l#
+b1 m#
+b0 n#
+0o#
+0u#
+b1 v#
+b1 w#
+b0 x#
+0y#
+0!$
+b1 "$
+b1 #$
+b0 $$
+0%$
+bx Q$
+xR$
+0S$
+0T$
+0U$
+b0 V$
+b0 W$
+b0 X$
+b0 Y$
+b0 Z$
+1\$
+b0 ]$
+b10001 +%
+b0 ,%
+b0 -%
+b101000 C!
+b1 F!
+b10 G!
+b100 H!
+b1 I!
+b1 P!
+b10 Q!
+b100 R!
+b1 S!
+b1 Z!
+b10 [!
+b100 \!
+b1 ]!
+b1 d!
+b10 e!
+b100 f!
+b1 g!
+b1 n!
+b10 o!
+b100 p!
+b1 q!
+b1 x!
+b10 y!
+b100 z!
+b1 {!
+b1 $"
+b10 %"
+b100 &"
+b1 '"
+b1 ."
+b10 /"
+b100 0"
+b1 1"
+b1 8"
+b10 9"
+b100 :"
+b1 ;"
+b1 B"
+b10 C"
+b100 D"
+b1 E"
+b1 L"
+b10 M"
+b100 N"
+b1 O"
+b1 V"
+b10 W"
+b100 X"
+b1 Y"
+b1 `"
+b10 a"
+b100 b"
+b1 c"
+b1 j"
+b10 k"
+b100 l"
+b1 m"
+b1 t"
+b10 u"
+b100 v"
+b1 w"
+b1 ~"
+b10 !#
+b100 "#
+b1 ##
+b1 *#
+b10 +#
+b100 ,#
+b1 -#
+b1 4#
+b10 5#
+b100 6#
+b1 7#
+b1 >#
+b10 ?#
+b100 @#
+b1 A#
+b1 H#
+b10 I#
+b100 J#
+b1 K#
+b1 R#
+b10 S#
+b100 T#
+b1 U#
+b1 \#
+b10 ]#
+b100 ^#
+b1 _#
+b1 f#
+b10 g#
+b100 h#
+b1 i#
+b1 p#
+b10 q#
+b100 r#
+b1 s#
+b1 z#
+b10 {#
+b100 |#
+b1 }#
+b0 &$
+b1 '$
+b10 ($
+b11 )$
+b100 *$
+b101 +$
+b110 ,$
+b111 -$
+b1000 .$
+b1001 /$
+b1010 0$
+b1011 1$
+b1100 2$
+b1101 3$
+b1110 4$
+b1111 5$
+b10000 6$
+b10001 7$
+b10010 8$
+b10011 9$
+b10100 :$
+b10101 ;$
+b10110 <$
+b10111 =$
+b11000 >$
+b11001 ?$
+b11010 @$
+b11011 A$
+b11100 B$
+b11101 C$
+b11110 D$
+b11111 E$
+b0 F$
+b1 G$
+b10 H$
+b11 I$
+b100 J$
+b101 K$
+b110 L$
+b111 M$
+b1000 N$
+b1001 O$
+b1010 P$
+b0 ^$
+b1 _$
+b10 `$
+b11 a$
+b100 b$
+b101 c$
+b110 d$
+b111 e$
+b1000 f$
+b1001 g$
+b1010 h$
+b1011 i$
+b1100 j$
+b1101 k$
+b1110 l$
+b1111 m$
+b10000 n$
+b10001 o$
+b10010 p$
+b10011 q$
+b10100 r$
+b10101 s$
+b10110 t$
+b10111 u$
+b11000 v$
+b11001 w$
+b11010 x$
+b11011 y$
+b11100 z$
+b11101 {$
+b11110 |$
+b11111 }$
+b0 ~$
+b1 !%
+b10 "%
+b11 #%
+b100 $%
+b101 %%
+b110 &%
+b111 '%
+b1000 (%
+b1001 )%
+b1010 *%
+bx [$
+03
+02
+01
+00
+0/
+0.
+0-
+0,
+0+
+0*
+0)
+0>
+0=
+0<
+0;
+0:
+09
+08
+07
+06
+05
+04
+1?
+1J
+0I
+0H
+0G
+1F
+0E
+0D
+0C
+0B
+0A
+0@
+0N
+0M
+0L
+0K
+1O
+0P
+0Q
+0R
+0S
+0z
+0y
+0x
+0w
+0v
+0u
+0t
+0s
+0r
+0q
+0p
+0'!
+0&!
+0%!
+0$!
+0#!
+0"!
+0!!
+0~
+0}
+0|
+0{
+0(!
+0)!
+0*!
+1+!
+x/!
+x.!
+x-!
+x,!
+x0!
+01!
+07!
+06!
+05!
+04!
+03!
+02!
+z8!
+09!
+z=!
+z<!
+z;!
+z:!
+0>!
+0?!
+0@!
+0A!
+0B!
+0T
+0_
+0^
+0]
+0\
+0[
+0Z
+0Y
+0X
+0W
+0V
+0U
+0j
+0i
+0h
+0g
+0f
+0e
+0d
+0c
+0b
+0a
+0`
+0k
+0l
+0m
+1n
+0o
+1~#
+1t#
+1j#
+1`#
+1V#
+1L#
+1B#
+18#
+1.#
+1$#
+1x"
+1n"
+1d"
+1Z"
+1P"
+1F"
+1<"
+12"
+1("
+1|!
+1r!
+1h!
+1^!
+1T!
+1J!
+1D!
+$end
+#20
+1E!
+1>!
+#40
+0E!
+0>!
+#50
+1!
+1T
+#60
+1E!
+1>!
+#80
+0E!
+0>!
+#100
+1E!
+1>!
+#120
+0E!
+0>!
+#140
+1E!
+1>!
+#160
+0E!
+0>!
+#180
+1E!
+1>!
+#200
+0E!
+0>!
+#220
+1E!
+1>!
+#240
+0E!
+0>!
+#260
+1E!
+1>!
+#280
+0E!
+0>!
+#300
+1E!
+1>!
+#320
+0E!
+0>!
+#340
+1E!
+1>!
+#360
+0E!
+0>!
+#380
+1E!
+1>!
+#400
+0E!
+0>!
+#420
+1E!
+1>!
+#440
+0E!
+0>!
+#460
+1E!
+1>!
+#480
+0E!
+0>!
+#500
+1E!
+1>!
+#520
+0E!
+0>!
+#540
+1E!
+1>!
+#550
+b100 "
+1]
+0^!
+b10 a!
+#560
+0E!
+0>!
+#580
+1E!
+1>!
+b10 `!
+#600
+0E!
+0>!
+#620
+1E!
+1>!
+#640
+0E!
+0>!
+#660
+1E!
+1>!
+#680
+0E!
+0>!
+#700
+1E!
+1>!
+#720
+0E!
+0>!
+#740
+1E!
+1>!
+#750
+b0 "
+0]
+1^!
+b100 a!
+#760
+0E!
+0>!
+#780
+1E!
+1>!
+b100 `!
+1c!
+b1 a!
+#800
+0E!
+0>!
+#820
+1E!
+1>!
+b1 `!
+1_!
+b1 b!
+1x
+0c!
+#840
+0E!
+0>!
+#860
+1E!
+1>!
+b0 b!
+b100 X$
+b100 V$
+11
+1S$
+b1 [$
+b10 [$
+b10 Q$
+1R$
+b11 [$
+b100 [$
+b101 [$
+b110 [$
+b111 [$
+b1000 [$
+b1001 [$
+b1010 [$
+b1011 [$
+b11111111111111111111111111111111 [$
+11!
+0/!
+1.!
+0-!
+0,!
+10!
+b1011 -%
+#880
+0E!
+0>!
+#900
+1E!
+1>!
+0_!
+b1011 ,%
+0x
+17!
+16!
+14!
+0S$
+b1011 ]$
+0\$
+b1100 -%
+b10100110 +%
+0J
+1I
+1H
+0F
+1E
+1C
+1?!
+0?
+1P
+1@!
+0O
+01!
+19!
+1N
+#920
+0E!
+0>!
+#940
+1E!
+1>!
+b1100 ,%
+07!
+06!
+15!
+b1100 ]$
+b10 -%
+b100100110 +%
+0C
+1B
+0N
+1M
+#960
+0E!
+0>!
+#980
+1E!
+1>!
+b0 X$
+b0 V$
+b10 ,%
+01
+16!
+05!
+04!
+b10 ]$
+1\$
+b100010001 +%
+1J
+0I
+0H
+1F
+0E
+0?!
+1?
+0P
+0@!
+1O
+09!
+#1000
+0E!
+0>!
+#1020
+1E!
+1>!
+#1040
+0E!
+0>!
+#1060
+1E!
+1>!
+#1080
+0E!
+0>!
+#1100
+1E!
+1>!
+#1120
+0E!
+0>!
+#1140
+1E!
+1>!
+#1160
+0E!
+0>!
+#1180
+1E!
+1>!
+#1200
+0E!
+0>!
+#1220
+1E!
+1>!
+#1240
+0E!
+0>!
+#1250
+b1000000 "
+1Y
+0("
+b10 +"
+#1260
+1E!
+1>!
+b10 *"
+#1280
+0E!
+0>!
+#1300
+1E!
+1>!
+#1320
+0E!
+0>!
+#1340
+1E!
+1>!
+#1360
+0E!
+0>!
+#1380
+1E!
+1>!
+#1400
+0E!
+0>!
+#1420
+1E!
+1>!
+#1440
+0E!
+0>!
+#1450
+b0 "
+0Y
+1("
+b100 +"
+#1460
+1E!
+1>!
+b100 *"
+1-"
+b1 +"
+#1480
+0E!
+0>!
+#1500
+1E!
+1>!
+b1 *"
+1)"
+b1 ,"
+1t
+0-"
+#1520
+0E!
+0>!
+#1540
+1E!
+1>!
+b0 ,"
+b1000000 X$
+b1000000 V$
+1-
+1S$
+b11 [$
+b100 [$
+b101 [$
+b110 [$
+b110 Q$
+b111 [$
+b1000 [$
+b1001 [$
+b1010 [$
+b1011 [$
+b1 [$
+b0 [$
+b11111111111111111111111111111111 [$
+11!
+1-!
+b1101 -%
+#1560
+0E!
+0>!
+#1580
+1E!
+1>!
+0)"
+b1101 ,%
+0t
+17!
+06!
+15!
+14!
+0S$
+b1101 ]$
+0\$
+b1110 -%
+b110100110 +%
+0J
+1I
+1H
+0F
+1E
+1C
+1?!
+0?
+1P
+1@!
+0O
+01!
+19!
+1N
+#1600
+0E!
+0>!
+#1620
+1E!
+1>!
+b1110 ,%
+07!
+16!
+b1110 ]$
+b1111 -%
+b1000100110 +%
+0C
+0B
+1A
+0N
+0M
+1L
+#1640
+0E!
+0>!
+#1660
+1E!
+1>!
+b1111 ,%
+17!
+b1111 ]$
+b10000 -%
+b1010100110 +%
+1C
+1N
+#1680
+0E!
+0>!
+#1700
+1E!
+1>!
+b10000 ,%
+07!
+06!
+05!
+04!
+13!
+b10000 ]$
+b110 -%
+b1100100110 +%
+0C
+1B
+0N
+1M
+#1720
+0E!
+0>!
+#1740
+1E!
+1>!
+b0 X$
+b0 V$
+b110 ,%
+0-
+16!
+15!
+03!
+b110 ]$
+1\$
+b1100010001 +%
+1J
+0I
+0H
+1F
+0E
+0?!
+1?
+0P
+0@!
+1O
+09!
+#1760
+0E!
+0>!
+#1780
+1E!
+1>!
+#1800
+0E!
+0>!
+#1820
+1E!
+1>!
+#1840
+0E!
+0>!
+#1860
+1E!
+1>!
+#1880
+0E!
+0>!
+#1900
+1E!
+1>!
+#1920
+0E!
+0>!
+#1940
+1E!
+1>!
+#1950
+b10 "
+1^
+0T!
+b10 W!
+#1960
+0E!
+0>!
+#1980
+1E!
+1>!
+b10 V!
+#2000
+0E!
+0>!
+#2020
+1E!
+1>!
+#2040
+0E!
+0>!
+#2060
+1E!
+1>!
+#2080
+0E!
+0>!
+#2100
+1E!
+1>!
+#2120
+0E!
+0>!
+#2140
+1E!
+1>!
+#2150
+b0 "
+0^
+1T!
+b100 W!
+#2160
+0E!
+0>!
+#2180
+1E!
+1>!
+b100 V!
+1Y!
+b1 W!
+#2200
+0E!
+0>!
+#2220
+1E!
+1>!
+b1 V!
+1U!
+b1 X!
+1y
+0Y!
+#2240
+0E!
+0>!
+#2260
+1E!
+1>!
+b0 X!
+b10 Y$
+b10 V$
+12
+1S$
+b101 [$
+b100 [$
+b11 [$
+b10 [$
+b1 [$
+b1 Q$
+0R$
+b0 [$
+b11111111111111111111111111111111 [$
+11!
+1/!
+0.!
+0-!
+00!
+b11001 -%
+#2280
+0E!
+0>!
+#2300
+1E!
+1>!
+0U!
+b11001 ,%
+0y
+17!
+06!
+05!
+14!
+13!
+0S$
+b11001 ]$
+0\$
+b11010 -%
+b1010101010 +%
+0J
+1I
+1G
+0F
+1E
+1C
+0B
+1?!
+0?
+1Q
+1@!
+0O
+01!
+1N
+0M
+#2320
+0E!
+0>!
+#2340
+1E!
+1>!
+b11010 ,%
+07!
+16!
+b11010 ]$
+b11011 -%
+b1000101010 +%
+0C
+0N
+#2360
+0E!
+0>!
+#2380
+1E!
+1>!
+b11011 ,%
+17!
+b11011 ]$
+b11100 -%
+b110101010 +%
+1C
+1B
+0A
+1N
+1M
+0L
+#2400
+0E!
+0>!
+#2420
+1E!
+1>!
+b11100 ,%
+07!
+06!
+15!
+b11100 ]$
+b11101 -%
+b100101010 +%
+0C
+0N
+#2440
+0E!
+0>!
+#2460
+1E!
+1>!
+b11101 ,%
+17!
+b11101 ]$
+b1 -%
+b10101010 +%
+1C
+0B
+1N
+0M
+#2480
+0E!
+0>!
+#2500
+1E!
+1>!
+b0 Y$
+b0 V$
+b1 ,%
+02
+05!
+04!
+03!
+b1 ]$
+1\$
+b10010001 +%
+1J
+0I
+0G
+1F
+0E
+0?!
+1?
+0Q
+0@!
+1O
+#2520
+0E!
+0>!
+#2540
+1E!
+1>!
+#2560
+0E!
+0>!
+#2580
+1E!
+1>!
+#2600
+0E!
+0>!
+#2620
+1E!
+1>!
+#2640
+0E!
+0>!
+#2650
+b10000 #
+1f
+0$#
+b10 '#
+#2660
+1E!
+1>!
+b10 &#
+#2680
+0E!
+0>!
+#2700
+1E!
+1>!
+#2720
+0E!
+0>!
+#2740
+1E!
+1>!
+#2760
+0E!
+0>!
+#2780
+1E!
+1>!
+#2800
+0E!
+0>!
+#2820
+1E!
+1>!
+#2840
+0E!
+0>!
+#2850
+b0 #
+0f
+1$#
+b100 '#
+#2860
+1E!
+1>!
+b100 &#
+1)#
+b1 '#
+#2880
+0E!
+0>!
+#2900
+1E!
+1>!
+b1 &#
+1%#
+b1 (#
+1#!
+0)#
+#2920
+0E!
+0>!
+#2940
+1E!
+1>!
+b0 (#
+b10000 Z$
+b10000 W$
+1:
+1S$
+b0 [$
+b11111111111111111111111111111111 [$
+b10 [$
+b11 [$
+b100 [$
+b100 Q$
+1R$
+b101 [$
+b110 [$
+b111 [$
+b1000 [$
+b1001 [$
+b1010 [$
+b1011 [$
+11!
+0/!
+1-!
+10!
+b1100 -%
+#2960
+0E!
+0>!
+#2980
+1E!
+1>!
+0%#
+b1100 ,%
+0#!
+07!
+15!
+14!
+0S$
+b1100 ]$
+0\$
+b1101 -%
+b100100110 +%
+0J
+1I
+1H
+0F
+1E
+0C
+1B
+1?!
+0?
+1P
+1@!
+0O
+01!
+19!
+0N
+1M
+#3000
+0E!
+0>!
+#3020
+1E!
+1>!
+b1101 ,%
+17!
+b1101 ]$
+b1110 -%
+b110100110 +%
+1C
+1N
+#3040
+0E!
+0>!
+#3060
+1E!
+1>!
+b1110 ,%
+07!
+16!
+b1110 ]$
+b100 -%
+b1000100110 +%
+0C
+0B
+1A
+0N
+0M
+1L
+#3080
+0E!
+0>!
+#3100
+1E!
+1>!
+b0 Z$
+b0 W$
+b100 ,%
+0:
+06!
+04!
+b100 ]$
+1\$
+b1000010001 +%
+1J
+0I
+0H
+1F
+0E
+0?!
+1?
+0P
+0@!
+1O
+09!
+#3120
+0E!
+0>!
+#3140
+1E!
+1>!
+#3160
+0E!
+0>!
+#3180
+1E!
+1>!
+#3200
+0E!
+0>!
+#3220
+1E!
+1>!
+#3240
+0E!
+0>!
+#3260
+1E!
+1>!
+#3280
+0E!
+0>!
+#3300
+1E!
+1>!
+#3320
+0E!
+0>!
+#3340
+1E!
+1>!
+#3350
+b1000000000 #
+1a
+0V#
+b10 Y#
+#3360
+0E!
+0>!
+#3380
+1E!
+1>!
+b10 X#
+#3400
+0E!
+0>!
+#3420
+1E!
+1>!
+#3440
+0E!
+0>!
+#3460
+1E!
+1>!
+#3480
+0E!
+0>!
+#3500
+1E!
+1>!
+#3520
+0E!
+0>!
+#3540
+1E!
+1>!
+#3550
+b0 #
+0a
+1V#
+b100 Y#
+#3560
+0E!
+0>!
+#3580
+1E!
+1>!
+b100 X#
+1[#
+b1 Y#
+#3600
+0E!
+0>!
+#3620
+1E!
+1>!
+b1 X#
+1W#
+b1 Z#
+1|
+0[#
+#3640
+0E!
+0>!
+#3660
+1E!
+1>!
+b0 Z#
+b1000000000 Z$
+b1000000000 W$
+15
+1S$
+b11 [$
+b10 [$
+b1 [$
+b0 [$
+b11111111111111111111111111111111 [$
+b101 [$
+b110 [$
+b111 [$
+b1000 [$
+b1001 [$
+b1001 Q$
+b1010 [$
+b1011 [$
+11!
+1/!
+0-!
+1,!
+b1111 -%
+#3680
+0E!
+0>!
+#3700
+1E!
+1>!
+0W#
+b1111 ,%
+0|
+17!
+16!
+14!
+0S$
+b1111 ]$
+0\$
+b10000 -%
+b1010100110 +%
+0J
+1I
+1H
+0F
+1E
+1C
+1?!
+0?
+1P
+1@!
+0O
+01!
+19!
+1N
+#3720
+0E!
+0>!
+#3740
+1E!
+1>!
+b10000 ,%
+07!
+06!
+05!
+04!
+13!
+b10000 ]$
+b10001 -%
+b1100100110 +%
+0C
+1B
+0N
+1M
+#3760
+0E!
+0>!
+#3780
+1E!
+1>!
+b10001 ,%
+17!
+b10001 ]$
+b10010 -%
+b1110100110 +%
+1C
+1N
+#3800
+0E!
+0>!
+#3820
+1E!
+1>!
+b10010 ,%
+07!
+16!
+b10010 ]$
+b10011 -%
+b10000100110 +%
+0C
+0B
+0A
+1@
+0N
+0M
+0L
+1K
+#3840
+0E!
+0>!
+#3860
+1E!
+1>!
+b10011 ,%
+17!
+b10011 ]$
+b1001 -%
+b10010100110 +%
+1C
+1N
+#3880
+0E!
+0>!
+#3900
+1E!
+1>!
+b0 Z$
+b0 W$
+b1001 ,%
+05
+06!
+14!
+03!
+b1001 ]$
+1\$
+b10010010001 +%
+1J
+0I
+0H
+1F
+0E
+0?!
+1?
+0P
+0@!
+1O
+09!
+#3920
+0E!
+0>!
+#3940
+1E!
+1>!
+#3960
+0E!
+0>!
+#3980
+1E!
+1>!
+#4000
+0E!
+0>!
+#4020
+1E!
+1>!
+#4040
+0E!
+0>!
+#4050
+b10000000 #
+1c
+0B#
+b10 E#
+#4060
+1E!
+1>!
+b10 D#
+#4080
+0E!
+0>!
+#4100
+1E!
+1>!
+#4120
+0E!
+0>!
+#4140
+1E!
+1>!
+#4160
+0E!
+0>!
+#4180
+1E!
+1>!
+#4200
+0E!
+0>!
+#4220
+1E!
+1>!
+#4240
+0E!
+0>!
+#4250
+b0 #
+0c
+1B#
+b100 E#
+#4260
+1E!
+1>!
+b100 D#
+1G#
+b1 E#
+#4280
+0E!
+0>!
+#4300
+1E!
+1>!
+b1 D#
+1C#
+b1 F#
+1~
+0G#
+#4320
+0E!
+0>!
+#4340
+1E!
+1>!
+b0 F#
+b10000000 Z$
+b10000000 W$
+17
+1S$
+b1000 [$
+b111 [$
+b111 Q$
+0R$
+b110 [$
+b101 [$
+b100 [$
+b11 [$
+b10 [$
+b1 [$
+b0 [$
+b11111111111111111111111111111111 [$
+b1010 [$
+b1011 [$
+11!
+1.!
+1-!
+0,!
+00!
+b10110 -%
+#4360
+0E!
+0>!
+#4380
+1E!
+1>!
+0C#
+b10110 ,%
+0~
+07!
+16!
+15!
+04!
+13!
+0S$
+b10110 ]$
+0\$
+b10111 -%
+b10000101010 +%
+0J
+1I
+1G
+0F
+1E
+0C
+1?!
+0?
+1Q
+1@!
+0O
+01!
+0N
+#4400
+0E!
+0>!
+#4420
+1E!
+1>!
+b10111 ,%
+17!
+b10111 ]$
+b111 -%
+b1110101010 +%
+1C
+1B
+1A
+0@
+1N
+1M
+1L
+0K
+#4440
+0E!
+0>!
+#4460
+1E!
+1>!
+b0 Z$
+b0 W$
+b111 ,%
+07
+03!
+b111 ]$
+1\$
+b1110010001 +%
+1J
+0I
+0G
+1F
+0E
+0?!
+1?
+0Q
+0@!
+1O
+#4480
+0E!
+0>!
+#4500
+1E!
+1>!
+#4520
+0E!
+0>!
+#4540
+1E!
+1>!
+#4560
+0E!
+0>!
+#4580
+1E!
+1>!
+#4600
+0E!
+0>!
+#4620
+1E!
+1>!
+#4640
+0E!
+0>!
+#4660
+1E!
+1>!
+#4680
+0E!
+0>!
+#4700
+1E!
+1>!
+#4720
+0E!
+0>!
+#4740
+1E!
+1>!
+#4750
+b1 #
+1j
+0Z"
+b10 ]"
+#4760
+0E!
+0>!
+#4780
+1E!
+1>!
+b10 \"
+#4800
+0E!
+0>!
+#4820
+1E!
+1>!
+#4840
+0E!
+0>!
+#4860
+1E!
+1>!
+#4880
+0E!
+0>!
+#4900
+1E!
+1>!
+#4920
+0E!
+0>!
+#4940
+1E!
+1>!
+#4950
+b0 #
+0j
+1Z"
+b100 ]"
+#4960
+0E!
+0>!
+#4980
+1E!
+1>!
+b100 \"
+1_"
+b1 ]"
+#5000
+0E!
+0>!
+#5020
+1E!
+1>!
+b1 \"
+1["
+b1 ^"
+1'!
+0_"
+#5040
+0E!
+0>!
+#5060
+1E!
+1>!
+b0 ^"
+b1 Z$
+b1 W$
+1>
+1S$
+b110 [$
+b101 [$
+b100 [$
+b11 [$
+b10 [$
+b1 [$
+b0 [$
+b0 Q$
+b11111111111111111111111111111111 [$
+b1000 [$
+b1001 [$
+b1010 [$
+b1011 [$
+11!
+0/!
+0.!
+0-!
+b11000 -%
+#5080
+0E!
+0>!
+#5100
+1E!
+1>!
+0["
+b11000 ,%
+0'!
+07!
+06!
+05!
+14!
+13!
+0S$
+b11000 ]$
+0\$
+b11001 -%
+b1100101010 +%
+0J
+1I
+1G
+0F
+1E
+0C
+1?!
+0?
+1Q
+1@!
+0O
+01!
+0N
+#5120
+0E!
+0>!
+#5140
+1E!
+1>!
+b11001 ,%
+17!
+b11001 ]$
+b11010 -%
+b1010101010 +%
+1C
+0B
+1N
+0M
+#5160
+0E!
+0>!
+#5180
+1E!
+1>!
+b11010 ,%
+07!
+16!
+b11010 ]$
+b11011 -%
+b1000101010 +%
+0C
+0N
+#5200
+0E!
+0>!
+#5220
+1E!
+1>!
+b11011 ,%
+17!
+b11011 ]$
+b11100 -%
+b110101010 +%
+1C
+1B
+0A
+1N
+1M
+0L
+#5240
+0E!
+0>!
+#5260
+1E!
+1>!
+b11100 ,%
+07!
+06!
+15!
+b11100 ]$
+b11101 -%
+b100101010 +%
+0C
+0N
+#5280
+0E!
+0>!
+#5300
+1E!
+1>!
+b11101 ,%
+17!
+b11101 ]$
+b11110 -%
+b10101010 +%
+1C
+0B
+1N
+0M
+#5320
+0E!
+0>!
+#5340
+1E!
+1>!
+b11110 ,%
+07!
+16!
+b11110 ]$
+b0 -%
+b101010 +%
+0C
+0N
+#5360
+0E!
+0>!
+#5380
+1E!
+1>!
+b0 Z$
+b0 W$
+b0 ,%
+0>
+06!
+05!
+04!
+03!
+b0 ]$
+1\$
+b10001 +%
+1J
+0I
+0G
+1F
+0E
+0?!
+1?
+0Q
+0@!
+1O
+#5400
+0E!
+0>!
+#5420
+1E!
+1>!
+#5440
+0E!
+0>!
+#5450
+b10000000000 #
+1`
+0`#
+b10 c#
+#5460
+1E!
+1>!
+b10 b#
+#5480
+0E!
+0>!
+#5500
+b0 #
+1E!
+0`
+1>!
+1`#
+b100 c#
+b100 b#
+1e#
+b1 c#
+#5520
+0E!
+0>!
+#5540
+1E!
+1>!
+b1 b#
+1a#
+b1 d#
+1{
+0e#
+#5550
+b100000 #
+1e
+0.#
+b10 1#
+#5560
+0E!
+0>!
+#5580
+1E!
+1>!
+b10 0#
+b0 d#
+b10000000000 Z$
+b10000000000 W$
+14
+1S$
+b11111111111111111111111111111111 [$
+b1 [$
+b10 [$
+b11 [$
+b100 [$
+b101 [$
+b110 [$
+b111 [$
+b1000 [$
+b1001 [$
+b1010 [$
+b1010 Q$
+1R$
+b1011 [$
+11!
+1.!
+1,!
+10!
+b1011 -%
+#5600
+b0 #
+0E!
+0e
+0>!
+1.#
+b100 1#
+#5620
+1E!
+1>!
+b100 0#
+0a#
+b1011 ,%
+0{
+17!
+16!
+14!
+0S$
+b1011 ]$
+0\$
+b1100 -%
+b10100110 +%
+13#
+b1 1#
+0J
+1I
+1H
+0F
+1E
+1C
+1?!
+0?
+1P
+1@!
+0O
+01!
+19!
+1N
+#5640
+0E!
+0>!
+#5650
+b10000000 #
+1c
+0B#
+b10 E#
+#5660
+1E!
+1>!
+b1 0#
+1/#
+b1 2#
+b10 D#
+b1100 ,%
+1"!
+07!
+06!
+15!
+b1100 ]$
+b1101 -%
+b100100110 +%
+03#
+0C
+1B
+0N
+1M
+#5680
+0E!
+0>!
+#5700
+b0 #
+1E!
+0c
+1>!
+1B#
+b100 E#
+b0 2#
+b100 D#
+b10000100000 Z$
+b10000100000 W$
+b1101 ,%
+19
+17!
+b1101 ]$
+b1110 -%
+b110100110 +%
+1G#
+b1 E#
+1C
+1N
+#5720
+0E!
+0>!
+#5740
+1E!
+1>!
+0/#
+b1 D#
+1C#
+b1 F#
+b1110 ,%
+0"!
+1~
+07!
+16!
+b1110 ]$
+b1111 -%
+b1000100110 +%
+0G#
+0C
+0B
+1A
+0N
+0M
+1L
+#5760
+0E!
+0>!
+#5780
+1E!
+1>!
+b0 F#
+b10010100000 Z$
+b10010100000 W$
+b1111 ,%
+17
+17!
+b1111 ]$
+b10000 -%
+b1010100110 +%
+1C
+1N
+#5800
+0E!
+0>!
+#5820
+1E!
+1>!
+0C#
+b10000 ,%
+0~
+07!
+06!
+05!
+04!
+13!
+b10000 ]$
+b10001 -%
+b1100100110 +%
+0C
+1B
+0N
+1M
+#5840
+0E!
+0>!
+#5860
+1E!
+1>!
+b10001 ,%
+17!
+b10001 ]$
+b10010 -%
+b1110100110 +%
+1C
+1N
+#5880
+0E!
+0>!
+#5900
+1E!
+1>!
+b10010 ,%
+07!
+16!
+b10010 ]$
+b10011 -%
+b10000100110 +%
+0C
+0B
+0A
+1@
+0N
+0M
+0L
+1K
+#5920
+0E!
+0>!
+#5940
+1E!
+1>!
+b10011 ,%
+17!
+b10011 ]$
+b10100 -%
+b10010100110 +%
+1C
+1N
+#5960
+0E!
+0>!
+#5980
+1E!
+1>!
+b10100 ,%
+07!
+06!
+15!
+b10100 ]$
+b1010 -%
+b10100100110 +%
+0C
+1B
+0N
+1M
+#6000
+0E!
+0>!
+#6020
+1E!
+1>!
+b10100000 Z$
+b10100000 W$
+b1010 ,%
+04
+16!
+05!
+14!
+03!
+b1010 ]$
+1\$
+b10100010001 +%
+1S$
+b1001 [$
+b1000 [$
+b111 [$
+b111 Q$
+0R$
+b110 [$
+b101 [$
+b101 Q$
+b100 [$
+b11 [$
+b10 [$
+b1 [$
+b0 [$
+b11111111111111111111111111111111 [$
+1J
+0I
+0H
+1F
+0E
+0?!
+1?
+0P
+0@!
+1O
+11!
+1/!
+0.!
+1-!
+0,!
+00!
+09!
+0S$
+1S$
+b1001 [$
+b1000 [$
+b111 [$
+b111 Q$
+b110 [$
+b101 [$
+b101 Q$
+b100 [$
+b11 [$
+b10 [$
+b1 [$
+b0 [$
+b11111111111111111111111111111111 [$
+b1011 [$
+b10101 -%
+#6040
+0E!
+0>!
+#6060
+1E!
+1>!
+b10101 ,%
+17!
+06!
+15!
+04!
+13!
+0S$
+b10101 ]$
+0\$
+b10110 -%
+b10010101010 +%
+0J
+1I
+1G
+0F
+1E
+1C
+0B
+1?!
+0?
+1Q
+1@!
+0O
+01!
+1N
+0M
+#6080
+0E!
+0>!
+#6100
+1E!
+1>!
+b10110 ,%
+07!
+16!
+b10110 ]$
+b10111 -%
+b10000101010 +%
+0C
+0N
+#6120
+0E!
+0>!
+#6140
+1E!
+1>!
+b10111 ,%
+17!
+b10111 ]$
+b11000 -%
+b1110101010 +%
+1C
+1B
+1A
+0@
+1N
+1M
+1L
+0K
+#6160
+0E!
+0>!
+#6180
+1E!
+1>!
+b11000 ,%
+07!
+06!
+05!
+14!
+b11000 ]$
+b11001 -%
+b1100101010 +%
+0C
+0N
+#6200
+0E!
+0>!
+#6220
+1E!
+1>!
+b11001 ,%
+17!
+b11001 ]$
+b101 -%
+b1010101010 +%
+1C
+0B
+1N
+0M
+#6240
+0E!
+0>!
+#6260
+1E!
+1>!
+b10000000 Z$
+b10000000 W$
+b101 ,%
+09
+15!
+04!
+03!
+b101 ]$
+1\$
+b1010010001 +%
+1S$
+b100 [$
+b11 [$
+b10 [$
+b1 [$
+b0 [$
+b11111111111111111111111111111111 [$
+b110 [$
+b111 [$
+b111 Q$
+1R$
+b1000 [$
+b1001 [$
+b1010 [$
+b1011 [$
+1J
+0I
+0G
+1F
+0E
+0?!
+1?
+0Q
+0@!
+1O
+11!
+1.!
+10!
+b10000 -%
+#6280
+0E!
+0>!
+#6300
+1E!
+1>!
+b10000 ,%
+07!
+05!
+13!
+0S$
+b10000 ]$
+0\$
+b10001 -%
+b1100100110 +%
+0J
+1I
+1H
+0F
+1E
+0C
+1B
+1?!
+0?
+1P
+1@!
+0O
+01!
+19!
+0N
+1M
+#6320
+0E!
+0>!
+#6340
+1E!
+1>!
+b10001 ,%
+17!
+b10001 ]$
+b111 -%
+b1110100110 +%
+1C
+1N
+#6360
+0E!
+0>!
+#6380
+1E!
+1>!
+b0 Z$
+b0 W$
+b111 ,%
+07
+16!
+15!
+03!
+b111 ]$
+1\$
+b1110010001 +%
+1J
+0I
+0H
+1F
+0E
+0?!
+1?
+0P
+0@!
+1O
+09!
+#6400
+0E!
+0>!
+#6420
+1E!
+1>!
+#6440
+0E!
+0>!
+#6460
+1E!
+1>!
+#6480
+0E!
+0>!
+#6500
+1E!
+1>!
+#6520
+0E!
+0>!
+#6540
+1E!
+1>!
+#6560
+0E!
+0>!
+#6580
+1E!
+1>!
+#6600
+0E!
+0>!
+#6620
+1E!
+1>!
+#6640
+0E!
+0>!
+#6660
+1E!
+1>!
+#6680
+0E!
+0>!
+#6700
+1E!
+1>!
+#6720
+0E!
+0>!
+#6740
+1E!
+1>!
+#6760
+0E!
+0>!
+#6780
+1E!
+1>!
+#6800
+0E!
+0>!
+#6820
+1E!
+1>!
+#6840
+0E!
+0>!
+#6860
+1E!
+1>!
+#6880
+0E!
+0>!
+#6900
+1E!
+1>!
+#6920
+0E!
+0>!
+#6940
+1E!
+1>!
+#6960
+0E!
+0>!
+#6980
+1E!
+1>!
+#7000
+0E!
+0>!
+#7020
+1E!
+1>!
+#7040
+0E!
+0>!
+#7060
+1E!
+1>!
+#7080
+0E!
+0>!
+#7100
+1E!
+1>!
+#7120
+0E!
+0>!
+#7140
+1E!
+1>!
+#7160
+0E!
+0>!
+#7180
+1E!
+1>!
+#7200
+0E!
+0>!
+#7220
+1E!
+1>!
+#7240
+0E!
+0>!
+#7260
+1E!
+1>!
+#7280
+0E!
+0>!
+#7300
+1E!
+1>!
+#7320
+0E!
+0>!
+#7340
+1E!
+1>!
+#7360
+0E!
+0>!
+#7380
+1E!
+1>!
+#7400
+0E!
+0>!
+#7420
+1E!
+1>!
+#7440
+0E!
+0>!
+#7460
+1E!
+1>!
+#7480
+0E!
+0>!
+#7500
+1E!
+1>!
+#7520
+0E!
+0>!
+#7540
+1E!
+1>!
+#7560
+0E!
+0>!
+#7580
+1E!
+1>!
+#7600
+0E!
+0>!
+#7620
+1E!
+1>!
+#7640
+0E!
+0>!
+#7660
+1E!
+1>!
+#7680
+0E!
+0>!
+#7700
+0!
+1E!
+0T
+1>!
+b0 ,%
+07!
+06!
+05!
+b0 ]$
+b0 -%
+b10001 +%
+0C
+0B
+0A
+0N
+0M
+0L
+#7720
+0E!
+0>!
+#7740
+1E!
+1>!
+#7750
+1!
+1T
+#7760
+0E!
+0>!
+#7780
+1E!
+1>!
+#7800
+0E!
+0>!
+#7820
+1E!
+1>!
+#7840
+0E!
+0>!
+#7860
+1E!
+1>!
+#7880
+0E!
+0>!
+#7900
+1E!
+1>!
+#7920
+0E!
+0>!
+#7940
+1E!
+1>!
+#7960
+0E!
+0>!
+#7980
+1E!
+1>!
+#8000
+0E!
+0>!
+#8020
+1E!
+1>!
+#8040
+0E!
+0>!
+#8060
+1E!
+1>!
+#8080
+0E!
+0>!
+#8100
+1E!
+1>!
+#8120
+0E!
+0>!
+#8140
+1E!
+1>!
+#8160
+0E!
+0>!
+#8180
+1E!
+1>!
+#8200
+0E!
+0>!
+#8220
+1E!
+1>!
+#8240
+0E!
+0>!
+#8250
+b1000 #
+1g
+0x"
+b10 {"
+#8260
+1E!
+1>!
+b10 z"
+#8280
+0E!
+0>!
+#8300
+1E!
+1>!
+#8320
+0E!
+0>!
+#8340
+1E!
+1>!
+#8360
+0E!
+0>!
+#8380
+1E!
+1>!
+#8400
+0E!
+0>!
+#8420
+1E!
+1>!
+#8440
+0E!
+0>!
+#8450
+b0 #
+0g
+1x"
+b100 {"
+#8460
+1E!
+1>!
+b100 z"
+1}"
+b1 {"
+#8480
+0E!
+0>!
+#8500
+1E!
+1>!
+b1 z"
+1y"
+b1 |"
+1$!
+0}"
+#8520
+0E!
+0>!
+#8540
+1E!
+1>!
+b0 |"
+b1000 Z$
+b1000 W$
+1;
+1S$
+b11111111111111111111111111111111 [$
+b1 [$
+b10 [$
+b11 [$
+b11 Q$
+b100 [$
+b101 [$
+b110 [$
+b111 [$
+b1000 [$
+b1001 [$
+b1010 [$
+b1011 [$
+11!
+0-!
+b1011 -%
+#8560
+0E!
+0>!
+#8580
+1E!
+1>!
+0y"
+b1011 ,%
+0$!
+17!
+16!
+14!
+0S$
+b1011 ]$
+0\$
+b1100 -%
+b10100110 +%
+0J
+1I
+1H
+0F
+1E
+1C
+1?!
+0?
+1P
+1@!
+0O
+01!
+19!
+1N
+#8600
+0E!
+0>!
+#8620
+1E!
+1>!
+b1100 ,%
+07!
+06!
+15!
+b1100 ]$
+b1101 -%
+b100100110 +%
+0C
+1B
+0N
+1M
+#8640
+0E!
+0>!
+#8660
+1E!
+1>!
+b1101 ,%
+17!
+b1101 ]$
+b11 -%
+b110100110 +%
+1C
+1N
+#8680
+0E!
+0>!
+#8700
+1E!
+1>!
+b0 Z$
+b0 W$
+b11 ,%
+0;
+16!
+05!
+04!
+b11 ]$
+1\$
+b110010001 +%
+1J
+0I
+0H
+1F
+0E
+0?!
+1?
+0P
+0@!
+1O
+09!
+#8720
+0E!
+0>!
+#8740
+1E!
+1>!
+#8760
+0E!
+0>!
+#8780
+1E!
+1>!
+#8800
+0E!
+0>!
+#8820
+1E!
+1>!
+#8840
+0E!
+0>!
+#8860
+1E!
+1>!
+#8880
+0E!
+0>!
+#8900
+1E!
+1>!
+#8920
+0E!
+0>!
+#8940
+1E!
+1>!
+#8950
+1(
+1o
+1S
+#8960
+0E!
+0>!
+#8980
+1E!
+1>!
+#9000
+0E!
+0>!
+#9020
+1E!
+1>!
+#9040
+0E!
+0>!
+#9060
+1E!
+1>!
+#9080
+0E!
+0>!
+#9100
+1E!
+1>!
+#9120
+0E!
+0>!
+#9140
+1E!
+1>!
+#9150
+b10 #
+1i
+0d"
+b10 g"
+#9160
+0E!
+0>!
+#9180
+1E!
+1>!
+b10 f"
+#9200
+0E!
+0>!
+#9210
+b0 #
+0i
+1d"
+b100 g"
+#9220
+1E!
+1>!
+b100 f"
+1i"
+b1 g"
+#9240
+0E!
+0>!
+#9260
+1E!
+1>!
+b1 f"
+1e"
+b1 h"
+1&!
+0i"
+#9270
+0(
+0o
+0S
+#9280
+0E!
+0>!
+#9300
+1E!
+1>!
+b0 h"
+b10 Z$
+b10 W$
+1=
+1S$
+b10 [$
+b1 [$
+b1 Q$
+0R$
+b0 [$
+b11111111111111111111111111111111 [$
+b100 [$
+b101 [$
+b110 [$
+b111 [$
+b1000 [$
+b1001 [$
+b1010 [$
+b1011 [$
+11!
+0.!
+00!
+b11100 -%
+#9320
+0!
+0E!
+0T
+0>!
+0e"
+b0 Z$
+b0 W$
+b0 ,%
+0&!
+0=
+07!
+06!
+b0 ]$
+b0 -%
+b10001 +%
+0S$
+0C
+0B
+01!
+0N
+0M
+#9340
+1E!
+1>!
+#9360
+0E!
+0>!
+#9370
+1!
+1T
+#9380
+1E!
+1>!
+#9400
+0E!
+0>!
+#9420
+1E!
+1>!
+#9440
+0E!
+0>!
+#9460
+1E!
+1>!
+#9480
+0E!
+0>!
+#9500
+1E!
+1>!
+#9520
+0E!
+0>!
+#9540
+1E!
+1>!
+#9560
+0E!
+0>!
+#9580
+1E!
+1>!
+#9600
+0E!
+0>!
+#9620
+1E!
+1>!
+#9640
+0E!
+0>!
+#9660
+1E!
+1>!
+#9680
+0E!
+0>!
+#9700
+1E!
+1>!
+#9720
+0E!
+0>!
+#9740
+1E!
+1>!
+#9760
+0E!
+0>!
+#9780
+1E!
+1>!
+#9800
+0E!
+0>!
+#9820
+1E!
+1>!
+#9840
+0E!
+0>!
+#9860
+1E!
+1>!
+#9870
+b1000 #
+1g
+0x"
+b10 {"
+#9880
+0E!
+0>!
+#9900
+1E!
+1>!
+b10 z"
+#9920
+0E!
+0>!
+#9940
+1E!
+1>!
+#9960
+0E!
+0>!
+#9980
+1E!
+1>!
+#10000
+0E!
+0>!
+#10020
+1E!
+1>!
+#10040
+0E!
+0>!
+#10060
+1E!
+1>!
+#10070
+b0 #
+0g
+1x"
+b100 {"
+#10080
+0E!
+0>!
+#10100
+1E!
+1>!
+b100 z"
+1}"
+b1 {"
+#10120
+0E!
+0>!
+#10140
+1E!
+1>!
+b1 z"
+1y"
+b1 |"
+1$!
+0}"
+#10160
+0E!
+0>!
+#10180
+1E!
+1>!
+b0 |"
+b1000 Z$
+b1000 W$
+1;
+1S$
+b11111111111111111111111111111111 [$
+b1 [$
+b10 [$
+b11 [$
+b11 Q$
+1R$
+b100 [$
+b101 [$
+b110 [$
+b111 [$
+b1000 [$
+b1001 [$
+b1010 [$
+b1011 [$
+11!
+1.!
+10!
+b1011 -%
+#10200
+0E!
+0>!
+#10220
+1E!
+1>!
+0y"
+b1011 ,%
+0$!
+17!
+16!
+14!
+0S$
+b1011 ]$
+0\$
+b1100 -%
+b10100110 +%
+0J
+1I
+1H
+0F
+1E
+1C
+1?!
+0?
+1P
+1@!
+0O
+01!
+19!
+1N
+#10240
+0E!
+0>!
+#10260
+1E!
+1>!
+b1100 ,%
+07!
+06!
+15!
+b1100 ]$
+b1101 -%
+b100100110 +%
+0C
+1B
+0N
+1M
+#10280
+0E!
+0>!
+#10300
+1E!
+1>!
+b1101 ,%
+17!
+b1101 ]$
+b11 -%
+b110100110 +%
+1C
+1N
+#10320
+0E!
+0>!
+#10340
+1E!
+1>!
+b0 Z$
+b0 W$
+b11 ,%
+0;
+16!
+05!
+04!
+b11 ]$
+1\$
+b110010001 +%
+1J
+0I
+0H
+1F
+0E
+0?!
+1?
+0P
+0@!
+1O
+09!
+#10360
+0E!
+0>!
+#10380
+1E!
+1>!
+#10400
+0E!
+0>!
+#10420
+1E!
+1>!
+#10440
+0E!
+0>!
+#10460
+1E!
+1>!
+#10480
+0E!
+0>!
+#10500
+1E!
+1>!
+#10520
+0E!
+0>!
+#10540
+1E!
+1>!
+#10560
+0E!
+0>!
+#10570
+1&
+1m
+0~#
+b10 #$
+#10580
+1E!
+1>!
+b10 "$
+#10600
+0E!
+0>!
+#10620
+1E!
+1>!
+#10640
+0E!
+0>!
+#10660
+1E!
+1>!
+#10680
+0E!
+0>!
+#10700
+1E!
+1>!
+#10720
+0E!
+0>!
+#10740
+1E!
+1>!
+#10760
+0E!
+0>!
+#10770
+0&
+0m
+1~#
+b100 #$
+#10780
+1E!
+1>!
+b100 "$
+1%$
+b1 #$
+#10800
+0E!
+0>!
+#10820
+1E!
+1>!
+b1 "$
+1!$
+b1 $$
+1*!
+b11111 -%
+0%$
+#10840
+0E!
+0>!
+#10860
+1E!
+1>!
+b0 $$
+b11111 ,%
+15!
+14!
+13!
+b11111 ]$
+0\$
+b11111010001 +%
+1D
+1A
+1@
+1R
+1L
+1K
+#10880
+0E!
+0>!
+#10900
+1E!
+1>!
+0!$
+0*!
+#10920
+0E!
+0>!
+#10940
+1E!
+1>!
+#10960
+0E!
+0>!
+#10980
+1E!
+1>!
+#11000
+0E!
+0>!
+#11020
+1E!
+1>!
+#11040
+0E!
+0>!
+#11060
+1E!
+1>!
+#11080
+0E!
+0>!
+#11100
+1E!
+1>!
+#11120
+0E!
+0>!
+#11140
+1E!
+1>!
+#11160
+0E!
+0>!
+#11180
+1E!
+1>!
+#11200
+0E!
+0>!
+#11220
+1E!
+1>!
+#11240
+0E!
+0>!
+#11260
+1E!
+1>!
+#11270
+b10 #
+1i
+0d"
+b10 g"
+#11280
+0E!
+0>!
+#11300
+1E!
+1>!
+b10 f"
+#11320
+0E!
+0>!
+#11340
+1E!
+1>!
+#11360
+0E!
+0>!
+#11380
+1E!
+1>!
+#11400
+0E!
+0>!
+#11420
+1E!
+1>!
+#11440
+0E!
+0>!
+#11460
+1E!
+1>!
+#11470
+b0 #
+0i
+1d"
+b100 g"
+#11480
+0E!
+0>!
+#11500
+1E!
+1>!
+b100 f"
+1i"
+b1 g"
+#11520
+0E!
+0>!
+#11540
+1E!
+1>!
+b1 f"
+1e"
+b1 h"
+1&!
+0i"
+#11560
+0E!
+0>!
+#11580
+1E!
+1>!
+b0 h"
+b10 Z$
+b10 W$
+1=
+#11600
+0E!
+0>!
+#11620
+1E!
+1>!
+0e"
+0&!
+#11640
+0E!
+0>!
+#11660
+1E!
+1>!
+#11680
+0E!
+0>!
+#11700
+1E!
+1>!
+#11720
+0E!
+0>!
+#11740
+1E!
+1>!
+#11760
+0E!
+0>!
+#11780
+1E!
+1>!
+#11800
+0E!
+0>!
+#11820
+1E!
+1>!
+#11840
+0E!
+0>!
+#11860
+1E!
+1>!
+#11880
+0E!
+0>!
+#11900
+1E!
+1>!
+#11920
+0E!
+0>!
+#11940
+1E!
+1>!
+#11960
+0E!
+0>!
+#11970
+0!
+0T
+b0 Z$
+b0 W$
+b0 ,%
+0=
+07!
+06!
+05!
+04!
+03!
+b0 ]$
+1\$
+b0 -%
+b10001 +%
+0D
+0C
+0B
+0A
+0@
+0R
+0N
+0M
+0L
+0K
+#11980
+1E!
+1>!
+#12000
+0E!
+0>!
+#12020
+1!
+1E!
+1T
+1>!
+#12040
+0E!
+0>!
+#12060
+1E!
+1>!
+#12080
+0E!
+0>!
+#12100
+1E!
+1>!
+#12120
+0E!
+0>!
+#12140
+1E!
+1>!
+#12160
+0E!
+0>!
+#12180
+1E!
+1>!
+#12200
+0E!
+0>!
+#12220
+1E!
+1>!
+#12240
+0E!
+0>!
+#12260
+1E!
+1>!
+#12280
+0E!
+0>!
+#12300
+1E!
+1>!
+#12320
+0E!
+0>!
+#12340
+1E!
+1>!
+#12360
+0E!
+0>!
+#12380
+1E!
+1>!
+#12400
+0E!
+0>!
+#12420
+1E!
+1>!
+#12440
+0E!
+0>!
+#12460
+1E!
+1>!
+#12480
+0E!
+0>!
+#12500
+1E!
+1>!
+#12520
+1%
+0E!
+1l
+0>!
+0t#
+b10 w#
+#12540
+1E!
+1>!
+b10 v#
+#12560
+0E!
+0>!
+#12580
+1E!
+1>!
+#12600
+0E!
+0>!
+#12620
+1E!
+1>!
+#12640
+0E!
+0>!
+#12660
+1E!
+1>!
+#12680
+0E!
+0>!
+#12700
+1E!
+1>!
+#12720
+0%
+0E!
+0l
+0>!
+1t#
+b100 w#
+#12740
+1E!
+1>!
+b100 v#
+1y#
+b1 w#
+#12760
+0E!
+0>!
+#12780
+1E!
+1>!
+b1 v#
+1u#
+b1 x#
+1)!
+1U$
+0y#
+1B!
+0?
+1?!
+#12800
+0E!
+0>!
+#12820
+1E!
+1>!
+b0 x#
+#12840
+0E!
+0>!
+#12860
+1E!
+1>!
+0u#
+0)!
+0U$
+0B!
+1?
+0?!
+#12880
+0E!
+0>!
+#12900
+1E!
+1>!
+#12920
+0E!
+0>!
+#12940
+1E!
+1>!
+#12960
+0E!
+0>!
+#12980
+1E!
+1>!
+#13000
+0E!
+0>!
+#13020
+1E!
+1>!
+#13040
+0E!
+0>!
+#13060
+1E!
+1>!
+#13080
+0E!
+0>!
+#13100
+1E!
+1>!
+#13120
+0E!
+0>!
+#13140
+1E!
+1>!
+#13160
+0E!
+0>!
+#13180
+1E!
+1>!
+#13200
+0E!
+0>!
+#13220
+1E!
+1>!
+#13240
+0E!
+0>!
+#13260
+1E!
+1>!
+#13280
+0E!
+0>!
+#13300
+1E!
+1>!
+#13320
+0E!
+0>!
+#13340
+1E!
+1>!
+#13360
+0E!
+0>!
+#13380
+1E!
+1>!
+#13400
+0E!
+0>!
+#13420
+1E!
+1>!
+#13440
+0E!
+0>!
+#13460
+1E!
+1>!
+#13480
+0E!
+0>!
+#13500
+1E!
+1>!
+#13520
+0E!
+0>!
+#13540
+1E!
+1>!
+#13560
+0E!
+0>!
+#13580
+1E!
+1>!
+#13600
+0E!
+0>!
+#13620
+1E!
+1>!
+#13640
+0E!
+0>!
+#13660
+1E!
+1>!
+#13680
+0E!
+0>!
+#13700
+1E!
+1>!
+#13720
+0E!
+0>!
+#13740
+1E!
+1>!
+#13760
+0E!
+0>!
+#13780
+1E!
+1>!
+#13800
+0E!
+0>!
+#13820
+1E!
+1>!
+#13840
+0E!
+0>!
+#13860
+1E!
+1>!
+#13880
+0E!
+0>!
+#13900
+1E!
+1>!
+#13920
+0E!
+0>!
+#13940
+1E!
+1>!
+#13960
+0E!
+0>!
+#13980
+1E!
+1>!
+#14000
+0E!
+0>!
+#14020
+1E!
+1>!
+#14040
+0E!
+0>!
+#14060
+1E!
+1>!
+#14080
+0E!
+0>!
+#14100
+1E!
+1>!
+#14120
+0E!
+0>!
+#14140
+1E!
+1>!
+#14160
+0E!
+0>!
+#14180
+1E!
+1>!
+#14200
+0E!
+0>!
+#14220
+1$
+1E!
+1k
+1>!
+0j#
+b10 m#
+b10 l#
+#14240
+0E!
+0>!
+#14260
+1E!
+1>!
+#14280
+0E!
+0>!
+#14300
+1E!
+1>!
+#14320
+0E!
+0>!
+#14340
+1E!
+1>!
+#14360
+0E!
+0>!
+#14380
+1E!
+1>!
+#14400
+0E!
+0>!
+#14420
+0$
+1E!
+0k
+1>!
+1j#
+b100 m#
+b100 l#
+1o#
+b1 m#
+#14440
+0E!
+0>!
+#14460
+1E!
+1>!
+b1 l#
+1k#
+b1 n#
+1(!
+1T$
+0o#
+1A!
+#14480
+0E!
+0>!
+#14500
+1E!
+1>!
+b0 n#
+#14520
+0E!
+0>!
+#14540
+1E!
+1>!
+0k#
+0(!
+0T$
+0A!
+#14560
+0E!
+0>!
+#14580
+1E!
+1>!
+#14600
+0E!
+0>!
+#14620
+1E!
+1>!
+#14640
+0E!
+0>!
+#14660
+1E!
+1>!
+#14680
+0E!
+0>!
+#14700
+1E!
+1>!
+#14720
+0E!
+0>!
+#14740
+1E!
+1>!
+#14760
+0E!
+0>!
+#14780
+1E!
+1>!
+#14800
+0E!
+0>!
+#14820
+1E!
+1>!
+#14840
+0E!
+0>!
+#14860
+1E!
+1>!
+#14880
+0E!
+0>!
+#14900
+1E!
+1>!
+#14920
+0E!
+0>!
+#14940
+1E!
+1>!
+#14960
+0E!
+0>!
+#14980
+1E!
+1>!
+#15000
+0E!
+0>!
+#15020
+1E!
+1>!
+#15040
+0E!
+0>!
+#15060
+1E!
+1>!
+#15080
+0E!
+0>!
+#15100
+1E!
+1>!
+#15120
+0E!
+0>!
+#15140
+1E!
+1>!
+#15160
+0E!
+0>!
+#15180
+1E!
+1>!
+#15200
+0E!
+0>!
+#15220
+1E!
+1>!
+#15240
+0E!
+0>!
+#15260
+1E!
+1>!
+#15280
+0E!
+0>!
+#15300
+1E!
+1>!
+#15320
+0E!
+0>!
+#15340
+1E!
+1>!
+#15360
+0E!
+0>!
+#15380
+1E!
+1>!
+#15400
+0E!
+0>!
+#15420
+1E!
+1>!
+#15440
+0E!
+0>!
+#15460
+1E!
+1>!
+#15480
+0E!
+0>!
+#15500
+1E!
+1>!
+#15520
+0E!
+0>!
+#15540
+1E!
+1>!
+#15560
+0E!
+0>!
+#15580
+1E!
+1>!
+#15600
+0E!
+0>!
+#15620
+1E!
+1>!
+#15640
+0E!
+0>!
+#15660
+1E!
+1>!
+#15680
+0E!
+0>!
+#15700
+1E!
+1>!
+#15720
+0E!
+0>!
+#15740
+1E!
+1>!
+#15760
+0E!
+0>!
+#15780
+1E!
+1>!
+#15800
+0E!
+0>!
+#15820
+1E!
+1>!
+#15840
+0E!
+0>!
+#15860
+1E!
+1>!
+#15880
+0E!
+0>!
+#15900
+1E!
+1>!
+#15920
+b100000 #
+0E!
+1e
+0>!
+0.#
+b10 1#
+#15940
+1E!
+1>!
+b10 0#
+#15960
+0E!
+0>!
+#15970
+b0 #
+0e
+1.#
+b100 1#
+#15980
+1E!
+1>!
+b100 0#
+13#
+b1 1#
+#16000
+0E!
+0>!
+#16020
+1E!
+1>!
+b1 0#
+1/#
+b1 2#
+1"!
+03#
+#16040
+0E!
+0>!
+#16060
+1E!
+1>!
+b0 2#
+b100000 Z$
+b100000 W$
+19
+1S$
+b11111111111111111111111111111111 [$
+b1 [$
+b10 [$
+b11 [$
+b100 [$
+b101 [$
+b101 Q$
+b110 [$
+b111 [$
+b1000 [$
+b1001 [$
+b1010 [$
+b1011 [$
+11!
+0.!
+1-!
+b1011 -%
+#16070
+1$
+1k
+0j#
+b10 m#
+#16080
+0E!
+0>!
+#16100
+1E!
+1>!
+0/#
+b10 l#
+b1011 ,%
+0"!
+17!
+16!
+14!
+0S$
+b1011 ]$
+0\$
+b1100 -%
+b10100110 +%
+0J
+1I
+1H
+0F
+1E
+1C
+1?!
+0?
+1P
+1@!
+0O
+01!
+19!
+1N
+#16120
+0E!
+0>!
+#16140
+1E!
+1>!
+b1100 ,%
+07!
+06!
+15!
+b1100 ]$
+b1101 -%
+b100100110 +%
+0C
+1B
+0N
+1M
+#16160
+0E!
+0>!
+#16180
+1E!
+1>!
+b1101 ,%
+17!
+b1101 ]$
+b1110 -%
+b110100110 +%
+1C
+1N
+#16200
+0E!
+0>!
+#16220
+1E!
+1>!
+b1110 ,%
+07!
+16!
+b1110 ]$
+b1111 -%
+b1000100110 +%
+0C
+0B
+1A
+0N
+0M
+1L
+#16240
+0E!
+0>!
+#16260
+1E!
+1>!
+b1111 ,%
+17!
+b1111 ]$
+b101 -%
+b1010100110 +%
+1C
+1N
+#16270
+0$
+0k
+1j#
+b100 m#
+#16280
+0E!
+0>!
+#16300
+1E!
+1>!
+b100 l#
+b0 Z$
+b0 W$
+b101 ,%
+09
+06!
+04!
+b101 ]$
+1\$
+b1010010001 +%
+1o#
+b1 m#
+1J
+0I
+0H
+1F
+0E
+0?!
+1?
+0P
+0@!
+1O
+09!
+#16320
+0E!
+0>!
+#16340
+1E!
+1>!
+b1 l#
+1k#
+b1 n#
+1(!
+1T$
+0o#
+1A!
+#16360
+0E!
+0>!
+#16380
+1E!
+1>!
+b0 n#
+#16400
+0E!
+0>!
+#16420
+1E!
+1>!
+0k#
+0(!
+0T$
+0A!
+#16440
+0E!
+0>!
+#16460
+1E!
+1>!
+#16480
+0E!
+0>!
+#16500
+1E!
+1>!
+#16520
+0E!
+0>!
+#16540
+1E!
+1>!
+#16560
+0E!
+0>!
+#16580
+1E!
+1>!
+#16600
+0E!
+0>!
+#16620
+1E!
+1>!
+#16640
+0E!
+0>!
+#16660
+1E!
+1>!
+#16680
+0E!
+0>!
+#16700
+1E!
+1>!
+#16720
+0E!
+0>!
+#16740
+1E!
+1>!
+#16760
+0E!
+0>!
+#16780
+1E!
+1>!
+#16800
+0E!
+0>!
+#16820
+1E!
+1>!
+#16840
+0E!
+0>!
+#16860
+1E!
+1>!
+#16880
+0E!
+0>!
+#16900
+1E!
+1>!
+#16920
+0E!
+0>!
+#16940
+1E!
+1>!
+#16960
+0E!
+0>!
+#16980
+1E!
+1>!
+#17000
+0E!
+0>!
+#17020
+1E!
+1>!
+#17040
+0E!
+0>!
+#17060
+1E!
+1>!
+#17080
+0E!
+0>!
+#17100
+1E!
+1>!
+#17120
+0E!
+0>!
+#17140
+1E!
+1>!
+#17160
+0E!
+0>!
+#17180
+1E!
+1>!
+#17200
+0E!
+0>!
+#17220
+1E!
+1>!
+#17240
+0E!
+0>!
+#17260
+1E!
+1>!
+#17280
+0E!
+0>!
+#17300
+1E!
+1>!
+#17320
+0E!
+0>!
+#17340
+1E!
+1>!
+#17360
+0E!
+0>!
+#17380
+1E!
+1>!
+#17400
+0E!
+0>!
+#17420
+1E!
+1>!
+#17440
+0E!
+0>!
+#17460
+1E!
+1>!
+#17480
+0E!
+0>!
+#17500
+1E!
+1>!
+#17520
+0E!
+0>!
+#17540
+1E!
+1>!
+#17560
+0E!
+0>!
+#17580
+1E!
+1>!
+#17600
+0E!
+0>!
+#17620
+1E!
+1>!
+#17640
+0E!
+0>!
+#17660
+1E!
+1>!
+#17680
+0E!
+0>!
+#17700
+1E!
+1>!
+#17720
+0E!
+0>!
+#17740
+1E!
+1>!
+#17760
+0E!
+0>!
+#17780
+1E!
+1>!
+#17800
+0E!
+0>!
+#17820
+1E!
+1>!
+#17840
+0E!
+0>!
+#17860
+1E!
+1>!
+#17880
+0E!
+0>!
+#17900
+1E!
+1>!
+#17920
+0E!
+0>!
+#17940
+1E!
+1>!
+#17960
+0E!
+0>!
+#17980
+1E!
+1>!
+#18000
+0E!
+0>!
+#18020
+1E!
+1>!
+#18040
+0E!
+0>!
+#18060
+1E!
+1>!
+#18080
+0E!
+0>!
+#18100
+1E!
+1>!
+#18120
+0E!
+0>!
+#18140
+1E!
+1>!
+#18160
+0E!
+0>!
+#18180
+1E!
+1>!
+#18200
+0E!
+0>!
+#18220
+1E!
+1>!
+#18240
+0E!
+0>!
+#18260
+1E!
+1>!
+#18280
+0E!
+0>!
+#18300
+1E!
+1>!
+#18320
+0E!
+0>!
+#18340
+1E!
+1>!
+#18360
+0E!
+0>!
+#18380
+1E!
+1>!
+#18400
+0E!
+0>!
+#18420
+1E!
+1>!
+#18440
+0E!
+0>!
+#18460
+1E!
+1>!
+#18480
+0E!
+0>!
+#18500
+1E!
+1>!
+#18520
+0E!
+0>!
+#18540
+1E!
+1>!
+#18560
+0E!
+0>!
+#18580
+1E!
+1>!
+#18600
+0E!
+0>!
+#18620
+1E!
+1>!
+#18640
+0E!
+0>!
+#18660
+1E!
+1>!
+#18680
+0E!
+0>!
+#18700
+1E!
+1>!
+#18720
+0E!
+0>!
+#18740
+1E!
+1>!
+#18760
+0E!
+0>!
+#18770
+1%
+1l
+0t#
+b10 w#
+#18780
+1E!
+1>!
+b10 v#
+#18800
+0E!
+0>!
+#18820
+1E!
+1>!
+#18840
+0E!
+0>!
+#18860
+1E!
+1>!
+#18880
+0E!
+0>!
+#18900
+1E!
+1>!
+#18920
+0E!
+0>!
+#18940
+1E!
+1>!
+#18960
+0E!
+0>!
+#18970
+0%
+0l
+1t#
+b100 w#
+#18980
+1E!
+1>!
+b100 v#
+1y#
+b1 w#
+#19000
+0E!
+0>!
+#19020
+1E!
+1>!
+b1 v#
+1u#
+b1 x#
+1)!
+1U$
+0y#
+1B!
+0?
+1?!
+#19040
+0E!
+0>!
+#19060
+1E!
+1>!
+b0 x#
+#19080
+0E!
+0>!
+#19100
+1E!
+1>!
+0u#
+0)!
+0U$
+0B!
+1?
+0?!
+#19120
+0E!
+0>!
+#19140
+1E!
+1>!
+#19160
+0E!
+0>!
+#19180
+1E!
+1>!
+#19200
+0E!
+0>!
+#19220
+1E!
+1>!
+#19240
+0E!
+0>!
+#19260
+1E!
+1>!
+#19280
+0E!
+0>!
+#19300
+1E!
+1>!
+#19320
+0E!
+0>!
+#19340
+1E!
+1>!
+#19360
+0E!
+0>!
+#19380
+1E!
+1>!
+#19400
+0E!
+0>!
+#19420
+1E!
+1>!
+#19440
+0E!
+0>!
+#19460
+1E!
+1>!
+#19470
+0!
+0T
+b0 ,%
+07!
+05!
+b0 ]$
+b0 -%
+b10001 +%
+0C
+0A
+0N
+0L
+#19480
+0E!
+0>!
+#19500
+1E!
+1>!
+#19520
+1!
+0E!
+1T
+0>!
+#19540
+1E!
+1>!
+#19560
+0E!
+0>!
+#19580
+1E!
+1>!
+#19600
+0E!
+0>!
+#19620
+1E!
+1>!
+#19640
+0E!
+0>!
+#19660
+1E!
+1>!
+#19680
+0E!
+0>!
+#19700
+1E!
+1>!
+#19720
+0E!
+0>!
+#19740
+1E!
+1>!
+#19760
+0E!
+0>!
+#19780
+1E!
+1>!
+#19800
+0E!
+0>!
+#19820
+1E!
+1>!
+#19840
+0E!
+0>!
+#19860
+1E!
+1>!
+#19880
+0E!
+0>!
+#19900
+1E!
+1>!
+#19920
+0E!
+0>!
+#19940
+1E!
+1>!
+#19960
+0E!
+0>!
+#19980
+1E!
+1>!
+#20000
+0E!
+0>!
+#20020
+b100000 #
+1E!
+1e
+1>!
+0.#
+b10 1#
+b10 0#
+#20040
+0E!
+0>!
+#20060
+1E!
+1>!
+#20080
+0E!
+0>!
+#20100
+1E!
+1>!
+#20120
+0E!
+0>!
+#20140
+1E!
+1>!
+#20160
+0E!
+0>!
+#20180
+1E!
+1>!
+#20200
+0E!
+0>!
+#20220
+b0 #
+1E!
+0e
+1>!
+1.#
+b100 1#
+b100 0#
+13#
+b1 1#
+#20240
+0E!
+0>!
+#20260
+1E!
+1>!
+b1 0#
+1/#
+b1 2#
+1"!
+03#
+#20280
+0E!
+0>!
+#20300
+1E!
+1>!
+b0 2#
+b100000 Z$
+b100000 W$
+19
+1S$
+b11111111111111111111111111111111 [$
+b1 [$
+b10 [$
+b11 [$
+b100 [$
+b101 [$
+b110 [$
+b111 [$
+b1000 [$
+b1001 [$
+b1010 [$
+b1011 [$
+11!
+b1011 -%
+#20320
+0E!
+0>!
+#20340
+1E!
+1>!
+0/#
+b1011 ,%
+0"!
+17!
+16!
+14!
+0S$
+b1011 ]$
+0\$
+b1100 -%
+b10100110 +%
+0J
+1I
+1H
+0F
+1E
+1C
+1?!
+0?
+1P
+1@!
+0O
+01!
+19!
+1N
+#20360
+0E!
+0>!
+#20380
+1E!
+1>!
+b1100 ,%
+07!
+06!
+15!
+b1100 ]$
+b1101 -%
+b100100110 +%
+0C
+1B
+0N
+1M
+#20400
+0E!
+0>!
+#20420
+1E!
+1>!
+b1101 ,%
+17!
+b1101 ]$
+b1110 -%
+b110100110 +%
+1C
+1N
+#20440
+0E!
+0>!
+#20460
+1E!
+1>!
+b1110 ,%
+07!
+16!
+b1110 ]$
+b1111 -%
+b1000100110 +%
+0C
+0B
+1A
+0N
+0M
+1L
+#20480
+0E!
+0>!
+#20500
+1E!
+1>!
+b1111 ,%
+17!
+b1111 ]$
+b101 -%
+b1010100110 +%
+1C
+1N
+#20520
+0E!
+0>!
+#20540
+1E!
+1>!
+b0 Z$
+b0 W$
+b101 ,%
+09
+06!
+04!
+b101 ]$
+1\$
+b1010010001 +%
+1J
+0I
+0H
+1F
+0E
+0?!
+1?
+0P
+0@!
+1O
+09!
+#20560
+0E!
+0>!
+#20580
+1E!
+1>!
+#20600
+0E!
+0>!
+#20620
+1E!
+1>!
+#20640
+0E!
+0>!
+#20660
+1E!
+1>!
+#20680
+0E!
+0>!
+#20700
+1E!
+1>!
+#20720
+0'
+0E!
+0n
+0>!
+0+!
+#20740
+1E!
+1>!
+#20760
+0E!
+0>!
+#20780
+1E!
+1>!
+#20800
+0E!
+0>!
+#20820
+1$
+b100000000 #
+1E!
+1k
+1b
+1>!
+0j#
+0L#
+b10 O#
+b10 m#
+b10 N#
+b10 l#
+#20840
+0E!
+0>!
+#20860
+1E!
+1>!
+#20880
+0E!
+0>!
+#20900
+1E!
+1>!
+#20920
+0E!
+0>!
+#20940
+1E!
+1>!
+#20960
+0E!
+0>!
+#20980
+1E!
+1>!
+#21000
+0E!
+0>!
+#21020
+0$
+b0 #
+1E!
+0k
+0b
+1>!
+1j#
+1L#
+b100 O#
+b100 m#
+b100 N#
+b100 l#
+1o#
+b1 m#
+1Q#
+b1 O#
+#21040
+0E!
+0>!
+#21060
+1E!
+1>!
+b1 N#
+1M#
+b1 P#
+b1 l#
+1k#
+b1 n#
+1}
+1(!
+0o#
+0Q#
+#21080
+0E!
+0>!
+#21100
+1E!
+1>!
+b0 P#
+b0 n#
+#21120
+0E!
+0>!
+#21140
+1E!
+1>!
+0M#
+0k#
+0}
+0(!
+#21160
+0E!
+0>!
+#21180
+1E!
+1>!
+#21200
+0E!
+0>!
+#21220
+1E!
+1>!
+#21240
+0E!
+0>!
+#21260
+1E!
+1>!
+#21280
+0E!
+0>!
+#21300
+1E!
+1>!
+#21320
+0E!
+0>!
+#21340
+1E!
+1>!
+#21360
+0E!
+0>!
+#21380
+1E!
+1>!
+#21400
+0E!
+0>!
+#21420
+1E!
+1>!
+#21440
+0E!
+0>!
+#21460
+1E!
+1>!
+#21480
+0E!
+0>!
+#21500
+1E!
+1>!
+#21520
+1'
+0E!
+1n
+0>!
+1+!
+#21540
+1E!
+1>!
+#21560
+0E!
+0>!
+#21580
+1E!
+1>!
+#21600
+0E!
+0>!
+#21620
+1E!
+1>!
+#21640
+0E!
+0>!
+#21660
+1E!
+1>!
+#21680
+0E!
+0>!
+#21700
+1E!
+1>!
+#21720
+0E!
+0>!
+#21740
+1E!
+1>!
+#21760
+0E!
+0>!
+#21780
+1E!
+1>!
+#21800
+0E!
+0>!
+#21820
+1E!
+1>!
+#21840
+0E!
+0>!
+#21860
+1E!
+1>!
+#21880
+0E!
+0>!
+#21900
+1E!
+1>!
+#21920
+0E!
+0>!
+#21940
+1E!
+1>!
+#21960
+0E!
+0>!
+#21980
+1E!
+1>!
+#22000
+0E!
+0>!
+#22020
+1E!
+1>!
+#22040
+0E!
+0>!
+#22060
+1E!
+1>!
+#22080
+0E!
+0>!
+#22100
+1E!
+1>!
+#22120
+0E!
+0>!
+#22140
+1E!
+1>!
+#22160
+0E!
+0>!
+#22180
+1E!
+1>!
+#22200
+0E!
+0>!
+#22220
+1E!
+1>!
+#22240
+0E!
+0>!
+#22260
+1E!
+1>!
+#22280
+0E!
+0>!
+#22300
+1E!
+1>!
+#22320
+0E!
+0>!
+#22340
+1E!
+1>!
+#22360
+0E!
+0>!
+#22380
+1E!
+1>!
+#22400
+0E!
+0>!
+#22420
+1E!
+1>!
+#22440
+0E!
+0>!
+#22460
+1E!
+1>!
+#22480
+0E!
+0>!
+#22500
+1E!
+1>!
+#22520
+0E!
+0>!
+#22540
+1E!
+1>!
+#22560
+0E!
+0>!
+#22580
+1E!
+1>!
+#22600
+0E!
+0>!
+#22620
+1E!
+1>!
+#22640
+0E!
+0>!
+#22660
+1E!
+1>!
+#22680
+0E!
+0>!
+#22700
+1E!
+1>!
+#22720
+0E!
+0>!
+#22740
+1E!
+1>!
+#22760
+0E!
+0>!
+#22780
+1E!
+1>!
+#22800
+0E!
+0>!
+#22820
+1E!
+1>!
+#22840
+0E!
+0>!
+#22860
+1E!
+1>!
+#22880
+0E!
+0>!
+#22900
+1E!
+1>!
+#22920
+0E!
+0>!
+#22940
+1E!
+1>!
+#22960
+0E!
+0>!
+#22980
+1E!
+1>!
+#23000
+0E!
+0>!
+#23020
+1E!
+1>!
+#23040
+0E!
+0>!
+#23060
+1E!
+1>!
+#23080
+0E!
+0>!
+#23100
+1E!
+1>!
+#23120
+0E!
+0>!
+#23140
+1E!
+1>!
+#23160
+0E!
+0>!
+#23180
+1E!
+1>!
+#23200
+0E!
+0>!
+#23220
+1E!
+1>!
+#23240
+0E!
+0>!
+#23260
+1E!
+1>!
+#23280
+0E!
+0>!
+#23300
+1E!
+1>!
+#23320
+0E!
+0>!
+#23340
+1E!
+1>!
+#23360
+0E!
+0>!
+#23380
+1E!
+1>!
+#23400
+0E!
+0>!
+#23420
+1E!
+1>!
+#23440
+0E!
+0>!
+#23460
+1E!
+1>!
+#23480
+0E!
+0>!
+#23500
+1E!
+1>!
