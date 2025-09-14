@@ -1,0 +1,91 @@
+[*]
+[*] GTKWave Analyzer v3.3.124 (w)1999-2025 BSI
+[*] Sun Sep 14 22:55:07 2025
+[*]
+[dumpfile] "/home/dlomis/Project-1-VLSI-Design/iVerilog/elevator_control_system.vcd"
+[dumpfile_mtime] "Sun Sep 14 22:07:33 2025"
+[dumpfile_size] 46004
+[savefile] "/home/dlomis/Project-1-VLSI-Design/iVerilog/Output.gtkw"
+[timestart] 21150
+[size] 2560 1345
+[pos] -27 -24
+*-8.100000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 290
+[signals_width] 515
+[sst_expanded] 1
+[sst_vpaned_height] 416
+@29
+[color] 1
+elevator_top_tb.reset_n
+@201
+-
+-Elevator FSM Binary Output (Debugging)
+@29
+[color] 1
+elevator_top_tb.elevator_control_output[10:0]
+@201
+-
+-Elevator Panel
+@29
+elevator_top_tb.raw_panel_buttons[10:0]
+elevator_top_tb.panel_button_lights[10:0]
+@201
+-Elevator Call Buttons (1 per floor)
+@29
+elevator_top_tb.raw_floor_call_buttons[10:0]
+@c00029
+elevator_top_tb.call_button_lights[10:0]
+@29
+(0)elevator_top_tb.call_button_lights[10:0]
+(1)elevator_top_tb.call_button_lights[10:0]
+(2)elevator_top_tb.call_button_lights[10:0]
+(3)elevator_top_tb.call_button_lights[10:0]
+(4)elevator_top_tb.call_button_lights[10:0]
+(5)elevator_top_tb.call_button_lights[10:0]
+(6)elevator_top_tb.call_button_lights[10:0]
+(7)elevator_top_tb.call_button_lights[10:0]
+(8)elevator_top_tb.call_button_lights[10:0]
+(9)elevator_top_tb.call_button_lights[10:0]
+(10)elevator_top_tb.call_button_lights[10:0]
+@1401201
+-group_end
+@201
+-
+-Button Inputs
+@29
+[color] 6
+elevator_top_tb.raw_door_close_btn
+[color] 6
+elevator_top_tb.raw_door_open_btn
+[color] 6
+elevator_top_tb.raw_emergency_btn
+[color] 6
+elevator_top_tb.raw_power_switch
+[color] 6
+elevator_top_tb.weight_sensor
+@201
+-
+-FSM Outputs
+@29
+[color] 2
+elevator_top_tb.door_open
+[color] 2
+elevator_top_tb.weight_overload_lamp
+[color] 2
+elevator_top_tb.safety_interlock
+[color] 2
+elevator_top_tb.elevator_upward_indicator_lamp
+[color] 2
+elevator_top_tb.elevator_downward_indicator_lamp
+[color] 2
+elevator_top_tb.alarm
+@201
+-
+-Elevator Position Floor Lights
+@25
+[color] 5
+elevator_top_tb.floor_indicator_lamps[3:0]
+@201
+-Value is binary, Floor 1 = 0, Floor 2 = 1, etc
+[pattern_trace] 1
+[pattern_trace] 0
