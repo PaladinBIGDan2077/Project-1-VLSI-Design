@@ -1,23 +1,16 @@
-D:/VLSI/Project-1-VLSI-Design/elevator_top.v {1 {vlog -work work -sv -stats=none D:/VLSI/Project-1-VLSI-Design/elevator_top.v
-Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
--- Compiling module elevator_top
-
-Top level modules:
-	elevator_top
-
-} {} {}} D:/VLSI/Project-1-VLSI-Design/clk_divider.v {1 {vlog -work work -sv -stats=none D:/VLSI/Project-1-VLSI-Design/clk_divider.v
+D:/VLSI/Project-1-VLSI-Design/clk_divider.v {1 {vlog -work work -sv -stats=none D:/VLSI/Project-1-VLSI-Design/clk_divider.v
 Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
 -- Compiling module clk_divider
 
 Top level modules:
 	clk_divider
 
-} {} {}} D:/VLSI/Project-1-VLSI-Design/clk.v {1 {vlog -work work -sv -stats=none D:/VLSI/Project-1-VLSI-Design/clk.v
+} {} {}} D:/VLSI/Project-1-VLSI-Design/elevator_top.v {1 {vlog -work work -sv -stats=none D:/VLSI/Project-1-VLSI-Design/elevator_top.v
 Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
--- Compiling module clk
+-- Compiling module elevator_top
 
 Top level modules:
-	clk
+	elevator_top
 
 } {} {}} D:/VLSI/Project-1-VLSI-Design/button_debouncer.v {1 {vlog -work work -sv -stats=none D:/VLSI/Project-1-VLSI-Design/button_debouncer.v
 Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
@@ -26,12 +19,19 @@ Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 
 Top level modules:
 	button_debouncer
 
-} {} {}} D:/VLSI/Project-1-VLSI-Design/tb_elevator.v {1 {vlog -work work -sv -stats=none D:/VLSI/Project-1-VLSI-Design/tb_elevator.v
+} {} {}} D:/VLSI/Project-1-VLSI-Design/clk.v {1 {vlog -work work -sv -stats=none D:/VLSI/Project-1-VLSI-Design/clk.v
 Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
--- Compiling module elevator_top_tb
+-- Compiling module clk
 
 Top level modules:
-	elevator_top_tb
+	clk
+
+} {} {}} D:/VLSI/Project-1-VLSI-Design/floor_logic.v {1 {vlog -work work -sv -stats=none D:/VLSI/Project-1-VLSI-Design/floor_logic.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module floor_logic_control_unit
+
+Top level modules:
+	floor_logic_control_unit
 
 } {} {}} D:/VLSI/Project-1-VLSI-Design/elevator_fsm.v {1 {vlog -work work -sv -stats=none D:/VLSI/Project-1-VLSI-Design/elevator_fsm.v
 Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
@@ -40,11 +40,11 @@ Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 
 Top level modules:
 	elevator_fsm
 
-} {} {}} D:/VLSI/Project-1-VLSI-Design/floor_logic.v {1 {vlog -work work -sv -stats=none D:/VLSI/Project-1-VLSI-Design/floor_logic.v
+} {} {}} D:/VLSI/Project-1-VLSI-Design/tb_elevator.v {1 {vlog -work work -sv -stats=none D:/VLSI/Project-1-VLSI-Design/tb_elevator.v
 Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
--- Compiling module floor_logic_control_unit
+-- Compiling module elevator_top_tb
 
 Top level modules:
-	floor_logic_control_unit
+	elevator_top_tb
 
 } {} {}}
