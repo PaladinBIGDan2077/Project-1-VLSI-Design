@@ -60,32 +60,77 @@ module elevator_top_tb;
         #50
         reset_n = 1;
         $display("=== Reset complete ===");
-
-        // Request Floor 3
+        // Outside Elevator Testing
+        // Request from Floor 3
         #500
         raw_floor_call_buttons[2] = 1;
         $display("Floor 3 call button pressed @ %t", $time);
         #200 
         raw_floor_call_buttons[2] = 0; // release button
 
-        // Request Floor 7
+        // Request from Floor 7
         #500
         raw_floor_call_buttons[6] = 1;
         $display("Floor 7 call button pressed @ %t", $time);
         #200 
         raw_floor_call_buttons[6] = 0;
 
-        // Request Floor 1
+        // Request from  Floor 2
         #500
-        raw_floor_call_buttons[0] = 1;
+        raw_floor_call_buttons[1] = 1;
         $display("Floor 1 call button pressed @ %t", $time);
         #200 
-        raw_floor_call_buttons[0] = 0;
+        raw_floor_call_buttons[1] = 0;
 
+        // Inside Elevator Testing
+        // Call to Floor 5
+        #500
+        raw_panel_buttons[4] = 1;
+        $display("Floor 5 call button pressed @ %t", $time);
+        #200
+        raw_panel_buttons[4] = 0;
+        // Call to Floor 10
+        #500
+        raw_panel_buttons[9] = 1;
+        $display("Floor 5 call button pressed @ %t", $time);
+        #200
+        raw_panel_buttons[9] = 0;
+        // Call to Floor 8
+        #500
+        raw_panel_buttons[7] = 1;
+        $display("Floor 5 call button pressed @ %t", $time);
+        #200
+        raw_panel_buttons[7] = 0;
+
+// Return to first floor
+      #500
+        raw_panel_buttons[0] = 1;
+        $display("Floor 0 call button pressed @ %t", $time);
+        #200
+        raw_panel_buttons[0] = 0;
+
+        // Inside Elevator Testing -- Select Destination, then select a destination while moving
+        // Call to Floor 5
+        #500
+        raw_panel_buttons[10] = 1;
+        $display("Floor 5 call button pressed @ %t", $time);
+        #50
+        raw_panel_buttons[10] = 0;
+        // Call to Floor 10
+        #50
+        raw_panel_buttons[5] = 1;
+        $display("Floor 5 call button pressed @ %t", $time);
+        #50
+        raw_panel_buttons[5] = 0;
+        // Call to Floor 8
+        #50
+        raw_panel_buttons[7] = 1;
+        $display("Floor 5 call button pressed @ %t", $time);
+        #50
+        raw_panel_buttons[7] = 0;
         // Run for a while
         #1000;
         $display("Simulation finished.");
         $stop;
     end
-
 endmodule

@@ -121,7 +121,6 @@ function is_stop_state;
     end
 endfunction
 
-// Button processing - capture new requests
 always @(posedge clock or negedge reset_n) begin
     if (!reset_n) begin
         up_requests <= 11'b0;
@@ -129,7 +128,7 @@ always @(posedge clock or negedge reset_n) begin
         panel_requests <= 11'b0;
         call_button_lights <= 11'b0;
         panel_button_lights <= 11'b0;
-    end 
+    end
     else if (power_switch) begin
         // Normal operation - process buttons (manual unrolling of for loops)
         // Floor 1
@@ -290,18 +289,18 @@ always @(posedge clock or negedge reset_n) begin
     end
 end
 
-// Clear only the current floor when elevator arrives
 always @(posedge clock or negedge reset_n) begin
     if (!reset_n) begin
         // Keep existing reset
     end 
     else if (power_switch) begin
-        if (is_stop_state(elevator_state)) begin
+        if (elevator_floor_selector == current_floor_state) begin
             up_requests[current_floor_state] <= 1'b0;
             down_requests[current_floor_state] <= 1'b0;
             panel_requests[current_floor_state] <= 1'b0;
             call_button_lights[current_floor_state] <= 1'b0;
             panel_button_lights[current_floor_state] <= 1'b0;
+            activate_elevator = 1'b0;
         end
     end
 end
@@ -309,8 +308,8 @@ end
 // Target floor selection logic
 always @(*) begin
     activate_elevator = 1'b0;
-    elevator_floor_selector = current_floor_state;
-    direction_selector = elevator_direction;    
+    // elevator_floor_selector = current_floor_state;
+   // direction_selector = elevator_direction;    
     // Normal operation when power is on and no emergency
     if (power_switch && !emergency_btn) begin
         // Only process requests when elevator is stopped
@@ -318,7 +317,6 @@ always @(*) begin
             // Check if there are any pending requests
             if (|panel_requests || |up_requests || |down_requests) begin
                 activate_elevator = 1'b1;
-                
                 // Priority 1: Panel requests
                 if (|panel_requests) begin
                     // Panel request logic
