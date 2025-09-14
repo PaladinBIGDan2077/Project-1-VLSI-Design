@@ -10,7 +10,7 @@
 // Instructor:                      Doctor Jeffrey Walling 
 //  
 // Hardware Description Language:   Verilog 2001 (IEEE 1364-2001)  
-// Simulation Tool:                 ModelSim: Intel FPGA Starter Edition 21.1 
+// Simulation Tool:                 iVerilog 12.0
 // 
 // Description:                     Top-level module that integrates all elevator system components.
 // 

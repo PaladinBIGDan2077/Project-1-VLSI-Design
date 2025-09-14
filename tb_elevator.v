@@ -10,7 +10,7 @@
 // Instructor:                      Doctor Jeffrey Walling 
 //  
 // Hardware Description Language:   Verilog 2001 (IEEE 1364-2001)  
-// Simulation Tool:                 ModelSim: Intel FPGA Starter Edition 21.1 
+// Simulation Tool:                 iVerilog 12.0 
 // 
 // Description:                     Testbench for elevator_top.v. 
 //                                  Provides basic simulation environment to verify floor button requests
@@ -50,6 +50,10 @@ module elevator_top_tb;
     elevator_top dut (reset_n, raw_floor_call_buttons, raw_panel_buttons, raw_door_open_btn, raw_door_close_btn, raw_emergency_btn, raw_power_switch, weight_sensor, call_button_lights, panel_button_lights, door_open, elevator_control_output, safety_interlock, floor_indicator_lamps, elevator_upward_indicator_lamp, elevator_downward_indicator_lamp, alarm, weight_overload_lamp);
 
     initial begin
+	// Dump sim files
+	$dumpfile("elevator_control_system.vcd");
+	$dumpvars(0,elevator_top_tb);
+
         // Initialize inputs
         reset_n = 0;
         raw_floor_call_buttons = 11'b0;
@@ -237,7 +241,5 @@ module elevator_top_tb;
         #1000;
         $display("Simulation finished.");
         $stop;
-
-
     end
 endmodule

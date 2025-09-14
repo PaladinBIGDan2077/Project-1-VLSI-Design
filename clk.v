@@ -10,10 +10,10 @@
 // Instructor:                      Doctor Jeffrey Walling 
 //  
 // Hardware Description Language:   Verilog 2001 (IEEE 1364-2001)  
-// Simulation Tool:                 ModelSim: Intel FPGA Starter Edition 21.1 
+// Simulation Tool:                 iVerilog 12.0
 // 
 // Description:                     Simple clock generator module that produces a clock signal,
-//                                  with adjustable frequency, when enabled. Default frequency is 20 MHz.
+//                                  with adjustable frequency, when enabled. Default frequency is 25 MHz.
 // Modification History:  
 //                                  Date        By   Version  Change Description  
 //                                  ============================================  
@@ -25,7 +25,7 @@ module clk(enable, clock_output);
     output               clock_output;		
     reg                  clock_output;
 
-    parameter FREQ = 50; // Clock period in nanoseconds
+    parameter FREQ = 40; // Clock period in nanoseconds
 
     initial clock_output = 0; // Initial value of the clock
 

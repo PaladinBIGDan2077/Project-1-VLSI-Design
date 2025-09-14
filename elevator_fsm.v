@@ -10,7 +10,7 @@
 // Instructor:                      Dcotor Jeffrey Walling 
 //  
 // Hardware Description Language:   Verilog 2001 (IEEE 1364-2001)  
-// Simulation Tool:                 ModelSim: Intel FPGA Starter Edition 21.1 
+// Simulation Tool:                 iVerilog 12.0
 // 
 // Description:                     Elevator Finite State Machine (FSM) that controls the operation 
 //                                  of the elevator based on inputs from buttons and sensors.
@@ -164,7 +164,7 @@ module elevator_fsm(clock_slower, init, elevator_floor_selector, emergency_stop,
             UP_F10_F11:         control_output = 11'b10100100110;
             DOWN_F11_F10:       control_output = 11'b10010101010;
             STOP_FL11:          control_output = 11'b10100010001;
-            EMERGENCY:          control_output = 11'b00001010001;  
+            EMERGENCY:          control_output = 11'b11111010001;  
             default:            control_output = 11'bxxxxxxxxxxx;
         endcase
     end
