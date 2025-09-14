@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Title:                           Elevator Floor Logic Controller
 // Filename:                        floor_logic.v
-// Version:                         3
+// Version:                         4
 // Author:                          Daniel J. Lomis, Sammy Craypoff
 // Date:                            9/7/2025 
 // Location:                        Blacksburg, Virginia 
@@ -21,9 +21,10 @@
 //                                  9/7/2025    DJL  1        Original Code
 //                                  9/13/2025   DJL  2        Revised logic for elevator calls
 //                                  9/13/2025   DJL  3        Converted to SystemVerilog
+//                                  9/14/2025   DJL  4        Streamlined Code
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_buttons, door_open_btn, door_close_btn, emergency_btn, power_switch, current_floor_state, elevator_state, elevator_moving, elevator_direction, elevator_floor_selector, direction_selector, activate_elevator, call_button_lights, panel_button_lights, door_open_light, door_close_light);
+module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_buttons, door_open_btn, door_close_btn, emergency_btn, power_switch, current_floor_state, elevator_state, elevator_moving, elevator_direction, elevator_floor_selector, direction_selector, activate_elevator, call_button_lights, panel_button_lights, door_open_allowed, door_close_allowed);
     input                                   clock;
     input                                   reset_n;
     // Button inputs (active high when pressed)
@@ -42,23 +43,25 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
     output              [3:0]               elevator_floor_selector;
     output                                  direction_selector;
     output                                  activate_elevator;
+    output                                  door_open_allowed;
+    output                                  door_close_allowed;
     // Button status outputs (for illumination)
     output              [10:0]              call_button_lights;
     output              [10:0]              panel_button_lights;
-    output                                  door_open_light;
-    output                                  door_close_light;
+
     reg                 [3:0]               elevator_floor_selector;
     reg                                     direction_selector;
     reg                                     activate_elevator;
     // Button status outputs (for illumination)
     reg                 [10:0]              call_button_lights;
     reg                 [10:0]              panel_button_lights;
-    reg                                     door_open_light;
-    reg                                     door_close_light;
+
     // Internal registers for request management
     reg                 [10:0]              up_requests;       // External calls for upward direction
     reg                 [10:0]              down_requests;     // External calls for downward direction  
     reg                 [10:0]              panel_requests;    // Internal destination requests
+    reg                                     door_open_allowed;
+    reg                                     door_close_allowed;
     // Internal Variables
     integer                                 i;
 
@@ -421,13 +424,11 @@ end
 
 // Door control logic
 always @(*) begin
-    door_open_light = 1'b0;
-    door_close_light = 1'b0;
     
     // Door control only active when elevator is stopped and power is on
     if (is_stop_state(elevator_state) && power_switch) begin
-        door_open_light = door_open_btn;
-        door_close_light = door_close_btn;
+        door_open_allowed = door_open_btn;
+        door_close_allowed = door_close_btn;
     end
 end
 

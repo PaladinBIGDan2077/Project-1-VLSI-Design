@@ -20,7 +20,7 @@
 //                                  9/13/2025    DJL  1        Original Code
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-module elevator_top(reset_n, raw_floor_call_buttons, raw_panel_buttons, raw_door_open_btn, raw_door_close_btn, raw_emergency_btn, raw_power_switch, weight_sensor, call_button_lights, panel_button_lights, door_open_light, door_close_light, elevator_control_output, current_state_display, current_floor_display);
+module elevator_top(reset_n, raw_floor_call_buttons, raw_panel_buttons, raw_door_open_btn, raw_door_close_btn, raw_emergency_btn, raw_power_switch, weight_sensor, call_button_lights, panel_button_lights, door_open, elevator_control_output, safety_interlock, floor_indicator_lamps, elevator_upward_indicator_lamp, elevator_downward_indicator_lamp, alarm, weight_overload_lamp);
     // Primary inputs
     input                                           reset_n;                    // Active-low reset
 
@@ -36,12 +36,14 @@ module elevator_top(reset_n, raw_floor_call_buttons, raw_panel_buttons, raw_door
     // Outputs to physical devices
     output                  [10:0]                  call_button_lights;      // External button illumination
     output                  [10:0]                  panel_button_lights;     // Internal button illumination
-    output                                          door_open_light;
-    output                                          door_close_light;
+    output                                          door_open;
     output                  [10:0]                  elevator_control_output; // Control signals to elevator mechanism
-    output                  [5:0]                   current_state_display;   // For debugging/display
-    output                  [3:0]                   current_floor_display;      // For debugging/display
-
+    output                  [3:0]                   floor_indicator_lamps;      // For debugging/display
+    output                                          safety_interlock;
+    output                                          elevator_upward_indicator_lamp;
+    output                                          elevator_downward_indicator_lamp;
+    output                                          weight_overload_lamp;
+    output                                          alarm;
 
     // Internal wires for debounced buttons
     wire                    [10:0]                  floor_call_buttons;
@@ -52,7 +54,6 @@ module elevator_top(reset_n, raw_floor_call_buttons, raw_panel_buttons, raw_door
     wire                                            power_switch;
 
     // Internal wires between modules
-    wire                                            clock_slower;
     wire                    [3:0]                   elevator_floor_selector;
     wire                                            direction_selector;
     wire                                            activate_elevator;
@@ -61,12 +62,14 @@ module elevator_top(reset_n, raw_floor_call_buttons, raw_panel_buttons, raw_door
     wire                                            elevator_direction;
     wire                    [3:0]                   current_floor_state;
     wire                                            clock;
+    wire                                            door_close;
+
+
+    // FSM/Control Signalling
+    wire                                            elevator_movement;
 
     // Generate slower clock for FSM
     clk clk_inst (1'b1, clock); 
-    clk_divider clock_divider_inst (clock, reset_n, 1'b1, clock_slower);
-
-
     
     // Debounce all button inputs
     // Floor call button debouncers (11 buttons)
@@ -103,12 +106,25 @@ module elevator_top(reset_n, raw_floor_call_buttons, raw_panel_buttons, raw_door
     assign power_switch = raw_power_switch; // No debouncing for power switch
 
     // Floor logic controller
-    floor_logic_control_unit floor_logic_inst (clock, reset_n, floor_call_buttons, panel_buttons, door_open_btn, door_close_btn, emergency_btn, power_switch, elevator_control_output[10:7], elevator_state, elevator_control_output[0], elevator_control_output[1], elevator_floor_selector, direction_selector, activate_elevator, call_button_lights, panel_button_lights, door_open_light, door_close_light);
-    
+    floor_logic_control_unit floor_logic_inst (clock, reset_n, floor_call_buttons, panel_buttons, door_open_btn, door_close_btn, emergency_btn, power_switch, floor_indicator_lamps, elevator_state, elevator_movement, elevator_direction, elevator_floor_selector, direction_selector, activate_elevator, call_button_lights, panel_button_lights, door_open_logic_check, door_close_logic_check);
+
     
     
     // Elevator finite state machine
     elevator_fsm elevator_fsm_inst (clock, reset_n, elevator_floor_selector, emergency_btn, activate_elevator, weight_sensor, power_switch, direction_selector, elevator_state, elevator_control_output);
+
+    assign safety_interlock = elevator_control_output[0];
+    assign elevator_movement = elevator_control_output[1];
+    assign elevator_direction = elevator_control_output[2];
+    assign elevator_upward_indicator_lamp = elevator_control_output[2];
+    assign elevator_downward_indicator_lamp = elevator_control_output[3];
+// Door control logic with button override
+    assign door_open = door_open_logic_check ? 1'b1 : door_close_logic_check ? 1'b0 : elevator_control_output[4];
+    assign door_close = door_close_logic_check ? 1'b1 : elevator_control_output[5];
+    assign alarm = elevator_control_output[6];
+    assign floor_indicator_lamps = elevator_control_output[10:7];
+    assign weight_overload_lamp = weight_sensor;
+
 
 
 endmodule

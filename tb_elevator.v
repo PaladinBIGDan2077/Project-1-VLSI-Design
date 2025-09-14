@@ -36,14 +36,18 @@ module elevator_top_tb;
 
     wire                        [10:0]                          call_button_lights;
     wire                        [10:0]                          panel_button_lights;
-    wire                                                        door_open_light;
-    wire                                                        door_close_light;
+    wire                                                        door_open;
+    wire                                                        door_close;
     wire                        [10:0]                          elevator_control_output;
-    wire                        [5:0]                           current_state_display;
-    wire                        [3:0]                           current_floor_display;
+    wire                        [3:0]                           floor_indicator_lamps;
+    wire                                                        safety_interlock;
+    wire                                                        elevator_upward_indicator_lamp;
+    wire                                                        elevator_downward_indicator_lamp;
+    wire                                                        alarm;
+    wire                                                        weight_overload_lamp;
 
     // Instantiate DUT
-    elevator_top dut (reset_n, raw_floor_call_buttons, raw_panel_buttons, raw_door_open_btn, raw_door_close_btn, raw_emergency_btn, raw_power_switch, weight_sensor, call_button_lights, panel_button_lights, door_open_light, door_close_light, elevator_control_output, current_state_display, current_floor_display);
+    elevator_top dut (reset_n, raw_floor_call_buttons, raw_panel_buttons, raw_door_open_btn, raw_door_close_btn, raw_emergency_btn, raw_power_switch, weight_sensor, call_button_lights, panel_button_lights, door_open, elevator_control_output, safety_interlock, floor_indicator_lamps, elevator_upward_indicator_lamp, elevator_downward_indicator_lamp, alarm, weight_overload_lamp);
 
     initial begin
         // Initialize inputs
@@ -84,13 +88,13 @@ module elevator_top_tb;
 
         // Inside Elevator Testing
         // Call to Floor 5
-        #500
+      #500
         raw_panel_buttons[4] = 1;
         $display("Floor 5 call button pressed @ %t", $time);
         #200
         raw_panel_buttons[4] = 0;
         // Call to Floor 10
-        #500
+      #500
         raw_panel_buttons[9] = 1;
         $display("Floor 5 call button pressed @ %t", $time);
         #200
@@ -102,35 +106,138 @@ module elevator_top_tb;
         #200
         raw_panel_buttons[7] = 0;
 
-// Return to first floor
-      #500
+        // Return to first floor
+        #500
         raw_panel_buttons[0] = 1;
         $display("Floor 0 call button pressed @ %t", $time);
         #200
         raw_panel_buttons[0] = 0;
 
         // Inside Elevator Testing -- Select Destination, then select a destination while moving
-        // Call to Floor 5
+        // Call to Floor 11
         #500
         raw_panel_buttons[10] = 1;
-        $display("Floor 5 call button pressed @ %t", $time);
+        $display("Floor 11 call button pressed @ %t", $time);
         #50
         raw_panel_buttons[10] = 0;
-        // Call to Floor 10
+        // Call to Floor 6
         #50
         raw_panel_buttons[5] = 1;
-        $display("Floor 5 call button pressed @ %t", $time);
+        $display("Floor 6 call button pressed @ %t", $time);
         #50
         raw_panel_buttons[5] = 0;
         // Call to Floor 8
         #50
         raw_panel_buttons[7] = 1;
-        $display("Floor 5 call button pressed @ %t", $time);
+        $display("Floor 8 call button pressed @ %t", $time);
         #50
         raw_panel_buttons[7] = 0;
+        #2000
+        // Reset for next test
+        reset_n = 0;
+        #50
+        reset_n = 1;
+        $display("=== Reset complete ===");
+
+        // Emergency Conditions - Weight
+        // Go to Floor 4
+        #500
+        raw_panel_buttons[3] = 1;
+        $display("Floor 4 call button pressed @ %t", $time);
+        #200
+        raw_panel_buttons[3] = 0;
+        #500
+        weight_sensor = 1;
+        $display("Weight Sensor activated @ %t", $time);
+        #200
+
+        // Attempt to go to Floor 2
+        raw_panel_buttons[1] = 1;
+        $display("Floor 2 call button pressed @ %t", $time);
+        #60
+        raw_panel_buttons[1] = 0;
+        #60
+
+        weight_sensor = 0;
+        #50
+        // Reset for next test
+        reset_n = 0;
+        #50
+        reset_n = 1;
+        $display("=== Reset complete ===");
+
+        // Emergency Conditions - Emergency Button
+        // Go to Floor 4
+        #500
+        raw_panel_buttons[3] = 1;
+        $display("Floor 4 call button pressed @ %t", $time);
+        #200
+        raw_panel_buttons[3] = 0;
+        #500
+        raw_emergency_btn = 1;
+        $display("Emergency Button activated @ %t", $time);
+        #200
+        raw_emergency_btn = 0;
+        #500
+        // Attempt to go to Floor 2
+        raw_panel_buttons[1] = 1;
+        $display("Floor 2 call button pressed @ %t", $time);
+        #200
+        raw_panel_buttons[1] = 0;
+        #500
+        
+        // Reset for next test
+        reset_n = 0;
+        #50
+        reset_n = 1;
+        $display("=== Reset complete ===");
+        // Test Door Close Button
+        #500
+        raw_door_close_btn = 1;
+        $display("Door Close button pressed @ %t", $time);
+        #200
+        raw_door_close_btn = 0;
+        $display("Door Close button released @ %t", $time);
+        #1000; // Wait to observe door behavior
+        
+        // Test Door Open Button
+        #500
+        raw_door_open_btn = 1;
+        $display("Door Open button pressed @ %t", $time);
+        #200
+        raw_door_open_btn = 0;
+        $display("Door Open button released @ %t", $time);
+        #1000; // Wait to observe door behavior
+        
+
+        // Test Door Open while moving (should be ignored)
+        #500
+        raw_panel_buttons[5] = 1; // Request floor 6
+        $display("Floor 6 call button pressed @ %t", $time);
+        #50
+        raw_panel_buttons[5] = 0;
+        #100 // Wait for elevator to start moving
+        raw_door_open_btn = 1;
+        $display("Door Open button pressed while moving @ %t", $time);
+        #200
+        raw_door_open_btn = 0;
+        $display("Door Open button released @ %t", $time);
+        #2000; // Wait to observe that door doesn't open while moving
+        
+        // Test Door Close while stopped (should work)
+        #500
+        raw_door_close_btn = 1;
+        $display("Door Close button pressed while stopped @ %t", $time);
+        #200
+        raw_door_close_btn = 0;
+        $display("Door Close button released @ %t", $time);
+        #1000;
+
         // Run for a while
         #1000;
         $display("Simulation finished.");
         $stop;
+
+
     end
 endmodule
