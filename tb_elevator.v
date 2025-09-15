@@ -153,17 +153,17 @@ module elevator_top_tb;
         #500
         weight_sensor = 1;
         $display("Weight Sensor activated @ %t", $time);
-        #200
+        #100
 
         // Attempt to go to Floor 2
         raw_panel_buttons[1] = 1;
         $display("Floor 2 call button pressed @ %t", $time);
         #60
         raw_panel_buttons[1] = 0;
-        #60
+        #500
 
         weight_sensor = 0;
-        #50
+        #300
         // Reset for next test
         reset_n = 0;
         #50
@@ -265,8 +265,14 @@ module elevator_top_tb;
         raw_power_switch = 1;
         $display("Power switched on @ %t", $time);
         #1000; // Wait to observe door behavior
-        
 
+        // Edge Case - Pressing all the buttons inside
+        // 
+        raw_panel_buttons[10:0] = 11'b11111111111; // Request floor 6
+        $display("All Floor panel buttons pressed @ %t", $time);
+        #50
+        raw_panel_buttons[10:0] = 11'b11111111111;
+        #2000;
         // Run for a while
         #1000;
         $display("Simulation finished.");
