@@ -8,7 +8,7 @@
 // Organization:                    Virginia Polytechnic Institute and State University, Bradley Department of Electrical and Computer Engineering 
 // Course:                          ECE 4540 - VLSI Circuit Design
 // Instructor:                      Doctor Jeffrey Walling 
-//  
+// 1  
 // Hardware Description Language:   Verilog 2001 (IEEE 1364-2001)  
 // Simulation Tool:                 iVerilog 12.0 
 // 
