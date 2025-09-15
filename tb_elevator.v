@@ -1,5 +1,5 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
- // Title:                           Elevator System Top Module Testbench
+// Title:                           Elevator System Top Module Testbench
 // Filename:                        elevator_top_tb.v
 // Version:                         2
 // Author:                          Daniel J. Lomis, Sammy Craypoff
