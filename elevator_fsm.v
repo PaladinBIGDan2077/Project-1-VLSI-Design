@@ -82,7 +82,7 @@ module elevator_fsm(clock, reset_n, elevator_floor_selector, emergency_stop, act
                                 FLOOR_10                      = 4'h9,
                                 FLOOR_11                      = 4'hA;
 	
-    always @(posedge reset_n or negedge reset_n) begin
+    always @(posedge clock or negedge reset_n) begin
 		if (!reset_n) begin
 			counter_state <= STOP_FL1; // Reset to initial state
         end
