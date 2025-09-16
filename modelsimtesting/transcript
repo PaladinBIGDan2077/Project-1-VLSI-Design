@@ -1,0 +1,60 @@
+# Compile of elevator_fsm.v was successful.
+# Compile of tb_elevator.v was successful.
+# 2 compiles, 0 failed with no errors.
+vsim -gui work.elevator_top_tb
+# vsim -gui work.elevator_top_tb 
+# Start time: 22:48:34 on Sep 15,2025
+# Loading sv_std.std
+# Loading work.elevator_top_tb
+# Loading work.elevator_top
+# Loading work.clk
+# Loading work.button_debouncer
+# Loading work.floor_logic_control_unit
+# Loading work.elevator_fsm
+add wave -position insertpoint sim:/elevator_top_tb/*
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: Danie  Hostname: DLOMIS-P1G6  ProcessID: 26048
+#           Attempting to use alternate WLF file "./wlftfhfj7n".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlftfhfj7n
+run -all
+# === Reset complete ===
+# Floor 3 call button pressed @                  550
+# Floor 7 call button pressed @                 1250
+# Floor 1 call button pressed @                 1950
+# Floor 5 call button pressed @                 2650
+# Floor 10 call button pressed @                 3350
+# Floor 8 call button pressed @                 4050
+# Floor 1 call button pressed @                 4750
+# Floor 11 call button pressed @                 5450
+# Floor 6 call button pressed @                 5550
+# Floor 8 call button pressed @                 5650
+# === Reset complete ===
+# Floor 4 call button pressed @                 8250
+# Weight Sensor activated @                 8950
+# Floor 2 call button pressed @                 9050
+# === Reset complete ===
+# Floor 4 call button pressed @                10460
+# Emergency Button activated @                11160
+# Floor 2 call button pressed @                11860
+# === Reset complete ===
+# Door Close button pressed @                13110
+# Door Close button released @                13310
+# Door Open button pressed @                14810
+# Door Open button released @                15010
+# Floor 6 call button pressed @                16510
+# Door Open button pressed while moving @                16660
+# Door Open button released @                16860
+# Door Close button pressed while stopped @                19360
+# Door Close button released @                19560
+# === Reset complete ===
+# Floor 6 call button pressed @                20610
+# Power switched off @                21310
+# Floor 9 call button pressed @                21410
+# Power switched on @                22110
+# All Floor panel buttons begin pressing @                23110
+# All Floor panel buttons end pressing @                24160
+# Simulation finished.
+# ** Note: $stop    : D:/VLSI/Project-1-VLSI-Design/tb_elevator.v(320)
+#    Time: 26160 ns  Iteration: 0  Instance: /elevator_top_tb
+# Break in Module elevator_top_tb at D:/VLSI/Project-1-VLSI-Design/tb_elevator.v line 320

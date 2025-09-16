@@ -26,18 +26,18 @@ Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 
 Top level modules:
 	floor_logic_control_unit
 
-} {} {}} D:/VLSI/Project-1-VLSI-Design/elevator_fsm.v {1 {vlog -work work -sv -stats=none D:/VLSI/Project-1-VLSI-Design/elevator_fsm.v
-Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
--- Compiling module elevator_fsm
-
-Top level modules:
-	elevator_fsm
-
 } {} {}} D:/VLSI/Project-1-VLSI-Design/tb_elevator.v {1 {vlog -work work -sv -stats=none D:/VLSI/Project-1-VLSI-Design/tb_elevator.v
 Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
 -- Compiling module elevator_top_tb
 
 Top level modules:
 	elevator_top_tb
+
+} {} {}} D:/VLSI/Project-1-VLSI-Design/elevator_fsm.v {1 {vlog -work work -sv -stats=none D:/VLSI/Project-1-VLSI-Design/elevator_fsm.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module elevator_fsm
+
+Top level modules:
+	elevator_fsm
 
 } {} {}}

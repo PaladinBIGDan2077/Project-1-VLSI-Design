@@ -21,9 +21,9 @@
 //                                  9/7/2025    DJL  1        Original Code
 //                                  9/14/2025   DJL  2        Added Weight Sensor Logic
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-module elevator_fsm(clock_slower, init, elevator_floor_selector, emergency_stop, activate_elevator, weight_sensor, power_switch, direction_selector, counter_state, control_output);
-    input                                                     clock_slower;     
-	input                                                     init; // Active-low reset (KEY[1])
+module elevator_fsm(clock, reset_n, elevator_floor_selector, emergency_stop, activate_elevator, weight_sensor, power_switch, direction_selector, counter_state, control_output);
+    input                                                     clock;     
+	input                                                     reset_n; 
     input                       [3:0]                         elevator_floor_selector; // Elevator Floor Selector (4 bits for 11 floors) Comes from floor_logic.v
     input                                                     emergency_stop;
     input                                                     activate_elevator;
@@ -82,10 +82,8 @@ module elevator_fsm(clock_slower, init, elevator_floor_selector, emergency_stop,
                                 FLOOR_10                      = 4'h9,
                                 FLOOR_11                      = 4'hA;
 	
-    // Operation code register
-    // 
-    always @(posedge clock_slower or negedge init) begin
-		if (!init) begin
+    always @(posedge reset_n or negedge reset_n) begin
+		if (!reset_n) begin
 			counter_state <= STOP_FL1; // Reset to initial state
         end
 		else begin

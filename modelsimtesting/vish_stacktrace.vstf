@@ -1,0 +1,17 @@
+# Current time Mon Sep 15 22:50:56 2025
+# ModelSim - Intel FPGA Edition Stack Trace
+# Program = vish
+# Id = "2020.1"
+# Version = "2020.02"
+# Date = "Feb 28 2020"
+# Platform = win32pe
+
+Exception c0000005 has occurred at address 5efbd467. Traceback:
+# 0    0x5efbd467: '<unknown (@0x5efbd467)>'
+# 1    0x5eff41fc: '<unknown (@0x5eff41fc)>'
+# 2    0x5fb16369: 'Tcl_DeleteTimerHandler + 0x219'
+# 3    0x5faeacb5: 'Tcl_ServiceEvent + 0xc5'
+# 4    0x5faeafc8: 'Tcl_DoOneEvent + 0xb8'
+StackWalk failed 0
+# End of Stack Trace
+
