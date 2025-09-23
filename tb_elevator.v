@@ -318,5 +318,6 @@ module elevator_top_tb;
         #2000;
         $display("Simulation finished.");
         $stop;
+        $finish;
     end
 endmodule
