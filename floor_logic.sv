@@ -64,7 +64,7 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
     reg                                     door_open_allowed;
     reg                                     door_close_allowed;
     // Internal Variables
-    integer                                 a, b, c, d, e, f, g, h, i ,j;
+    integer                                 i;
 
     parameter                   STOP_FL1                      = 6'h00,      
                                 STOP_FL2                      = 6'h01,      
