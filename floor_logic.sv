@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Title:                           Elevator Floor Logic Controller
 // Filename:                        floor_logic.sv
-// Version:                         6
+// Version:                         5
 // Author:                          Daniel J. Lomis, Sammy Craypoff
 // Date:                            9/7/2025 
 // Location:                        Blacksburg, Virginia 
@@ -23,7 +23,6 @@
 //                                  9/13/2025   DJL  3        Converted to SystemVerilog
 //                                  9/14/2025   DJL  4        Streamlined Code
 //                                  9/14/2025   DJL  5        Updated code for iVerilog Compatibility
-//                                  9/22/2024   DJL  6        Corrected code for Genus
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_buttons, door_open_btn, door_close_btn, emergency_btn, power_switch, current_floor_state, elevator_state, elevator_moving, elevator_direction, elevator_floor_selector, direction_selector, activate_elevator, call_button_lights, panel_button_lights, door_open_allowed, door_close_allowed);
@@ -319,7 +318,6 @@ always @(*) begin
         if (is_stop_state(elevator_state)) begin
             // Check if there are any pending requests
             if (|panel_requests || |up_requests || |down_requests) begin
-                i = 0;
                 activate_elevator = 1'b1;
                 // Priority 1: Panel requests
                 if (|panel_requests) begin
@@ -350,7 +348,7 @@ always @(*) begin
                                 disable panel_request_down_direction_moving_down;
                             end
                         end
-                        if (i == 0) begin
+                        if (i == -1) begin
                             for (i = 0; i < 11; i = i + 1) begin : panel_request_up_direction_moving_down
                                 if (panel_requests[i]) begin
                                     elevator_floor_selector = i;
@@ -364,7 +362,7 @@ always @(*) begin
                 // Priority 2: External calls in current direction
                 else if (elevator_direction && (|up_requests)) begin
                     // External call logic
-                    for (i = 0; i < 11; i = i + 1) begin : elevator_call_moving_up
+                    for (i = 0; i < 10; i = i + 1) begin : elevator_call_moving_up
                         if (up_requests[i]) begin
                             elevator_floor_selector = i;
                             direction_selector = 1'b1;
@@ -391,7 +389,7 @@ always @(*) begin
                         end
                     end
                     if (i == 10) begin
-                        for (i = 10; i >= 0; i = i - 1) begin : elevator_remaining_direction_up_moving_down
+                        for (i = current_floor_state - 1; i >= 0; i = i - 1) begin : elevator_remaining_direction_up_moving_down
                             if (up_requests[i]) begin
                                 elevator_floor_selector = i;
                                 direction_selector = 1'b0;
@@ -408,7 +406,7 @@ always @(*) begin
                             disable elevator_remaining_direction_down_moving_down;
                         end
                     end
-                    if (i == 0) begin
+                    if (i == -1) begin
                         for (i = 0; i < 11; i = i + 1) begin : elevator_remaining_direction_down_moving_up
                             if (down_requests[i]) begin
                                 elevator_floor_selector = i;
