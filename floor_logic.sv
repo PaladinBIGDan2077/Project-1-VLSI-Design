@@ -330,7 +330,7 @@ always @(*) begin
                                 disable panel_request_up_direction_moving_up;
                             end
                         end
-                        if (i == 10) begin
+                        if (i == 11) begin
                             for (i = 10; i >= 0; i = i - 1) begin : panel_request_down_direction_moving_up
                                 if (panel_requests[i]) begin
                                     elevator_floor_selector = i;
@@ -341,7 +341,7 @@ always @(*) begin
                         end
                     end 
                     else begin
-                        for (i =  10; i >= 0; i = i - 1) begin : panel_request_down_direction_moving_down
+                        for (i = 10; i >= 0; i = i - 1) begin : panel_request_down_direction_moving_down
                             if (panel_requests[i]) begin
                                 elevator_floor_selector = i;
                                 direction_selector = 1'b0;
@@ -388,7 +388,7 @@ always @(*) begin
                             disable elevator_remaining_direction_up_moving_up;
                         end
                     end
-                    if (i == 10) begin
+                    if (i == 11) begin
                         for (i = current_floor_state - 1; i >= 0; i = i - 1) begin : elevator_remaining_direction_up_moving_down
                             if (up_requests[i]) begin
                                 elevator_floor_selector = i;
