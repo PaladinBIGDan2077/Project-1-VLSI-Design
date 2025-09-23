@@ -323,7 +323,7 @@ always @(*) begin
                 if (|panel_requests) begin
                     // Panel request logic
                     if (elevator_direction) begin
-                        for (i = 0; i < 11; i = i + 1) begin : panel_request_up_direction_moving_up
+                        for (i = 0; i <= 10; i = i + 1) begin : panel_request_up_direction_moving_up
                             if (panel_requests[i]) begin
                                 elevator_floor_selector = i;
                                 direction_selector = 1'b1;
@@ -349,7 +349,7 @@ always @(*) begin
                             end
                         end
                         if (i == -1) begin
-                            for (i = 0; i < 11; i = i + 1) begin : panel_request_up_direction_moving_down
+                            for (i = 0; i <= 10; i = i + 1) begin : panel_request_up_direction_moving_down
                                 if (panel_requests[i]) begin
                                     elevator_floor_selector = i;
                                     direction_selector = 1'b1;
@@ -362,7 +362,7 @@ always @(*) begin
                 // Priority 2: External calls in current direction
                 else if (elevator_direction && (|up_requests)) begin
                     // External call logic
-                    for (i = 0; i < 10; i = i + 1) begin : elevator_call_moving_up
+                    for (i = 0; i <= 10; i = i + 1) begin : elevator_call_moving_up
                         if (up_requests[i]) begin
                             elevator_floor_selector = i;
                             direction_selector = 1'b1;
@@ -381,7 +381,7 @@ always @(*) begin
                 end
                 // Priority 3: Remaining external calls
                 else if (|up_requests) begin
-                    for (i = 0; i < 11; i = i + 1) begin : elevator_remaining_direction_up_moving_up
+                    for (i = 0; i <= 10; i = i + 1) begin : elevator_remaining_direction_up_moving_up
                         if (up_requests[i]) begin
                             elevator_floor_selector = i;
                             direction_selector = 1'b1;
@@ -407,7 +407,7 @@ always @(*) begin
                         end
                     end
                     if (i == -1) begin
-                        for (i = 0; i < 11; i = i + 1) begin : elevator_remaining_direction_down_moving_up
+                        for (i = 0; i <= 10; i = i + 1) begin : elevator_remaining_direction_down_moving_up
                             if (down_requests[i]) begin
                                 elevator_floor_selector = i;
                                 direction_selector = 1'b1;
