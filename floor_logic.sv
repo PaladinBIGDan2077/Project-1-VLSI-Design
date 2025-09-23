@@ -64,7 +64,7 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
     reg                                     door_open_allowed;
     reg                                     door_close_allowed;
     // Internal Variables
-    integer                                 i;
+    integer                                 a, b, c, d, e, f, g, h, i ,j;
 
     parameter                   STOP_FL1                      = 6'h00,      
                                 STOP_FL2                      = 6'h01,      
@@ -389,7 +389,7 @@ always @(*) begin
                         end
                     end
                     if (i == 11) begin
-                        for (i = current_floor_state - 1; i >= 0; i = i - 1) begin : elevator_remaining_direction_up_moving_down
+                        for (i = 10; i >= 0; i = i - 1) begin : elevator_remaining_direction_up_moving_down
                             if (up_requests[i]) begin
                                 elevator_floor_selector = i;
                                 direction_selector = 1'b0;
