@@ -319,6 +319,7 @@ always @(*) begin
         if (is_stop_state(elevator_state)) begin
             // Check if there are any pending requests
             if (|panel_requests || |up_requests || |down_requests) begin
+                i = 0;
                 activate_elevator = 1'b1;
                 // Priority 1: Panel requests
                 if (|panel_requests) begin
