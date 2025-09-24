@@ -164,47 +164,47 @@ always @(posedge clock or negedge reset_n) begin
     else if (power_switch && !stack_full) begin
         // Check elevator panel buttons (internal requests)
         case (1'b1)
-            panel_buttons[0] && current_floor_state != 0: begin
+            panel_buttons[0] && current_floor_state != FLOOR_1: begin
                 push_to_stack(4'd0);
                 panel_button_lights[0] <= 1'b1;
             end
-            panel_buttons[1] && current_floor_state != 1: begin
+            panel_buttons[1] && current_floor_state != FLOOR_2: begin
                 push_to_stack(4'd1);
                 panel_button_lights[1] <= 1'b1;
             end
-            panel_buttons[2] && current_floor_state != 2: begin
+            panel_buttons[2] && current_floor_state != FLOOR_3: begin
                 push_to_stack(4'd2);
                 panel_button_lights[2] <= 1'b1;
             end
-            panel_buttons[3] && current_floor_state != 3: begin
+            panel_buttons[3] && current_floor_state != FLOOR_4: begin
                 push_to_stack(4'd3);
                 panel_button_lights[3] <= 1'b1;
             end
-            panel_buttons[4] && current_floor_state != 4: begin
+            panel_buttons[4] && current_floor_state != FLOOR_5: begin
                 push_to_stack(4'd4);
                 panel_button_lights[4] <= 1'b1;
             end
-            panel_buttons[5] && current_floor_state != 5: begin
+            panel_buttons[5] && current_floor_state != FLOOR_6: begin
                 push_to_stack(4'd5);
                 panel_button_lights[5] <= 1'b1;
             end
-            panel_buttons[6] && current_floor_state != 6: begin
+            panel_buttons[6] && current_floor_state != FLOOR_7: begin
                 push_to_stack(4'd6);
                 panel_button_lights[6] <= 1'b1;
             end
-            panel_buttons[7] && current_floor_state != 7: begin
+            panel_buttons[7] && current_floor_state != FLOOR_8: begin
                 push_to_stack(4'd7);
                 panel_button_lights[7] <= 1'b1;
             end
-            panel_buttons[8] && current_floor_state != 8: begin
+            panel_buttons[8] && current_floor_state != FLOOR_9: begin
                 push_to_stack(4'd8);
                 panel_button_lights[8] <= 1'b1;
             end
-            panel_buttons[9] && current_floor_state != 9: begin
+            panel_buttons[9] && current_floor_state != FLOOR_10: begin
                 push_to_stack(4'd9);
                 panel_button_lights[9] <= 1'b1;
             end
-            panel_buttons[10] && current_floor_state != 10: begin
+            panel_buttons[10] && current_floor_state != FLOOR_11: begin
                 push_to_stack(4'd10);
                 panel_button_lights[10] <= 1'b1;
             end
@@ -212,47 +212,47 @@ always @(posedge clock or negedge reset_n) begin
         
         // Check floor call buttons (external requests)
         case (1'b1)
-            floor_call_buttons[0] && current_floor_state != 0: begin
+            floor_call_buttons[0] && current_floor_state != FLOOR_1: begin
                 push_to_stack(4'd0);
                 call_button_lights[0] <= 1'b1;
             end
-            floor_call_buttons[1] && current_floor_state != 1: begin
+            floor_call_buttons[1] && current_floor_state != FLOOR_2: begin
                 push_to_stack(4'd1);
                 call_button_lights[1] <= 1'b1;
             end
-            floor_call_buttons[2] && current_floor_state != 2: begin
+            floor_call_buttons[2] && current_floor_state != FLOOR_3: begin
                 push_to_stack(4'd2);
                 call_button_lights[2] <= 1'b1;
             end
-            floor_call_buttons[3] && current_floor_state != 3: begin
+            floor_call_buttons[3] && current_floor_state != FLOOR_4: begin
                 push_to_stack(4'd3);
                 call_button_lights[3] <= 1'b1;
             end
-            floor_call_buttons[4] && current_floor_state != 4: begin
+            floor_call_buttons[4] && current_floor_state != FLOOR_5: begin
                 push_to_stack(4'd4);
                 call_button_lights[4] <= 1'b1;
             end
-            floor_call_buttons[5] && current_floor_state != 5: begin
+            floor_call_buttons[5] && current_floor_state != FLOOR_6: begin
                 push_to_stack(4'd5);
                 call_button_lights[5] <= 1'b1;
             end
-            floor_call_buttons[6] && current_floor_state != 6: begin
+            floor_call_buttons[6] && current_floor_state != FLOOR_7: begin
                 push_to_stack(4'd6);
                 call_button_lights[6] <= 1'b1;
             end
-            floor_call_buttons[7] && current_floor_state != 7: begin
+            floor_call_buttons[7] && current_floor_state != FLOOR_8: begin
                 push_to_stack(4'd7);
                 call_button_lights[7] <= 1'b1;
             end
-            floor_call_buttons[8] && current_floor_state != 8: begin
+            floor_call_buttons[8] && current_floor_state != FLOOR_9: begin
                 push_to_stack(4'd8);
                 call_button_lights[8] <= 1'b1;
             end
-            floor_call_buttons[9] && current_floor_state != 9: begin
+            floor_call_buttons[9] && current_floor_state != FLOOR_10: begin
                 push_to_stack(4'd9);
                 call_button_lights[9] <= 1'b1;
             end
-            floor_call_buttons[10] && current_floor_state != 10: begin
+            floor_call_buttons[10] && current_floor_state != FLOOR_11: begin
                 push_to_stack(4'd10);
                 call_button_lights[10] <= 1'b1;
             end
@@ -268,47 +268,47 @@ always @(posedge clock or negedge reset_n) begin
     else if (power_switch && !stack_full) begin
         // Check elevator panel buttons (internal requests)
         case (1'b1)
-            (panel_buttons[0] || floor_call_buttons[0]) && current_floor_state == 0: begin
+            (panel_buttons[0] || floor_call_buttons[0]) && current_floor_state == FLOOR_1: begin
                 panel_button_lights[0] <= 1'b0;
                 call_button_lights[0] <= 1'b0;
             end
-            (panel_buttons[1] || floor_call_buttons[1]) && current_floor_state == 1: begin
+            (panel_buttons[1] || floor_call_buttons[1]) && current_floor_state == FLOOR_2: begin
                 panel_button_lights[1] <= 1'b0;
                 call_button_lights[1] <= 1'b0;
             end
-            (panel_buttons[2] || floor_call_buttons[2]) && current_floor_state == 2: begin
+            (panel_buttons[2] || floor_call_buttons[2]) && current_floor_state == FLOOR_3: begin
                 panel_button_lights[2] <= 1'b0;
                 call_button_lights[2] <= 1'b0;
             end
-            (panel_buttons[3] || floor_call_buttons[3]) && current_floor_state == 3: begin
+            (panel_buttons[3] || floor_call_buttons[3]) && current_floor_state == FLOOR_4: begin
                 panel_button_lights[3] <= 1'b0;
                 call_button_lights[3] <= 1'b0;
             end
-            (panel_buttons[4] || floor_call_buttons[4]) && current_floor_state == 4: begin
+            (panel_buttons[4] || floor_call_buttons[4]) && current_floor_state == FLOOR_5: begin
                 panel_button_lights[4] <= 1'b0;
                 call_button_lights[4] <= 1'b0;
             end
-            (panel_buttons[5] || floor_call_buttons[5]) && current_floor_state == 5: begin
+            (panel_buttons[5] || floor_call_buttons[5]) && current_floor_state == FLOOR_6: begin
                 panel_button_lights[5] <= 1'b0;
                 call_button_lights[5] <= 1'b0;
             end
-            (panel_buttons[6] || floor_call_buttons[6]) && current_floor_state == 6: begin
+            (panel_buttons[6] || floor_call_buttons[6]) && current_floor_state == FLOOR_7: begin
                 panel_button_lights[6] <= 1'b0;
                 call_button_lights[6] <= 1'b0;
             end
-            (panel_buttons[7] || floor_call_buttons[7]) && current_floor_state == 7: begin
+            (panel_buttons[7] || floor_call_buttons[7]) && current_floor_state == FLOOR_8: begin
                 panel_button_lights[7] <= 1'b0;
                 call_button_lights[7] <= 1'b0;
             end
-            (panel_buttons[8] || floor_call_buttons[8]) && current_floor_state == 8: begin
+            (panel_buttons[8] || floor_call_buttons[8]) && current_floor_state == FLOOR_9: begin
                 panel_button_lights[8] <= 1'b0;
                 call_button_lights[8] <= 1'b0;
             end
-            (panel_buttons[9] || floor_call_buttons[9]) && current_floor_state == 9: begin
+            (panel_buttons[9] || floor_call_buttons[9]) && current_floor_state == FLOOR_10: begin
                 panel_button_lights[9] <= 1'b0;
                 call_button_lights[9] <= 1'b0;
             end
-            (panel_buttons[10] || floor_call_buttons[10]) && current_floor_state == 10: begin
+            (panel_buttons[10] || floor_call_buttons[10]) && current_floor_state == FLOOR_11: begin
                 panel_button_lights[10] <= 1'b0;
                 call_button_lights[10] <= 1'b0;
             end
