@@ -283,7 +283,7 @@ task push_to_stack;
 endtask
 
 // Stack pop function
-task pop_from_stack_task;
+task pop_from_stack;
     output [3:0] popped_floor;
     begin
         if (!stack_empty) begin
