@@ -52,6 +52,8 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
     output              [10:0]              panel_button_lights;
 
     reg                 [3:0]               elevator_floor_selector;
+    reg                                     door_open_allowed;
+    reg                                     door_close_allowed;
     reg                                     direction_selector;
     reg                                     activate_elevator;
     // Button status outputs (for illumination)
