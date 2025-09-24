@@ -307,8 +307,8 @@ end
 // Stack-based target floor selection logic
 always @(*) begin
     activate_elevator = 1'b0;
-    elevator_floor_selector = current_floor_state;
-    direction_selector = elevator_direction;
+    //elevator_floor_selector = current_floor_state;
+    //direction_selector = elevator_direction;
     
     // Stack register - 44 bits wide (4 bits per floor * 11 floors)
 
