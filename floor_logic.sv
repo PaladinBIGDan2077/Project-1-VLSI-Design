@@ -59,6 +59,7 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
     // Button status outputs (for illumination)
     reg                 [10:0]              call_button_lights;
     reg                 [10:0]              panel_button_lights;
+    reg                 [3:0]               next_floor;
 
     // Internal registers for request management
 // Internal registers for stack management
@@ -135,6 +136,8 @@ always @(posedge clock or negedge reset_n) begin
         stack_pointer <= 44'b0;
         stack_full <= 1'b0;
         stack_empty <= 1'b1;
+        elevator_floor_selector <= FLOOR_1; // Default to first floor on reset
+        next_floor <= FLOOR_1;
     end 
     else if (!power_switch) begin
         call_button_lights <= 11'b0;
