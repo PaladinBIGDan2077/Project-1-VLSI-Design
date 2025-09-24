@@ -326,9 +326,11 @@ always @(*) begin
             // Natural direction selection
             if (elevator_floor_selector > current_floor_state) begin
                 direction_selector = 1'b1; // Up direction
+                activate_elevator = 1'b1;
             end
             else if (elevator_floor_selector < current_floor_state) begin
                 direction_selector = 1'b0; // Down direction
+                activate_elevator = 1'b1;
             end
             else begin
                 activate_elevator = 1'b0; // Same floor, don't activate
