@@ -296,138 +296,258 @@ always @(posedge clock or negedge reset_n) begin
     end
 end
 
+// Revised target floor selection logic with stack register
 always @(*) begin
-activate_elevator = 1'b0;
-elevator_floor_selector = current_floor_state; // Default to current floor
-direction_selector = elevator_direction; // Default to current direction
-
-// Normal operation when power is on and no emergency
-if (power_switch && !emergency_btn) begin
-    // Only process requests when elevator is stopped
-    if ((elevator_state == STOP_FL1) || (elevator_state == STOP_FL2) || 
-                        (elevator_state == STOP_FL3) || (elevator_state == STOP_FL4) || 
-                        (elevator_state == STOP_FL5) || (elevator_state == STOP_FL6) || 
-                        (elevator_state == STOP_FL7) || (elevator_state == STOP_FL8) || 
-                        (elevator_state == STOP_FL9) || (elevator_state == STOP_FL10) || 
-                        (elevator_state == STOP_FL11)) begin
-        // Check if there are any pending requests
-        if (|panel_requests || |up_requests || |down_requests) begin
-            activate_elevator = 1'b1;
-            
-            // Priority 1: Panel requests in current direction
-            if (elevator_direction) begin // Currently going up
-                // Search upward for panel requests
-                for (i = 0; i <= 10; i = i + 1) begin : panel_up_search
-                    if (panel_requests[i] && i > current_floor_state) begin
-                        elevator_floor_selector = i;
-                        direction_selector = 1'b1;
-                        disable panel_up_search;
-                    end
-                end
-                // If no panel requests above, search downward for panel requests
-                if (elevator_floor_selector == current_floor_state) begin
-                    for (i = 10; i >= 0; i = i - 1) begin : panel_down_search
-                        if (panel_requests[i] && i < current_floor_state) begin
-                            elevator_floor_selector = i;
-                            direction_selector = 1'b0;
-                            disable panel_down_search;
-                        end
-                    end
-                end
-            end else begin // Currently going down
-                // Search downward for panel requests
-                for (i = 10; i >= 0; i = i - 1) begin : panel_down_search2
-                    if (panel_requests[i] && i < current_floor_state) begin
-                        elevator_floor_selector = i;
-                        direction_selector = 1'b0;
-                        disable panel_down_search2;
-                    end
-                end
-                // If no panel requests below, search upward for panel requests
-                if (elevator_floor_selector == current_floor_state) begin
-                    for (i = 0; i <= 10; i = i + 1) begin : panel_up_search2
-                        if (panel_requests[i] && i > current_floor_state) begin
-                            elevator_floor_selector = i;
-                            direction_selector = 1'b1;
-                            disable panel_up_search2;
-                        end
-                    end
-                end
-            end
-            
-            // Priority 2: External calls in current direction
-            if (elevator_floor_selector == current_floor_state) begin
-                if (elevator_direction) begin // Going up
-                    // Search upward for up requests
-                    for (i = 0; i <= 10; i = i + 1) begin : up_call_search
-                        if (up_requests[i] && i > current_floor_state) begin
-                            elevator_floor_selector = i;
-                            direction_selector = 1'b1;
-                            disable up_call_search;
-                        end
-                    end
-                end else begin // Going down
-                    // Search downward for down requests
-                    for (i = 10; i >= 0; i = i - 1) begin : down_call_search
-                        if (down_requests[i] && i < current_floor_state) begin
-                            elevator_floor_selector = i;
-                            direction_selector = 1'b0;
-                            disable down_call_search;
-                        end
-                    end
-                end
-            end
-            
-            // Priority 3: Any remaining requests (change direction if needed)
-            if (elevator_floor_selector == current_floor_state) begin
-                // Check if there are any requests above current floor
-                for (i = 0; i <= 10; i = i + 1) begin : any_above_search
-                    if ((up_requests[i] || down_requests[i] || panel_requests[i]) && 
-                        i > current_floor_state) begin
-                        elevator_floor_selector = i;
-                        direction_selector = 1'b1;
-                        disable any_above_search;
+    activate_elevator = 1'b0;
+    elevator_floor_selector = current_floor_state;
+    direction_selector = elevator_direction;
+    
+    // Normal operation when power is on and no emergency
+    if (power_switch && !emergency_btn) begin
+        // Only process requests when elevator is stopped
+        if (is_stop_state(elevator_state)) begin
+            // Check if there are any pending requests
+            if (|panel_requests || |up_requests || |down_requests) begin
+                activate_elevator = 1'b1;
+                
+                // Stack register - 44 bits wide (4 bits per floor * 11 floors)
+                reg [43:0] request_stack;
+                reg [3:0] next_floor;
+                reg stack_has_requests;
+                
+                // Initialize stack and flags
+                request_stack = 44'b0;
+                next_floor = current_floor_state;
+                stack_has_requests = 1'b0;
+                
+                // Push upward requests above current floor onto stack (highest priority)
+                case (1'b1)
+                    (up_requests[10] && 10 > current_floor_state) || 
+                    (panel_requests[10] && 10 > current_floor_state): 
+                        request_stack[43:40] = 4'd10;
+                    (up_requests[9] && 9 > current_floor_state) || 
+                    (panel_requests[9] && 9 > current_floor_state): 
+                        request_stack[39:36] = 4'd9;
+                    (up_requests[8] && 8 > current_floor_state) || 
+                    (panel_requests[8] && 8 > current_floor_state): 
+                        request_stack[35:32] = 4'd8;
+                    (up_requests[7] && 7 > current_floor_state) || 
+                    (panel_requests[7] && 7 > current_floor_state): 
+                        request_stack[31:28] = 4'd7;
+                    (up_requests[6] && 6 > current_floor_state) || 
+                    (panel_requests[6] && 6 > current_floor_state): 
+                        request_stack[27:24] = 4'd6;
+                    (up_requests[5] && 5 > current_floor_state) || 
+                    (panel_requests[5] && 5 > current_floor_state): 
+                        request_stack[23:20] = 4'd5;
+                    (up_requests[4] && 4 > current_floor_state) || 
+                    (panel_requests[4] && 4 > current_floor_state): 
+                        request_stack[19:16] = 4'd4;
+                    (up_requests[3] && 3 > current_floor_state) || 
+                    (panel_requests[3] && 3 > current_floor_state): 
+                        request_stack[15:12] = 4'd3;
+                    (up_requests[2] && 2 > current_floor_state) || 
+                    (panel_requests[2] && 2 > current_floor_state): 
+                        request_stack[11:8] = 4'd2;
+                    (up_requests[1] && 1 > current_floor_state) || 
+                    (panel_requests[1] && 1 > current_floor_state): 
+                        request_stack[7:4] = 4'd1;
+                    (up_requests[0] && 0 > current_floor_state) || 
+                    (panel_requests[0] && 0 > current_floor_state): 
+                        request_stack[3:0] = 4'd0;
+                endcase
+                
+                // Check if upward stack has requests
+                stack_has_requests = |request_stack;
+                
+                // Pop from upward stack (highest floor first - LIFO)
+                if (stack_has_requests) begin
+                    case (1'b1)
+                        request_stack[43:40] != 4'b0: next_floor = request_stack[43:40];
+                        request_stack[39:36] != 4'b0: next_floor = request_stack[39:36];
+                        request_stack[35:32] != 4'b0: next_floor = request_stack[35:32];
+                        request_stack[31:28] != 4'b0: next_floor = request_stack[31:28];
+                        request_stack[27:24] != 4'b0: next_floor = request_stack[27:24];
+                        request_stack[23:20] != 4'b0: next_floor = request_stack[23:20];
+                        request_stack[19:16] != 4'b0: next_floor = request_stack[19:16];
+                        request_stack[15:12] != 4'b0: next_floor = request_stack[15:12];
+                        request_stack[11:8] != 4'b0: next_floor = request_stack[11:8];
+                        request_stack[7:4] != 4'b0: next_floor = request_stack[7:4];
+                        request_stack[3:0] != 4'b0: next_floor = request_stack[3:0];
+                        default: stack_has_requests = 1'b0;
+                    endcase
+                    
+                    if (stack_has_requests) begin
+                        elevator_floor_selector = next_floor;
+                        direction_selector = 1'b1; // Go up
                     end
                 end
                 
-                // If nothing above, check for requests below current floor
-                if (elevator_floor_selector == current_floor_state) begin
-                    for (i = 10; i >= 0; i = i - 1) begin : any_below_search
-                        if ((up_requests[i] || down_requests[i] || panel_requests[i]) && 
-                            i < current_floor_state) begin
-                            elevator_floor_selector = i;
-                            direction_selector = 1'b0;
-                            disable any_below_search;
+                // If no upward requests, push downward requests below current floor onto stack
+                if (!stack_has_requests) begin
+                    request_stack = 44'b0; // Clear stack
+                    
+                    case (1'b1)
+                        (down_requests[0] && 0 < current_floor_state) || 
+                        (panel_requests[0] && 0 < current_floor_state): 
+                            request_stack[43:40] = 4'd0;
+                        (down_requests[1] && 1 < current_floor_state) || 
+                        (panel_requests[1] && 1 < current_floor_state): 
+                            request_stack[39:36] = 4'd1;
+                        (down_requests[2] && 2 < current_floor_state) || 
+                        (panel_requests[2] && 2 < current_floor_state): 
+                            request_stack[35:32] = 4'd2;
+                        (down_requests[3] && 3 < current_floor_state) || 
+                        (panel_requests[3] && 3 < current_floor_state): 
+                            request_stack[31:28] = 4'd3;
+                        (down_requests[4] && 4 < current_floor_state) || 
+                        (panel_requests[4] && 4 < current_floor_state): 
+                            request_stack[27:24] = 4'd4;
+                        (down_requests[5] && 5 < current_floor_state) || 
+                        (panel_requests[5] && 5 < current_floor_state): 
+                            request_stack[23:20] = 4'd5;
+                        (down_requests[6] && 6 < current_floor_state) || 
+                        (panel_requests[6] && 6 < current_floor_state): 
+                            request_stack[19:16] = 4'd6;
+                        (down_requests[7] && 7 < current_floor_state) || 
+                        (panel_requests[7] && 7 < current_floor_state): 
+                            request_stack[15:12] = 4'd7;
+                        (down_requests[8] && 8 < current_floor_state) || 
+                        (panel_requests[8] && 8 < current_floor_state): 
+                            request_stack[11:8] = 4'd8;
+                        (down_requests[9] && 9 < current_floor_state) || 
+                        (panel_requests[9] && 9 < current_floor_state): 
+                            request_stack[7:4] = 4'd9;
+                        (down_requests[10] && 10 < current_floor_state) || 
+                        (panel_requests[10] && 10 < current_floor_state): 
+                            request_stack[3:0] = 4'd10;
+                    endcase
+                    
+                    stack_has_requests = |request_stack;
+                    
+                    // Pop from downward stack (lowest floor first - LIFO for downward direction)
+                    if (stack_has_requests) begin
+                        case (1'b1)
+                            request_stack[3:0] != 4'b0: next_floor = request_stack[3:0];
+                            request_stack[7:4] != 4'b0: next_floor = request_stack[7:4];
+                            request_stack[11:8] != 4'b0: next_floor = request_stack[11:8];
+                            request_stack[15:12] != 4'b0: next_floor = request_stack[15:12];
+                            request_stack[19:16] != 4'b0: next_floor = request_stack[19:16];
+                            request_stack[23:20] != 4'b0: next_floor = request_stack[23:20];
+                            request_stack[27:24] != 4'b0: next_floor = request_stack[27:24];
+                            request_stack[31:28] != 4'b0: next_floor = request_stack[31:28];
+                            request_stack[35:32] != 4'b0: next_floor = request_stack[35:32];
+                            request_stack[39:36] != 4'b0: next_floor = request_stack[39:36];
+                            request_stack[43:40] != 4'b0: next_floor = request_stack[43:40];
+                            default: stack_has_requests = 1'b0;
+                        endcase
+                        
+                        if (stack_has_requests) begin
+                            elevator_floor_selector = next_floor;
+                            direction_selector = 1'b0; // Go down
                         end
                     end
                 end
                 
-                // Final fallback: any request (shouldn't happen due to initial check)
-                if (elevator_floor_selector == current_floor_state) begin
-                    for (i = 0; i <= 10; i = i + 1) begin : any_request_search
-                        if (up_requests[i] || down_requests[i] || panel_requests[i]) begin
-                            elevator_floor_selector = i;
-                            // Choose direction based on position
-                            direction_selector = (i > current_floor_state) ? 1'b1 : 1'b0;
-                            disable any_request_search;
+                // If still no requests, check for any requests in opposite direction
+                if (!stack_has_requests) begin
+                    request_stack = 44'b0; // Clear stack
+                    
+                    // Push any upward requests (even if below current floor)
+                    case (1'b1)
+                        up_requests[10] || panel_requests[10]: request_stack[43:40] = 4'd10;
+                        up_requests[9] || panel_requests[9]: request_stack[39:36] = 4'd9;
+                        up_requests[8] || panel_requests[8]: request_stack[35:32] = 4'd8;
+                        up_requests[7] || panel_requests[7]: request_stack[31:28] = 4'd7;
+                        up_requests[6] || panel_requests[6]: request_stack[27:24] = 4'd6;
+                        up_requests[5] || panel_requests[5]: request_stack[23:20] = 4'd5;
+                        up_requests[4] || panel_requests[4]: request_stack[19:16] = 4'd4;
+                        up_requests[3] || panel_requests[3]: request_stack[15:12] = 4'd3;
+                        up_requests[2] || panel_requests[2]: request_stack[11:8] = 4'd2;
+                        up_requests[1] || panel_requests[1]: request_stack[7:4] = 4'd1;
+                        up_requests[0] || panel_requests[0]: request_stack[3:0] = 4'd0;
+                    endcase
+                    
+                    stack_has_requests = |request_stack;
+                    
+                    if (stack_has_requests) begin
+                        case (1'b1)
+                            request_stack[43:40] != 4'b0: next_floor = request_stack[43:40];
+                            request_stack[39:36] != 4'b0: next_floor = request_stack[39:36];
+                            request_stack[35:32] != 4'b0: next_floor = request_stack[35:32];
+                            request_stack[31:28] != 4'b0: next_floor = request_stack[31:28];
+                            request_stack[27:24] != 4'b0: next_floor = request_stack[27:24];
+                            request_stack[23:20] != 4'b0: next_floor = request_stack[23:20];
+                            request_stack[19:16] != 4'b0: next_floor = request_stack[19:16];
+                            request_stack[15:12] != 4'b0: next_floor = request_stack[15:12];
+                            request_stack[11:8] != 4'b0: next_floor = request_stack[11:8];
+                            request_stack[7:4] != 4'b0: next_floor = request_stack[7:4];
+                            request_stack[3:0] != 4'b0: next_floor = request_stack[3:0];
+                            default: stack_has_requests = 1'b0;
+                        endcase
+                        
+                        if (stack_has_requests) begin
+                            elevator_floor_selector = next_floor;
+                            direction_selector = 1'b1; // Go up
+                        end
+                    end else begin
+                        // Finally, check for any downward requests
+                        case (1'b1)
+                            down_requests[10] || panel_requests[10]: request_stack[43:40] = 4'd10;
+                            down_requests[9] || panel_requests[9]: request_stack[39:36] = 4'd9;
+                            down_requests[8] || panel_requests[8]: request_stack[35:32] = 4'd8;
+                            down_requests[7] || panel_requests[7]: request_stack[31:28] = 4'd7;
+                            down_requests[6] || panel_requests[6]: request_stack[27:24] = 4'd6;
+                            down_requests[5] || panel_requests[5]: request_stack[23:20] = 4'd5;
+                            down_requests[4] || panel_requests[4]: request_stack[19:16] = 4'd4;
+                            down_requests[3] || panel_requests[3]: request_stack[15:12] = 4'd3;
+                            down_requests[2] || panel_requests[2]: request_stack[11:8] = 4'd2;
+                            down_requests[1] || panel_requests[1]: request_stack[7:4] = 4'd1;
+                            down_requests[0] || panel_requests[0]: request_stack[3:0] = 4'd0;
+                        endcase
+                        
+                        stack_has_requests = |request_stack;
+                        
+                        if (stack_has_requests) begin
+                            case (1'b1)
+                                request_stack[43:40] != 4'b0: next_floor = request_stack[43:40];
+                                request_stack[39:36] != 4'b0: next_floor = request_stack[39:36];
+                                request_stack[35:32] != 4'b0: next_floor = request_stack[35:32];
+                                request_stack[31:28] != 4'b0: next_floor = request_stack[31:28];
+                                request_stack[27:24] != 4'b0: next_floor = request_stack[27:24];
+                                request_stack[23:20] != 4'b0: next_floor = request_stack[23:20];
+                                request_stack[19:16] != 4'b0: next_floor = request_stack[19:16];
+                                request_stack[15:12] != 4'b0: next_floor = request_stack[15:12];
+                                request_stack[11:8] != 4'b0: next_floor = request_stack[11:8];
+                                request_stack[7:4] != 4'b0: next_floor = request_stack[7:4];
+                                request_stack[3:0] != 4'b0: next_floor = request_stack[3:0];
+                                default: stack_has_requests = 1'b0;
+                            endcase
+                            
+                            if (stack_has_requests) begin
+                                elevator_floor_selector = next_floor;
+                                direction_selector = 1'b0; // Go down
+                            end
                         end
                     end
                 end
-            end
-            
-            // Special case: if at top floor with downward requests, ensure we go down
-            if (current_floor_state == FLOOR_11 && elevator_floor_selector < FLOOR_11) begin
-                direction_selector = 1'b0;
-            end
-            
-            // Special case: if at bottom floor with upward requests, ensure we go up
-            if (current_floor_state == FLOOR_1 && elevator_floor_selector > FLOOR_1) begin
-                direction_selector = 1'b1;
+                
+                // Force direction changes at boundaries
+                if (current_floor_state == FLOOR_11) begin
+                    direction_selector = 1'b0; // At top floor, must go down
+                end else if (current_floor_state == FLOOR_1) begin
+                    direction_selector = 1'b1; // At bottom floor, must go up
+                end
+                
+                // Safety: don't activate if target is current floor
+                if (elevator_floor_selector == current_floor_state) begin
+                    activate_elevator = 1'b0;
+                end
             end
         end
     end
 end
-end
+
 
 // Door control logic
 always @(*) begin
