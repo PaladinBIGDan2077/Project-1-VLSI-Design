@@ -35,6 +35,7 @@ module elevator_top_tb;
     reg                                                         raw_power_switch;
     reg                                                         weight_sensor;
 
+    wire                                                        clock;
     wire                        [10:0]                          call_button_lights;
     wire                        [10:0]                          panel_button_lights;
     wire                                                        door_open;
@@ -47,7 +48,10 @@ module elevator_top_tb;
     wire                                                        weight_overload_lamp;
 
     // Instantiate DUT
-    elevator_top dut (reset_n, raw_floor_call_buttons, raw_panel_buttons, raw_door_open_btn, raw_door_close_btn, raw_emergency_btn, raw_power_switch, weight_sensor, call_button_lights, panel_button_lights, door_open, elevator_control_output, safety_interlock, floor_indicator_lamps, elevator_upward_indicator_lamp, elevator_downward_indicator_lamp, alarm, weight_overload_lamp);
+    elevator_top dut (clock, reset_n, raw_floor_call_buttons, raw_panel_buttons, raw_door_open_btn, raw_door_close_btn, raw_emergency_btn, raw_power_switch, weight_sensor, call_button_lights, panel_button_lights, door_open, elevator_control_output, safety_interlock, floor_indicator_lamps, elevator_upward_indicator_lamp, elevator_downward_indicator_lamp, alarm, weight_overload_lamp);
+    clk clock_dut (1'b1, clock);
+
+
 
     initial begin
 	// Dump sim files
@@ -317,7 +321,6 @@ module elevator_top_tb;
 
         #2000;
         $display("Simulation finished.");
-        $stop;
         $finish;
     end
 endmodule

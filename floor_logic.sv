@@ -112,19 +112,6 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
                                 FLOOR_11                      = 4'hA;
 	
 
-// Function to check if state is a STOP state
-function is_stop_state;
-    input [5:0] state;
-    begin
-        is_stop_state = (state == STOP_FL1) || (state == STOP_FL2) || 
-                        (state == STOP_FL3) || (state == STOP_FL4) || 
-                        (state == STOP_FL5) || (state == STOP_FL6) || 
-                        (state == STOP_FL7) || (state == STOP_FL8) || 
-                        (state == STOP_FL9) || (state == STOP_FL10) || 
-                        (state == STOP_FL11);
-    end
-endfunction
-
 always @(posedge clock or negedge reset_n) begin
     if (!reset_n) begin
         up_requests <= 11'b0;
@@ -310,138 +297,148 @@ always @(posedge clock or negedge reset_n) begin
 end
 
 always @(*) begin
-    activate_elevator = 1'b0;
-    elevator_floor_selector = current_floor_state; // Default to current floor
-    direction_selector = elevator_direction; // Default to current direction
-    
-    // Normal operation when power is on and no emergency
-    if (power_switch && !emergency_btn) begin
-        // Only process requests when elevator is stopped
-        if (is_stop_state(elevator_state)) begin
-            // Check if there are any pending requests
-            if (|panel_requests || |up_requests || |down_requests) begin
-                activate_elevator = 1'b1;
-                
-                // Priority 1: Panel requests in current direction
-                if (elevator_direction) begin // Currently going up
-                    // Search upward for panel requests
-                    for (i = 0; i <= 10; i = i + 1) begin : panel_up_search
-                        if (panel_requests[i] && i > current_floor_state) begin
-                            elevator_floor_selector = i;
-                            direction_selector = 1'b1;
-                            disable panel_up_search;
-                        end
+activate_elevator = 1'b0;
+elevator_floor_selector = current_floor_state; // Default to current floor
+direction_selector = elevator_direction; // Default to current direction
+
+// Normal operation when power is on and no emergency
+if (power_switch && !emergency_btn) begin
+    // Only process requests when elevator is stopped
+    if ((elevator_state == STOP_FL1) || (elevator_state == STOP_FL2) || 
+                        (elevator_state == STOP_FL3) || (elevator_state == STOP_FL4) || 
+                        (elevator_state == STOP_FL5) || (elevator_state == STOP_FL6) || 
+                        (elevator_state == STOP_FL7) || (elevator_state == STOP_FL8) || 
+                        (elevator_state == STOP_FL9) || (elevator_state == STOP_FL10) || 
+                        (elevator_state == STOP_FL11)) begin
+        // Check if there are any pending requests
+        if (|panel_requests || |up_requests || |down_requests) begin
+            activate_elevator = 1'b1;
+            
+            // Priority 1: Panel requests in current direction
+            if (elevator_direction) begin // Currently going up
+                // Search upward for panel requests
+                for (i = 0; i <= 10; i = i + 1) begin : panel_up_search
+                    if (panel_requests[i] && i > current_floor_state) begin
+                        elevator_floor_selector = i;
+                        direction_selector = 1'b1;
+                        disable panel_up_search;
                     end
-                    // If no panel requests above, search downward for panel requests
-                    if (elevator_floor_selector == current_floor_state) begin
-                        for (i = 10; i >= 0; i = i - 1) begin : panel_down_search
-                            if (panel_requests[i] && i < current_floor_state) begin
-                                elevator_floor_selector = i;
-                                direction_selector = 1'b0;
-                                disable panel_down_search;
-                            end
-                        end
-                    end
-                end else begin // Currently going down
-                    // Search downward for panel requests
-                    for (i = 10; i >= 0; i = i - 1) begin : panel_down_search2
+                end
+                // If no panel requests above, search downward for panel requests
+                if (elevator_floor_selector == current_floor_state) begin
+                    for (i = 10; i >= 0; i = i - 1) begin : panel_down_search
                         if (panel_requests[i] && i < current_floor_state) begin
                             elevator_floor_selector = i;
                             direction_selector = 1'b0;
-                            disable panel_down_search2;
-                        end
-                    end
-                    // If no panel requests below, search upward for panel requests
-                    if (elevator_floor_selector == current_floor_state) begin
-                        for (i = 0; i <= 10; i = i + 1) begin : panel_up_search2
-                            if (panel_requests[i] && i > current_floor_state) begin
-                                elevator_floor_selector = i;
-                                direction_selector = 1'b1;
-                                disable panel_up_search2;
-                            end
+                            disable panel_down_search;
                         end
                     end
                 end
-                
-                // Priority 2: External calls in current direction
-                if (elevator_floor_selector == current_floor_state) begin
-                    if (elevator_direction) begin // Going up
-                        // Search upward for up requests
-                        for (i = 0; i <= 10; i = i + 1) begin : up_call_search
-                            if (up_requests[i] && i > current_floor_state) begin
-                                elevator_floor_selector = i;
-                                direction_selector = 1'b1;
-                                disable up_call_search;
-                            end
-                        end
-                    end else begin // Going down
-                        // Search downward for down requests
-                        for (i = 10; i >= 0; i = i - 1) begin : down_call_search
-                            if (down_requests[i] && i < current_floor_state) begin
-                                elevator_floor_selector = i;
-                                direction_selector = 1'b0;
-                                disable down_call_search;
-                            end
-                        end
+            end else begin // Currently going down
+                // Search downward for panel requests
+                for (i = 10; i >= 0; i = i - 1) begin : panel_down_search2
+                    if (panel_requests[i] && i < current_floor_state) begin
+                        elevator_floor_selector = i;
+                        direction_selector = 1'b0;
+                        disable panel_down_search2;
                     end
                 end
-                
-                // Priority 3: Any remaining requests (change direction if needed)
+                // If no panel requests below, search upward for panel requests
                 if (elevator_floor_selector == current_floor_state) begin
-                    // Check if there are any requests above current floor
-                    for (i = 0; i <= 10; i = i + 1) begin : any_above_search
-                        if ((up_requests[i] || down_requests[i] || panel_requests[i]) && 
-                            i > current_floor_state) begin
+                    for (i = 0; i <= 10; i = i + 1) begin : panel_up_search2
+                        if (panel_requests[i] && i > current_floor_state) begin
                             elevator_floor_selector = i;
                             direction_selector = 1'b1;
-                            disable any_above_search;
+                            disable panel_up_search2;
                         end
                     end
-                    
-                    // If nothing above, check for requests below current floor
-                    if (elevator_floor_selector == current_floor_state) begin
-                        for (i = 10; i >= 0; i = i - 1) begin : any_below_search
-                            if ((up_requests[i] || down_requests[i] || panel_requests[i]) && 
-                                i < current_floor_state) begin
-                                elevator_floor_selector = i;
-                                direction_selector = 1'b0;
-                                disable any_below_search;
-                            end
+                end
+            end
+            
+            // Priority 2: External calls in current direction
+            if (elevator_floor_selector == current_floor_state) begin
+                if (elevator_direction) begin // Going up
+                    // Search upward for up requests
+                    for (i = 0; i <= 10; i = i + 1) begin : up_call_search
+                        if (up_requests[i] && i > current_floor_state) begin
+                            elevator_floor_selector = i;
+                            direction_selector = 1'b1;
+                            disable up_call_search;
                         end
                     end
-                    
-                    // Final fallback: any request (shouldn't happen due to initial check)
-                    if (elevator_floor_selector == current_floor_state) begin
-                        for (i = 0; i <= 10; i = i + 1) begin : any_request_search
-                            if (up_requests[i] || down_requests[i] || panel_requests[i]) begin
-                                elevator_floor_selector = i;
-                                // Choose direction based on position
-                                direction_selector = (i > current_floor_state) ? 1'b1 : 1'b0;
-                                disable any_request_search;
-                            end
+                end else begin // Going down
+                    // Search downward for down requests
+                    for (i = 10; i >= 0; i = i - 1) begin : down_call_search
+                        if (down_requests[i] && i < current_floor_state) begin
+                            elevator_floor_selector = i;
+                            direction_selector = 1'b0;
+                            disable down_call_search;
+                        end
+                    end
+                end
+            end
+            
+            // Priority 3: Any remaining requests (change direction if needed)
+            if (elevator_floor_selector == current_floor_state) begin
+                // Check if there are any requests above current floor
+                for (i = 0; i <= 10; i = i + 1) begin : any_above_search
+                    if ((up_requests[i] || down_requests[i] || panel_requests[i]) && 
+                        i > current_floor_state) begin
+                        elevator_floor_selector = i;
+                        direction_selector = 1'b1;
+                        disable any_above_search;
+                    end
+                end
+                
+                // If nothing above, check for requests below current floor
+                if (elevator_floor_selector == current_floor_state) begin
+                    for (i = 10; i >= 0; i = i - 1) begin : any_below_search
+                        if ((up_requests[i] || down_requests[i] || panel_requests[i]) && 
+                            i < current_floor_state) begin
+                            elevator_floor_selector = i;
+                            direction_selector = 1'b0;
+                            disable any_below_search;
                         end
                     end
                 end
                 
-                // Special case: if at top floor with downward requests, ensure we go down
-                if (current_floor_state == FLOOR_11 && elevator_floor_selector < FLOOR_11) begin
-                    direction_selector = 1'b0;
+                // Final fallback: any request (shouldn't happen due to initial check)
+                if (elevator_floor_selector == current_floor_state) begin
+                    for (i = 0; i <= 10; i = i + 1) begin : any_request_search
+                        if (up_requests[i] || down_requests[i] || panel_requests[i]) begin
+                            elevator_floor_selector = i;
+                            // Choose direction based on position
+                            direction_selector = (i > current_floor_state) ? 1'b1 : 1'b0;
+                            disable any_request_search;
+                        end
+                    end
                 end
-                
-                // Special case: if at bottom floor with upward requests, ensure we go up
-                if (current_floor_state == FLOOR_1 && elevator_floor_selector > FLOOR_1) begin
-                    direction_selector = 1'b1;
-                end
+            end
+            
+            // Special case: if at top floor with downward requests, ensure we go down
+            if (current_floor_state == FLOOR_11 && elevator_floor_selector < FLOOR_11) begin
+                direction_selector = 1'b0;
+            end
+            
+            // Special case: if at bottom floor with upward requests, ensure we go up
+            if (current_floor_state == FLOOR_1 && elevator_floor_selector > FLOOR_1) begin
+                direction_selector = 1'b1;
             end
         end
     end
+end
 end
 
 // Door control logic
 always @(*) begin
     
     // Door control only active when elevator is stopped and power is on
-    if (is_stop_state(elevator_state) && power_switch) begin
+    if (((elevator_state == STOP_FL1) || (elevator_state == STOP_FL2) || 
+                        (elevator_state == STOP_FL3) || (elevator_state == STOP_FL4) || 
+                        (elevator_state == STOP_FL5) || (elevator_state == STOP_FL6) || 
+                        (elevator_state == STOP_FL7) || (elevator_state == STOP_FL8) || 
+                        (elevator_state == STOP_FL9) || (elevator_state == STOP_FL10) || 
+                        (elevator_state == STOP_FL11)) && power_switch) begin
         door_open_allowed = door_open_btn;
         door_close_allowed = door_close_btn;
     end

@@ -1,0 +1,206 @@
+[dlomis1999@lnx-prd-03 work]$ xrun tb_elevator.v elevator_top_generic_struct.v /data/PDK/sky130a/stdcells/sky130_scl_9T/verilog/sky130_scl_9T.v +access+r
+TOOL:   xrun(64)        23.03-s013: Started on Sep 23, 2025 at 18:03:59 EDT
+xrun(64): 23.03-s013: (c) Copyright 1995-2024 Cadence Design Systems, Inc.
+Recompiling... reason: file './elevator_top_generic_struct.v' is newer than expected.
+        expected: Tue Sep 23 17:41:01 2025
+        actual:   Tue Sep 23 17:56:57 2025
+file: elevator_top_generic_struct.v
+        module worklib.button_debouncer_669:v
+                errors: 0, warnings: 0
+        module worklib.button_debouncer_670:v
+                errors: 0, warnings: 0
+        module worklib.button_debouncer_668:v
+                errors: 0, warnings: 0
+        module worklib.button_debouncer:v
+                errors: 0, warnings: 0
+        module worklib.button_debouncer_691:v
+                errors: 0, warnings: 0
+        module worklib.button_debouncer_690:v
+                errors: 0, warnings: 0
+        module worklib.button_debouncer_689:v
+                errors: 0, warnings: 0
+        module worklib.button_debouncer_688:v
+                errors: 0, warnings: 0
+        module worklib.button_debouncer_687:v
+                errors: 0, warnings: 0
+        module worklib.button_debouncer_686:v
+                errors: 0, warnings: 0
+        module worklib.button_debouncer_685:v
+                errors: 0, warnings: 0
+        module worklib.button_debouncer_684:v
+                errors: 0, warnings: 0
+        module worklib.button_debouncer_683:v
+                errors: 0, warnings: 0
+        module worklib.button_debouncer_682:v
+                errors: 0, warnings: 0
+        module worklib.button_debouncer_681:v
+                errors: 0, warnings: 0
+        module worklib.button_debouncer_680:v
+                errors: 0, warnings: 0
+        module worklib.button_debouncer_679:v
+                errors: 0, warnings: 0
+        module worklib.button_debouncer_678:v
+                errors: 0, warnings: 0
+        module worklib.button_debouncer_677:v
+                errors: 0, warnings: 0
+        module worklib.button_debouncer_676:v
+                errors: 0, warnings: 0
+        module worklib.button_debouncer_675:v
+                errors: 0, warnings: 0
+        module worklib.button_debouncer_674:v
+                errors: 0, warnings: 0
+        module worklib.button_debouncer_673:v
+                errors: 0, warnings: 0
+        module worklib.button_debouncer_672:v
+                errors: 0, warnings: 0
+        module worklib.button_debouncer_671:v
+                errors: 0, warnings: 0
+        module worklib.elevator_top:v
+                errors: 0, warnings: 0
+                Caching library 'worklib' ....... Done
+        Elaborating the design hierarchy:
+                Caching library 'worklib' ....... Done
+        Top level design units:
+                elevator_top_tb
+                ADDFX1
+                ADDHX1
+                AND2X1
+                AND3X1
+                AND4X1
+                AND4X2
+                AOI211X2
+                AOI21X2
+                AOI221X2
+                AOI222X2
+                AOI22X2
+                BUFX16
+                BUFX2
+                BUFX4
+                BUFX8
+                CLKAND2X2
+                CLKBUFX4
+                CLKBUFX8
+                CLKINVX4
+                CLKINVX8
+                CLKMX2X2
+                DFFRX4
+                DFFSRX1
+                DFFSRX4
+                DFFSX1
+                DFFSX4
+                DFFX4
+                DLY1X1
+                DLY1X4
+                DLY2X4
+                DLY4X4
+                ICGX1
+                INVX16
+                INVX4
+                INVX8
+                MX2X1
+                MX2X4
+                MX4X1
+                MX4X4
+                NAND2X2
+                NAND2X4
+                NAND3X2
+                NAND3X4
+                NAND4X2
+                NAND4X4
+                NOR2X2
+                NOR2X4
+                NOR3X2
+                NOR3X4
+                NOR4X2
+                NOR4X4
+                OAI211X2
+                OAI21X2
+                OAI221X2
+                OAI222X2
+                OAI22X2
+                OR3X2
+                OR4X1
+                SDFFRX4
+                SDFFSRX1
+                SDFFSRX4
+                SDFFSX4
+                SDFFX1
+                SDFFX4
+                TBUFX1
+                TBUFX4
+                TBUFX8
+                TIEHI
+                TIELO
+                TLATSRX1
+                XNOR2X1
+                XNOR2X2
+                XNOR2X4
+                XOR2X1
+                XOR2X2
+                XOR2X4
+        Building instance overlay tables: .................... Done
+        Generating native compiled code:
+                worklib.elevator_top:v <0x400930c8>
+                        streams:   2, words:   316
+        Building instance specific data structures.
+        Loading native compiled code:     .................... Done
+        Design hierarchy summary:
+                                    Instances  Unique
+                Modules:                 1041     137
+                UDPs:                     506      14
+                Primitives:              4407       5
+                Timing outputs:          1267     108
+                Registers:                263      41
+                Scalar wires:            1706       -
+                Expanded wires:            22       2
+                Initial blocks:             1       1
+                Cont. assignments:          2      67
+                Timing checks:           2928       -
+                Delayed tcheck signals:   632     391
+                Simulation timescale:    10ps
+        Writing initial simulation snapshot: worklib.elevator_top_tb:v
+Loading snapshot worklib.elevator_top_tb:v .................... Done
+xcelium> source /var/RFIC/cadtools/cadence/xcelium/release/tools/xcelium/files/xmsimrc
+xcelium> run
+=== Reset complete ===
+Floor 3 call button pressed @                55000
+Floor 7 call button pressed @               125000
+Floor 1 call button pressed @               195000
+Floor 5 call button pressed @               265000
+Floor 10 call button pressed @               335000
+Floor 8 call button pressed @               405000
+Floor 1 call button pressed @               475000
+Floor 11 call button pressed @               545000
+Floor 6 call button pressed @               555000
+Floor 8 call button pressed @               565000
+=== Reset complete ===
+Floor 4 call button pressed @               825000
+Weight Sensor activated @               895000
+Floor 2 call button pressed @               905000
+=== Reset complete ===
+Floor 4 call button pressed @              1046000
+Emergency Button activated @              1116000
+Floor 2 call button pressed @              1186000
+=== Reset complete ===
+Door Close button pressed @              1311000
+Door Close button released @              1331000
+Door Open button pressed @              1481000
+Door Open button released @              1501000
+Floor 6 call button pressed @              1651000
+Door Open button pressed while moving @              1666000
+Door Open button released @              1686000
+Door Close button pressed while stopped @              1936000
+Door Close button released @              1956000
+=== Reset complete ===
+Floor 6 call button pressed @              2061000
+Power switched off @              2131000
+Floor 9 call button pressed @              2141000
+Power switched on @              2211000
+All Floor panel buttons begin pressing @              2311000
+All Floor panel buttons end pressing @              2416000
+Simulation finished.
+Simulation stopped via $stop(1) at time 26160 NS + 0
+./tb_elevator.v:320         $stop;
+xcelium> finish
+TOOL:   xrun(64)        23.03-s013: Exiting on Sep 23, 2025 at 18:04:02 EDT  (total: 00:00:03)
+[dlomis1999@lnx-prd-03 work]$

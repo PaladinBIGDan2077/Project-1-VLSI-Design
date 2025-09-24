@@ -20,9 +20,10 @@
 //                                  9/13/2025    DJL  1        Original Code
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-module elevator_top(reset_n, raw_floor_call_buttons, raw_panel_buttons, raw_door_open_btn, raw_door_close_btn, raw_emergency_btn, raw_power_switch, weight_sensor, call_button_lights, panel_button_lights, door_open, elevator_control_output, safety_interlock, floor_indicator_lamps, elevator_upward_indicator_lamp, elevator_downward_indicator_lamp, alarm, weight_overload_lamp);
+module elevator_top(clock, reset_n, raw_floor_call_buttons, raw_panel_buttons, raw_door_open_btn, raw_door_close_btn, raw_emergency_btn, raw_power_switch, weight_sensor, call_button_lights, panel_button_lights, door_open, elevator_control_output, safety_interlock, floor_indicator_lamps, elevator_upward_indicator_lamp, elevator_downward_indicator_lamp, alarm, weight_overload_lamp);
     // Primary inputs
     input                                           reset_n;                    // Active-low reset
+    input                                           clock;
 
     // Button inputs (raw buttons - will be debounced)
     input                   [10:0]                  raw_floor_call_buttons;  // External call buttons
@@ -32,6 +33,7 @@ module elevator_top(reset_n, raw_floor_call_buttons, raw_panel_buttons, raw_door
     input                                           raw_emergency_btn;
     input                                           raw_power_switch;
     input                                           weight_sensor;
+    
 
     // Outputs to physical devices
     output                  [10:0]                  call_button_lights;      // External button illumination
@@ -61,15 +63,11 @@ module elevator_top(reset_n, raw_floor_call_buttons, raw_panel_buttons, raw_door
     wire                                            elevator_moving;
     wire                                            elevator_direction;
     wire                    [3:0]                   current_floor_state;
-    wire                                            clock;
     wire                                            door_close;
 
 
     // FSM/Control Signalling
     wire                                            elevator_movement;
-
-    // Generate slower clock for FSM
-    clk clk_inst (1'b1, clock); 
     
     // Debounce all button inputs
     // Floor call button debouncers (11 buttons)
