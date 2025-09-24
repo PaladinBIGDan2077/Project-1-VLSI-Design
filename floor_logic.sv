@@ -127,26 +127,29 @@ function is_stop_state;
     end
 endfunction
 
-// Button processing and request registration
+// Emergency handling - clear all requests
 always @(posedge clock or negedge reset_n) begin
     if (!reset_n) begin
-        up_requests <= 11'b0;
-        down_requests <= 11'b0;
-        panel_requests <= 11'b0;
         call_button_lights <= 11'b0;
         panel_button_lights <= 11'b0;
-        request_stack <= 44'b0;
-    end
-end
-
-
-// Initialize stack
-always @(posedge clock or negedge reset_n) begin
-    if (!reset_n) begin
-        floor_stack <= 44'b0;
-        stack_pointer <= 4'b0;
+        stack_pointer <= 44'b0;
         stack_full <= 1'b0;
         stack_empty <= 1'b1;
+    end 
+    else if (!power_switch) begin
+        call_button_lights <= 11'b0;
+        panel_button_lights <= 11'b0;
+        stack_pointer <= 44'b0;
+        stack_full <= 1'b0;
+        stack_empty <= 1'b1;
+    end
+    else if (emergency_button) begin
+        call_button_lights <= 11'b0;
+        panel_button_lights <= 11'b0;
+        stack_pointer <= 44'b0;
+        stack_full <= 1'b0;
+        stack_empty <= 1'b1;
+        elevator_floor_selector <= EMERGENCY;
     end
 end
 
@@ -365,22 +368,6 @@ always @(*) begin
     end
 end
 
-// Emergency handling - clear all requests
-always @(posedge clock or negedge reset_n) begin
-    if (!reset_n) begin
-        call_button_lights <= 11'b0;
-        panel_button_lights <= 11'b0;
-        stack_pointer <= 44'b0;
-        stack_full <= 1'b0;
-        stack_empty <= 1'b1;
-    end 
-    else if (!power_switch) begin
-        call_button_lights <= 11'b0;
-        panel_button_lights <= 11'b0;
-        stack_pointer <= 44'b0;
-        stack_full <= 1'b0;
-        stack_empty <= 1'b1;
-    end
-end
+
 
 endmodule
