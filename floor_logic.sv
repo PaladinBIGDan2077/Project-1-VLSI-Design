@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Title:                           Elevator Floor Logic Controller
 // Filename:                        floor_logic.sv
-// Version:                         5
+// Version:                         6
 // Author:                          Daniel J. Lomis, Sammy Craypoff
 // Date:                            9/7/2025 
 // Location:                        Blacksburg, Virginia 
@@ -23,6 +23,7 @@
 //                                  9/13/2025   DJL  3        Converted to SystemVerilog
 //                                  9/14/2025   DJL  4        Streamlined Code
 //                                  9/14/2025   DJL  5        Updated code for iVerilog Compatibility
+//                                  9/15/2025   DJL  6        Added stack-based floor selection logic
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_buttons, door_open_btn, door_close_btn, emergency_btn, power_switch, current_floor_state, elevator_state, elevator_moving, elevator_direction, elevator_floor_selector, direction_selector, activate_elevator, call_button_lights, panel_button_lights, door_open_allowed, door_close_allowed);
@@ -63,9 +64,7 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
     reg                 [10:0]              panel_requests;    // Internal destination requests
     reg                                     door_open_allowed;
     reg                                     door_close_allowed;
-    // Internal Variables
-    integer                                 i;
-
+    
     parameter                   STOP_FL1                      = 6'h00,      
                                 STOP_FL2                      = 6'h01,      
                                 STOP_FL3                      = 6'h02,     
@@ -110,8 +109,21 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
                                 FLOOR_9                       = 4'h8,
                                 FLOOR_10                      = 4'h9,
                                 FLOOR_11                      = 4'hA;
-	
 
+// Function to check if state is a STOP state
+function is_stop_state;
+    input [5:0] state;
+    begin
+        is_stop_state = (state == STOP_FL1) || (state == STOP_FL2) || 
+                        (state == STOP_FL3) || (state == STOP_FL4) || 
+                        (state == STOP_FL5) || (state == STOP_FL6) || 
+                        (state == STOP_FL7) || (state == STOP_FL8) || 
+                        (state == STOP_FL9) || (state == STOP_FL10) || 
+                        (state == STOP_FL11);
+    end
+endfunction
+
+// Button processing and request registration
 always @(posedge clock or negedge reset_n) begin
     if (!reset_n) begin
         up_requests <= 11'b0;
@@ -121,9 +133,18 @@ always @(posedge clock or negedge reset_n) begin
         panel_button_lights <= 11'b0;
     end
     else if (power_switch) begin
-        // Normal operation - process buttons (manual unrolling of for loops)
+        // Clear requests for current floor when elevator arrives
+        if (is_stop_state(elevator_state)) begin
+            up_requests[current_floor_state] <= 1'b0;
+            down_requests[current_floor_state] <= 1'b0;
+            panel_requests[current_floor_state] <= 1'b0;
+            call_button_lights[current_floor_state] <= 1'b0;
+            panel_button_lights[current_floor_state] <= 1'b0;
+        end
+        
+        // Register new button presses
         // Floor 1
-        if (floor_call_buttons[0]) begin
+        if (floor_call_buttons[0] && current_floor_state != 0) begin
             if (0 > current_floor_state) begin
                 up_requests[0] <= 1'b1;
             end 
@@ -133,8 +154,8 @@ always @(posedge clock or negedge reset_n) begin
             call_button_lights[0] <= 1'b1;
         end
         // Floor 2
-        if (floor_call_buttons[1]) begin
-            if (1 >current_floor_state) begin
+        if (floor_call_buttons[1] && current_floor_state != 1) begin
+            if (1 > current_floor_state) begin
                 up_requests[1] <= 1'b1;
             end 
             else if (1 < current_floor_state) begin
@@ -143,7 +164,7 @@ always @(posedge clock or negedge reset_n) begin
             call_button_lights[1] <= 1'b1;
         end
         // Floor 3
-        if (floor_call_buttons[2]) begin
+        if (floor_call_buttons[2] && current_floor_state != 2) begin
             if (2 > current_floor_state) begin
                 up_requests[2] <= 1'b1;
             end 
@@ -153,7 +174,7 @@ always @(posedge clock or negedge reset_n) begin
             call_button_lights[2] <= 1'b1;
         end
         // Floor 4
-        if (floor_call_buttons[3]) begin
+        if (floor_call_buttons[3] && current_floor_state != 3) begin
             if (3 > current_floor_state) begin
                 up_requests[3] <= 1'b1;
             end 
@@ -163,7 +184,7 @@ always @(posedge clock or negedge reset_n) begin
             call_button_lights[3] <= 1'b1;
         end
         // Floor 5
-        if (floor_call_buttons[4]) begin
+        if (floor_call_buttons[4] && current_floor_state != 4) begin
             if (4 > current_floor_state) begin
                 up_requests[4] <= 1'b1;
             end 
@@ -173,7 +194,7 @@ always @(posedge clock or negedge reset_n) begin
             call_button_lights[4] <= 1'b1;
         end
         // Floor 6
-        if (floor_call_buttons[5]) begin
+        if (floor_call_buttons[5] && current_floor_state != 5) begin
             if (5 > current_floor_state) begin
                 up_requests[5] <= 1'b1;
             end 
@@ -183,7 +204,7 @@ always @(posedge clock or negedge reset_n) begin
             call_button_lights[5] <= 1'b1;
         end
         // Floor 7
-        if (floor_call_buttons[6]) begin
+        if (floor_call_buttons[6] && current_floor_state != 6) begin
             if (6 > current_floor_state) begin
                 up_requests[6] <= 1'b1;
             end 
@@ -193,7 +214,7 @@ always @(posedge clock or negedge reset_n) begin
             call_button_lights[6] <= 1'b1;
         end
         // Floor 8
-        if (floor_call_buttons[7]) begin
+        if (floor_call_buttons[7] && current_floor_state != 7) begin
             if (7 > current_floor_state) begin
                 up_requests[7] <= 1'b1;
             end 
@@ -203,7 +224,7 @@ always @(posedge clock or negedge reset_n) begin
             call_button_lights[7] <= 1'b1;
         end
         // Floor 9
-        if (floor_call_buttons[8]) begin
+        if (floor_call_buttons[8] && current_floor_state != 8) begin
             if (8 > current_floor_state) begin
                 up_requests[8] <= 1'b1;
             end 
@@ -213,7 +234,7 @@ always @(posedge clock or negedge reset_n) begin
             call_button_lights[8] <= 1'b1;
         end
         // Floor 10
-        if (floor_call_buttons[9]) begin
+        if (floor_call_buttons[9] && current_floor_state != 9) begin
             if (9 > current_floor_state) begin
                 up_requests[9] <= 1'b1;
             end 
@@ -223,7 +244,7 @@ always @(posedge clock or negedge reset_n) begin
             call_button_lights[9] <= 1'b1;
         end
         // Floor 11
-        if (floor_call_buttons[10]) begin
+        if (floor_call_buttons[10] && current_floor_state != 10) begin
             if (10 > current_floor_state) begin
                 up_requests[10] <= 1'b1;
             end 
@@ -233,74 +254,63 @@ always @(posedge clock or negedge reset_n) begin
             call_button_lights[10] <= 1'b1;
         end
         // Panel buttons (similarly unrolled)
-        if (panel_buttons[0]) begin
+        if (panel_buttons[0] && current_floor_state != 0) begin
             panel_requests[0] <= 1'b1;
             panel_button_lights[0] <= 1'b1;
         end
-        if (panel_buttons[1]) begin
+        if (panel_buttons[1] && current_floor_state != 1) begin
             panel_requests[1] <= 1'b1;
             panel_button_lights[1] <= 1'b1;
         end
-        if (panel_buttons[2]) begin
+        if (panel_buttons[2] && current_floor_state != 2) begin
             panel_requests[2] <= 1'b1;
             panel_button_lights[2] <= 1'b1;
         end
-        if (panel_buttons[3]) begin
+        if (panel_buttons[3] && current_floor_state != 3) begin
             panel_requests[3] <= 1'b1;
             panel_button_lights[3] <= 1'b1;
         end
-        if (panel_buttons[4]) begin
+        if (panel_buttons[4] && current_floor_state != 4) begin
             panel_requests[4] <= 1'b1;
             panel_button_lights[4] <= 1'b1;
         end
-        if (panel_buttons[5]) begin
+        if (panel_buttons[5] && current_floor_state != 5) begin
             panel_requests[5] <= 1'b1;
             panel_button_lights[5] <= 1'b1;
         end
-        if (panel_buttons[6]) begin
+        if (panel_buttons[6] && current_floor_state != 6) begin
             panel_requests[6] <= 1'b1;
             panel_button_lights[6] <= 1'b1;
         end
-        if (panel_buttons[7]) begin
+        if (panel_buttons[7] && current_floor_state != 7) begin
             panel_requests[7] <= 1'b1;
             panel_button_lights[7] <= 1'b1;
         end
-        if (panel_buttons[8]) begin
+        if (panel_buttons[8] && current_floor_state != 8) begin
             panel_requests[8] <= 1'b1;
             panel_button_lights[8] <= 1'b1;
         end
-        if (panel_buttons[9]) begin
+        if (panel_buttons[9] && current_floor_state != 9) begin
             panel_requests[9] <= 1'b1;
             panel_button_lights[9] <= 1'b1;
         end
-        if (panel_buttons[10]) begin
+        if (panel_buttons[10] && current_floor_state != 10) begin
             panel_requests[10] <= 1'b1;
             panel_button_lights[10] <= 1'b1;
         end
     end
 end
 
-always @(posedge clock or negedge reset_n) begin
-    if (!reset_n) begin
-        // Keep existing reset
-    end 
-    else if (power_switch) begin
-        if (elevator_floor_selector == current_floor_state) begin
-            up_requests[current_floor_state] <= 1'b0;
-            down_requests[current_floor_state] <= 1'b0;
-            panel_requests[current_floor_state] <= 1'b0;
-            call_button_lights[current_floor_state] <= 1'b0;
-            panel_button_lights[current_floor_state] <= 1'b0;
-            activate_elevator = 1'b0;
-        end
-    end
-end
-
-// Revised target floor selection logic with stack register
+// Stack-based target floor selection logic
 always @(*) begin
     activate_elevator = 1'b0;
     elevator_floor_selector = current_floor_state;
     direction_selector = elevator_direction;
+    
+    // Stack register - 44 bits wide (4 bits per floor * 11 floors)
+    reg [43:0] request_stack;
+    reg [3:0] next_floor;
+    reg stack_has_requests;
     
     // Normal operation when power is on and no emergency
     if (power_switch && !emergency_btn) begin
@@ -309,11 +319,6 @@ always @(*) begin
             // Check if there are any pending requests
             if (|panel_requests || |up_requests || |down_requests) begin
                 activate_elevator = 1'b1;
-                
-                // Stack register - 44 bits wide (4 bits per floor * 11 floors)
-                reg [43:0] request_stack;
-                reg [3:0] next_floor;
-                reg stack_has_requests;
                 
                 // Initialize stack and flags
                 request_stack = 44'b0;
@@ -548,17 +553,13 @@ always @(*) begin
     end
 end
 
-
 // Door control logic
 always @(*) begin
+    door_open_allowed = 1'b0;
+    door_close_allowed = 1'b0;
     
     // Door control only active when elevator is stopped and power is on
-    if (((elevator_state == STOP_FL1) || (elevator_state == STOP_FL2) || 
-                        (elevator_state == STOP_FL3) || (elevator_state == STOP_FL4) || 
-                        (elevator_state == STOP_FL5) || (elevator_state == STOP_FL6) || 
-                        (elevator_state == STOP_FL7) || (elevator_state == STOP_FL8) || 
-                        (elevator_state == STOP_FL9) || (elevator_state == STOP_FL10) || 
-                        (elevator_state == STOP_FL11)) && power_switch) begin
+    if (is_stop_state(elevator_state) && power_switch) begin
         door_open_allowed = door_open_btn;
         door_close_allowed = door_close_btn;
     end
@@ -567,7 +568,11 @@ end
 // Emergency handling - clear all requests
 always @(posedge clock or negedge reset_n) begin
     if (!reset_n) begin
-        // Reset logic
+        up_requests <= 11'b0;
+        down_requests <= 11'b0;
+        panel_requests <= 11'b0;
+        call_button_lights <= 11'b0;
+        panel_button_lights <= 11'b0;
     end 
     else if (!power_switch) begin
         up_requests <= 11'b0;
