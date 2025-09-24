@@ -133,7 +133,8 @@ always @(posedge clock or negedge reset_n) begin
     if (!reset_n) begin
         call_button_lights <= 11'b0;
         panel_button_lights <= 11'b0;
-        stack_pointer <= 44'b0;
+        floor_stack <= 44'b0;
+        stack_pointer <= 4'b0;
         stack_full <= 1'b0;
         stack_empty <= 1'b1;
         elevator_floor_selector <= FLOOR_1; // Default to first floor on reset
@@ -142,7 +143,8 @@ always @(posedge clock or negedge reset_n) begin
     else if (!power_switch) begin
         call_button_lights <= 11'b0;
         panel_button_lights <= 11'b0;
-        stack_pointer <= 44'b0;
+        floor_stack <= 44'b0;
+        stack_pointer <= 4'b0;
         stack_full <= 1'b0;
         stack_empty <= 1'b1;
     end
@@ -151,6 +153,8 @@ always @(posedge clock or negedge reset_n) begin
         panel_button_lights <= 11'b0;
         stack_pointer <= 44'b0;
         stack_full <= 1'b0;
+        floor_stack <= 44'b0;
+        stack_pointer <= 4'b0;
         stack_empty <= 1'b1;
         elevator_floor_selector <= EMERGENCY;
     end
@@ -420,7 +424,7 @@ always @(posedge clock or negedge reset_n) begin
         // When elevator reaches target floor, clear the served floor
         if (elevator_floor_selector == current_floor_state && activate_elevator) begin
             // Simply reset stack pointer to empty when we've served all requests
-            if (stack_pointer == 4'd11) begin // Stack was full
+            if (floor_stack >= 44'b0) begin // Stack was full
                 stack_pointer <= 4'b0;
                 stack_full <= 1'b0;
                 stack_empty <= 1'b1;
