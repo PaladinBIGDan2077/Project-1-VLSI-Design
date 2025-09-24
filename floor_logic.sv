@@ -283,29 +283,30 @@ task push_to_stack;
 endtask
 
 // Stack pop function
-function [3:0] pop_from_stack;
+task pop_from_stack_task;
+    output [3:0] popped_floor;
     begin
         if (!stack_empty) begin
             case (stack_pointer)
-                4'd1: pop_from_stack = floor_stack[3:0];
-                4'd2: pop_from_stack = floor_stack[7:4];
-                4'd3: pop_from_stack = floor_stack[11:8];
-                4'd4: pop_from_stack = floor_stack[15:12];
-                4'd5: pop_from_stack = floor_stack[19:16];
-                4'd6: pop_from_stack = floor_stack[23:20];
-                4'd7: pop_from_stack = floor_stack[27:24];
-                4'd8: pop_from_stack = floor_stack[31:28];
-                4'd9: pop_from_stack = floor_stack[35:32];
-                4'd10: pop_from_stack = floor_stack[39:36];
-                4'd11: pop_from_stack = floor_stack[43:40];
-                default: pop_from_stack = current_floor_state;
+                4'd1: popped_floor = floor_stack[3:0];
+                4'd2: popped_floor = floor_stack[7:4];
+                4'd3: popped_floor = floor_stack[11:8];
+                4'd4: popped_floor = floor_stack[15:12];
+                4'd5: popped_floor = floor_stack[19:16];
+                4'd6: popped_floor = floor_stack[23:20];
+                4'd7: popped_floor = floor_stack[27:24];
+                4'd8: popped_floor = floor_stack[31:28];
+                4'd9: popped_floor = floor_stack[35:32];
+                4'd10: popped_floor = floor_stack[39:36];
+                4'd11: popped_floor = floor_stack[43:40];
+                default: popped_floor = current_floor_state;
             endcase
         end
         else begin
-            pop_from_stack = current_floor_state;
+            popped_floor = current_floor_state;
         end
     end
-endfunction
+endtask
 
 // Floor selection logic - pull from stack and set direction
 always @(*) begin
