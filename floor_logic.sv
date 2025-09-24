@@ -64,10 +64,13 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
     reg                 [10:0]              panel_requests;    // Internal destination requests
     reg                                     door_open_allowed;
     reg                                     door_close_allowed;
-    
-    parameter                   STOP_FL1                      = 6'h00,      
-                                STOP_FL2                      = 6'h01,      
-                                STOP_FL3                      = 6'h02,     
+    reg                 [43:0]              request_stack;
+    reg                 [3:0]               next_floor;
+    reg                                     stack_has_requests;
+
+    parameter                   STOP_FL1                      = 6'h00,
+                                STOP_FL2                      = 6'h01,
+                                STOP_FL3                      = 6'h02,  
                                 STOP_FL4                      = 6'h03,
                                 STOP_FL5                      = 6'h04,
                                 STOP_FL6                      = 6'h05,
@@ -308,9 +311,7 @@ always @(*) begin
     direction_selector = elevator_direction;
     
     // Stack register - 44 bits wide (4 bits per floor * 11 floors)
-    reg [43:0] request_stack;
-    reg [3:0] next_floor;
-    reg stack_has_requests;
+
     
     // Normal operation when power is on and no emergency
     if (power_switch && !emergency_btn) begin
