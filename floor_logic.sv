@@ -134,6 +134,7 @@ always @(posedge clock or negedge reset_n) begin
         panel_requests <= 11'b0;
         call_button_lights <= 11'b0;
         panel_button_lights <= 11'b0;
+        request_stack <= 44'b0;
     end
     else if (power_switch) begin
         // Clear requests for current floor when elevator arrives
@@ -322,9 +323,9 @@ always @(*) begin
                 activate_elevator = 1'b1;
                 
                 // Initialize stack and flags
-                request_stack = 44'b0;
+                //request_stack = 44'b0;
                 next_floor = current_floor_state;
-                stack_has_requests = 1'b0;
+                //stack_has_requests = 1'b0;
                 
                 // Push upward requests above current floor onto stack (highest priority)
                 case (1'b1)
@@ -574,6 +575,7 @@ always @(posedge clock or negedge reset_n) begin
         panel_requests <= 11'b0;
         call_button_lights <= 11'b0;
         panel_button_lights <= 11'b0;
+        request_stack <= 44'b0;
     end 
     else if (!power_switch) begin
         up_requests <= 11'b0;
@@ -581,6 +583,7 @@ always @(posedge clock or negedge reset_n) begin
         panel_requests <= 11'b0;
         call_button_lights <= 11'b0;
         panel_button_lights <= 11'b0;
+        request_stack <= 44'b0;
     end
 end
 
