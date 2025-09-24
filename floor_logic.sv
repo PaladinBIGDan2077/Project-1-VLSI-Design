@@ -368,28 +368,43 @@ task pop_from_stack;
 endtask
 
 // Floor selection logic - pull from stack and set direction
+// Floor selection logic - pull from stack and set direction
 always @(*) begin
     activate_elevator = 1'b0;
-    //elevator_floor_selector = current_floor_state;
-    //direction_selector = elevator_direction;
+    elevator_floor_selector = current_floor_state;
+    direction_selector = elevator_direction;
     
     if (power_switch && !emergency_btn && is_stop_state(elevator_state)) begin
         if (!stack_empty) begin
-            // Get next floor from stack
-            pop_from_stack(next_floor);
+            // Get next floor from stack WITHOUT popping (just read)
+            case (stack_pointer)
+                4'd1: next_floor = floor_stack[3:0];
+                4'd2: next_floor = floor_stack[7:4];
+                4'd3: next_floor = floor_stack[11:8];
+                4'd4: next_floor = floor_stack[15:12];
+                4'd5: next_floor = floor_stack[19:16];
+                4'd6: next_floor = floor_stack[23:20];
+                4'd7: next_floor = floor_stack[27:24];
+                4'd8: next_floor = floor_stack[31:28];
+                4'd9: next_floor = floor_stack[35:32];
+                4'd10: next_floor = floor_stack[39:36];
+                4'd11: next_floor = floor_stack[43:40];
+                default: next_floor = current_floor_state;
+            endcase
+            
             elevator_floor_selector = next_floor;
             
-            // Natural direction selection
-            if (elevator_floor_selector >= current_floor_state) begin
-                direction_selector = 1'b1; // Up direction
+            // Only activate if it's a different floor
+            if (elevator_floor_selector != current_floor_state) begin
                 activate_elevator = 1'b1;
-            end
-            else if (elevator_floor_selector < current_floor_state) begin
-                direction_selector = 1'b0; // Down direction
-                activate_elevator = 1'b1;
-            end
-            else begin
-                activate_elevator = 1'b0; // Same floor, don't activate
+                
+                // Natural direction selection
+                if (elevator_floor_selector > current_floor_state) begin
+                    direction_selector = 1'b1; // Up direction
+                end
+                else begin
+                    direction_selector = 1'b0; // Down direction
+                end
             end
         end
     end
