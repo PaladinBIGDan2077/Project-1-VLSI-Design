@@ -424,7 +424,7 @@ always @(posedge clock or negedge reset_n) begin
         // When elevator reaches target floor, clear the served floor
         if (elevator_floor_selector == current_floor_state && activate_elevator) begin
             // Simply reset stack pointer to empty when we've served all requests
-            if (floor_stack >= 44'b0) begin // Stack was full
+            if (stack_full) begin // Stack was full
                 stack_pointer <= 4'b0;
                 stack_full <= 1'b0;
                 stack_empty <= 1'b1;
