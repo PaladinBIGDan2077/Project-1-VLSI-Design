@@ -317,7 +317,7 @@ always @(*) begin
     if (power_switch && !emergency_btn && is_stop_state(elevator_state)) begin
         if (!stack_empty) begin
             // Get next floor from stack
-            pop_from_stack_task(next_floor);
+            pop_from_stack(next_floor);
             elevator_floor_selector = next_floor;
             
             // Natural direction selection
