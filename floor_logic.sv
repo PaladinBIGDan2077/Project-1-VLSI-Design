@@ -143,7 +143,7 @@ always @(posedge clock or negedge reset_n) begin
         stack_full <= 1'b0;
         stack_empty <= 1'b1;
     end
-    else if (emergency_button) begin
+    else if (emergency_btn) begin
         call_button_lights <= 11'b0;
         panel_button_lights <= 11'b0;
         stack_pointer <= 44'b0;
