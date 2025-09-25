@@ -176,7 +176,7 @@ always @(posedge clock or negedge reset_n) begin
             panel_buttons[0] && current_floor_state != FLOOR_1 && !panel_button_lights[0]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    if (!moving_stack_full) push_to_moving_stack(4'd0);
+                    push_to_moving_stack(4'd0);
                 end
                 else begin
                     // If elevator is stopped, push to main stack
@@ -187,7 +187,7 @@ always @(posedge clock or negedge reset_n) begin
             panel_buttons[1] && current_floor_state != FLOOR_2 && !panel_button_lights[1]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    if (!moving_stack_full) push_to_moving_stack(4'd1);
+                    push_to_moving_stack(4'd1);
                 end
                 else begin
                     // If elevator is stopped, push to main stack
@@ -198,7 +198,7 @@ always @(posedge clock or negedge reset_n) begin
             panel_buttons[2] && current_floor_state != FLOOR_3 && !panel_button_lights[2]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    if (!moving_stack_full) push_to_moving_stack(4'd2);
+                    push_to_moving_stack(4'd2);
                 end
                 else begin
                     // If elevator is stopped, push to main stack
@@ -209,7 +209,7 @@ always @(posedge clock or negedge reset_n) begin
             panel_buttons[3] && current_floor_state != FLOOR_4 && !panel_button_lights[3]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    if (!moving_stack_full) push_to_moving_stack(4'd3);
+                    push_to_moving_stack(4'd3);
                 end
                 else begin
                     // If elevator is stopped, push to main stack
@@ -220,7 +220,7 @@ always @(posedge clock or negedge reset_n) begin
             panel_buttons[4] && current_floor_state != FLOOR_5 && !panel_button_lights[4]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    if (!moving_stack_full) push_to_moving_stack(4'd4);
+                    push_to_moving_stack(4'd4);
                 end
                 else begin
                     // If elevator is stopped, push to main stack
@@ -231,7 +231,7 @@ always @(posedge clock or negedge reset_n) begin
             panel_buttons[5] && current_floor_state != FLOOR_6 && !panel_button_lights[5]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    if (!moving_stack_full) push_to_moving_stack(4'd5);
+                    push_to_moving_stack(4'd5);
                 end
                 else begin
                     // If elevator is stopped, push to main stack
@@ -242,7 +242,7 @@ always @(posedge clock or negedge reset_n) begin
             panel_buttons[6] && current_floor_state != FLOOR_7 && !panel_button_lights[6]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    if (!moving_stack_full) push_to_moving_stack(4'd6);
+                    push_to_moving_stack(4'd6);
                 end
                 else begin
                     // If elevator is stopped, push to main stack
@@ -253,7 +253,7 @@ always @(posedge clock or negedge reset_n) begin
             panel_buttons[7] && current_floor_state != FLOOR_8 && !panel_button_lights[7]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    if (!moving_stack_full) push_to_moving_stack(4'd7);
+                    push_to_moving_stack(4'd7);
                 end
                 else begin
                     // If elevator is stopped, push to main stack
@@ -264,7 +264,7 @@ always @(posedge clock or negedge reset_n) begin
             panel_buttons[8] && current_floor_state != FLOOR_9 && !panel_button_lights[8]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    if (!moving_stack_full) push_to_moving_stack(4'd8);
+                    push_to_moving_stack(4'd8);
                 end
                 else begin
                     // If elevator is stopped, push to main stack
@@ -275,7 +275,7 @@ always @(posedge clock or negedge reset_n) begin
             panel_buttons[9] && current_floor_state != FLOOR_10 && !panel_button_lights[9]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    if (!moving_stack_full) push_to_moving_stack(4'd9);
+                    push_to_moving_stack(4'd9);
                 end
                 else begin
                     // If elevator is stopped, push to main stack
@@ -286,7 +286,7 @@ always @(posedge clock or negedge reset_n) begin
             panel_buttons[10] && current_floor_state != FLOOR_11 && !panel_button_lights[10]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    if (!moving_stack_full) push_to_moving_stack(4'd10);
+                    push_to_moving_stack(4'd10);
                 end
                 else begin
                     // If elevator is stopped, push to main stack
@@ -301,7 +301,7 @@ always @(posedge clock or negedge reset_n) begin
             floor_call_buttons[0] && current_floor_state != FLOOR_1 && !call_button_lights[0]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    if (!moving_stack_full) push_to_moving_stack(4'd0);
+                    push_to_moving_stack(4'd0);
                 end
                 else begin
                     // If elevator is stopped, push to main stack
@@ -312,7 +312,7 @@ always @(posedge clock or negedge reset_n) begin
             floor_call_buttons[1] && current_floor_state != FLOOR_2 && !call_button_lights[1]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    if (!moving_stack_full) push_to_moving_stack(4'd1);
+                    push_to_moving_stack(4'd1);
                 end
                 else begin
                     // If elevator is stopped, push to main stack
@@ -323,7 +323,7 @@ always @(posedge clock or negedge reset_n) begin
             floor_call_buttons[2] && current_floor_state != FLOOR_3 && !call_button_lights[2]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    if (!moving_stack_full) push_to_moving_stack(4'd2);
+                    push_to_moving_stack(4'd2);
                 end
                 else begin
                     // If elevator is stopped, push to main stack
@@ -334,7 +334,7 @@ always @(posedge clock or negedge reset_n) begin
             floor_call_buttons[3] && current_floor_state != FLOOR_4 && !call_button_lights[3]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    if (!moving_stack_full) push_to_moving_stack(4'd3);
+                    push_to_moving_stack(4'd3);
                 end
                 else begin
                     // If elevator is stopped, push to main stack
@@ -345,7 +345,7 @@ always @(posedge clock or negedge reset_n) begin
             floor_call_buttons[4] && current_floor_state != FLOOR_5 && !call_button_lights[4]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    if (!moving_stack_full) push_to_moving_stack(4'd4);
+                    push_to_moving_stack(4'd4);
                 end
                 else begin
                     // If elevator is stopped, push to main stack
@@ -356,7 +356,7 @@ always @(posedge clock or negedge reset_n) begin
             floor_call_buttons[5] && current_floor_state != FLOOR_6 && !call_button_lights[5]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    if (!moving_stack_full) push_to_moving_stack(4'd5);
+                    push_to_moving_stack(4'd5);
                 end
                 else begin
                     // If elevator is stopped, push to main stack
@@ -367,7 +367,7 @@ always @(posedge clock or negedge reset_n) begin
             floor_call_buttons[6] && current_floor_state != FLOOR_7 && !call_button_lights[6]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    if (!moving_stack_full) push_to_moving_stack(4'd6);
+                    push_to_moving_stack(4'd6);
                 end
                 else begin
                     // If elevator is stopped, push to main stack
@@ -378,7 +378,7 @@ always @(posedge clock or negedge reset_n) begin
             floor_call_buttons[7] && current_floor_state != FLOOR_8 && !call_button_lights[7]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    if (!moving_stack_full) push_to_moving_stack(4'd7);
+                    push_to_moving_stack(4'd7);
                 end
                 else begin
                     // If elevator is stopped, push to main stack
@@ -389,7 +389,7 @@ always @(posedge clock or negedge reset_n) begin
             floor_call_buttons[8] && current_floor_state != FLOOR_9 && !call_button_lights[8]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    if (!moving_stack_full) push_to_moving_stack(4'd8);
+                    push_to_moving_stack(4'd8);
                 end
                 else begin
                     // If elevator is stopped, push to main stack
@@ -400,7 +400,7 @@ always @(posedge clock or negedge reset_n) begin
             floor_call_buttons[9] && current_floor_state != FLOOR_10 && !call_button_lights[9]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    if (!moving_stack_full) push_to_moving_stack(4'd9);
+                    push_to_moving_stack(4'd9);
                 end
                 else begin
                     // If elevator is stopped, push to main stack
@@ -411,7 +411,7 @@ always @(posedge clock or negedge reset_n) begin
             floor_call_buttons[10] && current_floor_state != FLOOR_11 && !call_button_lights[10]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    if (!moving_stack_full) push_to_moving_stack(4'd10);
+                    push_to_moving_stack(4'd10);
                 end
                 else begin
                     // If elevator is stopped, push to main stack
