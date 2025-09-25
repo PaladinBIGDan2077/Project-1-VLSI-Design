@@ -482,23 +482,21 @@ end
 task push_to_moving_stack;
     input [3:0] floor_num;
     begin
-        if (!moving_stack_full) begin
-            case (moving_stack_pointer)
-                4'd0: moving_stack[3:0] <= floor_num;
-                4'd1: moving_stack[7:4] <= floor_num;
-                4'd2: moving_stack[11:8] <= floor_num;
-                4'd3: moving_stack[15:12] <= floor_num;
-                4'd4: moving_stack[19:16] <= floor_num;
-                4'd5: moving_stack[23:20] <= floor_num;
-                4'd6: moving_stack[27:24] <= floor_num;
-                4'd7: moving_stack[31:28] <= floor_num;
-                4'd8: moving_stack[35:32] <= floor_num;
-                4'd9: moving_stack[39:36] <= floor_num;
-                4'd10: moving_stack[43:40] <= floor_num;
-            endcase
-            moving_stack_pointer <= moving_stack_pointer + 1;
-            remaining_requests <= remaining_requests + 1;
-        end
+        case (moving_stack_pointer)
+            4'd0: moving_stack[3:0] <= floor_num;
+            4'd1: moving_stack[7:4] <= floor_num;
+            4'd2: moving_stack[11:8] <= floor_num;
+            4'd3: moving_stack[15:12] <= floor_num;
+            4'd4: moving_stack[19:16] <= floor_num;
+            4'd5: moving_stack[23:20] <= floor_num;
+            4'd6: moving_stack[27:24] <= floor_num;
+            4'd7: moving_stack[31:28] <= floor_num;
+            4'd8: moving_stack[35:32] <= floor_num;
+            4'd9: moving_stack[39:36] <= floor_num;
+            4'd10: moving_stack[43:40] <= floor_num;
+        endcase
+        moving_stack_pointer <= moving_stack_pointer + 1;
+        remaining_requests <= remaining_requests + 1;
     end
 endtask
 
@@ -506,25 +504,22 @@ endtask
 task pop_from_moving_stack;
     output [3:0] popped_floor;
     begin
-        if (!moving_stack_empty) begin
-            case (moving_stack_pointer)
-                4'd1: popped_floor = moving_stack[3:0];
-                4'd2: popped_floor = moving_stack[7:4];
-                4'd3: popped_floor = moving_stack[11:8];
-                4'd4: popped_floor = moving_stack[15:12];
-                4'd5: popped_floor = moving_stack[19:16];
-                4'd6: popped_floor = moving_stack[23:20];
-                4'd7: popped_floor = moving_stack[27:24];
-                4'd8: popped_floor = moving_stack[31:28];
-                4'd9: popped_floor = moving_stack[35:32];
-                4'd10: popped_floor = moving_stack[39:36];
-                4'd11: popped_floor = moving_stack[43:40];
-                default: popped_floor = current_floor_state;
-            endcase
-            moving_stack_pointer <= moving_stack_pointer - 1;
-            remaining_requests <= remaining_requests - 1;
-
-        end
+        case (moving_stack_pointer)
+            4'd1: popped_floor = moving_stack[3:0];
+            4'd2: popped_floor = moving_stack[7:4];
+            4'd3: popped_floor = moving_stack[11:8];
+            4'd4: popped_floor = moving_stack[15:12];
+            4'd5: popped_floor = moving_stack[19:16];
+            4'd6: popped_floor = moving_stack[23:20];
+            4'd7: popped_floor = moving_stack[27:24];
+            4'd8: popped_floor = moving_stack[31:28];
+            4'd9: popped_floor = moving_stack[35:32];
+            4'd10: popped_floor = moving_stack[39:36];
+            4'd11: popped_floor = moving_stack[43:40];
+            default: popped_floor = current_floor_state;
+        endcase
+        moving_stack_pointer <= moving_stack_pointer - 1;
+        remaining_requests <= remaining_requests - 1;
     end
 endtask
 
