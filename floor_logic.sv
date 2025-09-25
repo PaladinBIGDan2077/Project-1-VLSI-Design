@@ -140,12 +140,12 @@ always @(posedge clock or negedge reset_n) begin
         stack_pointer <= 4'b0;
         stack_full <= 1'b0;
         stack_empty <= 1'b1;
-        elevator_floor_selector <= FLOOR_1; // Default to first floor on reset
+        elevator_floor_selector <= FLOOR_1; 
         next_floor <= FLOOR_1;
         moving_stack <= 44'b0;
         moving_stack_pointer <= 4'b0;
         remaining_requests <= 4'b0;
-        direction_selector <= 1'b1; // Default direction up
+        direction_selector <= 1'b1; 
         door_open_allowed <= 1'b0;
         door_close_allowed <= 1'b0;
         activate_elevator <= 1'b0;
@@ -434,13 +434,12 @@ always @(posedge clock or negedge reset_n) begin
         endcase
     end
 end
-// Button reader - clear floor requests when served
+// Button reader - clear floor lights when served
 always @(posedge clock or negedge reset_n) begin
     if (!reset_n) begin
         // Stack initialization handled above
     end
     else if (power_switch && !stack_full) begin
-        // Check elevator panel buttons (internal requests)
         case (1'b1)
             (!activate_elevator) && current_floor_state == FLOOR_1: begin
                 panel_button_lights[0] <= 1'b0;

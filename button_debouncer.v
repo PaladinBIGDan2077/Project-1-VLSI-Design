@@ -69,7 +69,6 @@ module button_debouncer (clk, rst_n, btn_n_in, pulse_out);
         end
     end
 
-    // Combinational Logic: Next State and Output Logic
     always @(*) begin
         // Default assignments
         next_state = current_state;
