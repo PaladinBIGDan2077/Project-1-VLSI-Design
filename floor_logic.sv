@@ -376,8 +376,8 @@ endtask
 // Floor selection logic - pull from stack and set direction
 always @(*) begin
     activate_elevator = 1'b0;
-    elevator_floor_selector = current_floor_state;
-    direction_selector = elevator_direction;
+    //elevator_floor_selector = current_floor_state;
+    //direction_selector = elevator_direction;
     
     if (power_switch && !emergency_btn && is_stop_state(elevator_state)) begin
         if (!stack_empty) begin
