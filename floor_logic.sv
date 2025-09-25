@@ -610,9 +610,11 @@ always @(*) begin
                         default: next_floor = current_floor_state;
                     endcase
                     elevator_floor_selector = next_floor;
-                    moving_stack_pointer = moving_stack_pointer - 1;
-                    floor_stack <= 44'b0; // Clear the entire stack
-                    remaining_requests = remaining_requests - 1;
+                    if (current_floor_state == next_floor) begin
+                        moving_stack_pointer = moving_stack_pointer - 1;
+                        floor_stack <= 44'b0; // Clear the entire stack
+                        remaining_requests = remaining_requests - 1;
+                    end
                 end
                 else begin
                     elevator_floor_selector = next_floor;
