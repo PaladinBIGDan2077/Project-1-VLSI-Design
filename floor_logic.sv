@@ -64,9 +64,12 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
     // Internal registers for request management
 // Internal registers for stack management
 reg                     [43:0]              floor_stack; // 44-bit stack (11 floors × 4 bits each)
+reg                     [43:0]              moving_stack; // 44-bit stack (11 floors × 4 bits each)
 reg                     [3:0]               stack_pointer; // Points to next available slot (0-10)
+reg                     [3:0]               moving_stack_pointer; // Points to next available slot (0-10)
 reg                                         stack_full;
 reg                                         stack_empty;
+reg                     [3:0]               remaining_requests;
 
 
     parameter                   STOP_FL1                      = 6'h00,
@@ -171,47 +174,124 @@ always @(posedge clock or negedge reset_n) begin
         // Check elevator panel buttons (internal requests)
         case (1'b1)
             panel_buttons[0] && current_floor_state != FLOOR_1 && !panel_button_lights[0]: begin
-                if (!stack_full) push_to_stack(4'd0);
+                if (elevator_moving) begin
+                    // If elevator is moving, push to moving stack instead
+                    if (!moving_stack_full) push_to_moving_stack(4'd0);
+                end
+                else begin
+                    // If elevator is stopped, push to main stack
+                    if (!stack_full) push_to_stack(4'd0);
+                end
                 panel_button_lights[0] <= 1'b1;
             end
             panel_buttons[1] && current_floor_state != FLOOR_2 && !panel_button_lights[1]: begin
-                if (!stack_full) push_to_stack(4'd1);
+                if (elevator_moving) begin
+                    // If elevator is moving, push to moving stack instead
+                    if (!moving_stack_full) push_to_moving_stack(4'd1);
+                end
+                else begin
+                    // If elevator is stopped, push to main stack
+                    if (!stack_full) push_to_stack(4'd1);
+                end
                 panel_button_lights[1] <= 1'b1;
             end
             panel_buttons[2] && current_floor_state != FLOOR_3 && !panel_button_lights[2]: begin
-                if (!stack_full) push_to_stack(4'd2);
+                if (elevator_moving) begin
+                    // If elevator is moving, push to moving stack instead
+                    if (!moving_stack_full) push_to_moving_stack(4'd2);
+                end
+                else begin
+                    // If elevator is stopped, push to main stack
+                    if (!stack_full) push_to_stack(4'd2);
+                end
                 panel_button_lights[2] <= 1'b1;
             end
             panel_buttons[3] && current_floor_state != FLOOR_4 && !panel_button_lights[3]: begin
-                if (!stack_full) push_to_stack(4'd3);
+                if (elevator_moving) begin
+                    // If elevator is moving, push to moving stack instead
+                    if (!moving_stack_full) push_to_moving_stack(4'd3);
+                end
+                else begin
+                    // If elevator is stopped, push to main stack
+                    if (!stack_full) push_to_stack(4'd3);
+                end
                 panel_button_lights[3] <= 1'b1;
             end
             panel_buttons[4] && current_floor_state != FLOOR_5 && !panel_button_lights[4]: begin
-                if (!stack_full) push_to_stack(4'd4);
+                if (elevator_moving) begin
+                    // If elevator is moving, push to moving stack instead
+                    if (!moving_stack_full) push_to_moving_stack(4'd4);
+                end
+                else begin
+                    // If elevator is stopped, push to main stack
+                    if (!stack_full) push_to_stack(4'd4);
+                end
                 panel_button_lights[4] <= 1'b1;
             end
             panel_buttons[5] && current_floor_state != FLOOR_6 && !panel_button_lights[5]: begin
-                if (!stack_full) push_to_stack(4'd5);
+                if (elevator_moving) begin
+                    // If elevator is moving, push to moving stack instead
+                    if (!moving_stack_full) push_to_moving_stack(4'd5);
+                end
+                else begin
+                    // If elevator is stopped, push to main stack
+                    if (!stack_full) push_to_stack(4'd5);
+                end
                 panel_button_lights[5] <= 1'b1;
             end
             panel_buttons[6] && current_floor_state != FLOOR_7 && !panel_button_lights[6]: begin
-                if (!stack_full) push_to_stack(4'd6);
+                if (elevator_moving) begin
+                    // If elevator is moving, push to moving stack instead
+                    if (!moving_stack_full) push_to_moving_stack(4'd6);
+                end
+                else begin
+                    // If elevator is stopped, push to main stack
+                    if (!stack_full) push_to_stack(4'd6);
+                end
                 panel_button_lights[6] <= 1'b1;
             end
             panel_buttons[7] && current_floor_state != FLOOR_8 && !panel_button_lights[7]: begin
-                if (!stack_full) push_to_stack(4'd7);
+                if (elevator_moving) begin
+                    // If elevator is moving, push to moving stack instead
+                    if (!moving_stack_full) push_to_moving_stack(4'd7);
+                end
+                else begin
+                    // If elevator is stopped, push to main stack
+                    if (!stack_full) push_to_stack(4'd7);
+                end
                 panel_button_lights[7] <= 1'b1;
             end
             panel_buttons[8] && current_floor_state != FLOOR_9 && !panel_button_lights[8]: begin
-                if (!stack_full) push_to_stack(4'd8);
+                if (elevator_moving) begin
+                    // If elevator is moving, push to moving stack instead
+                    if (!moving_stack_full) push_to_moving_stack(4'd8);
+                end
+                else begin
+                    // If elevator is stopped, push to main stack
+                    if (!stack_full) push_to_stack(4'd8);
+                end
                 panel_button_lights[8] <= 1'b1;
             end
             panel_buttons[9] && current_floor_state != FLOOR_10 && !panel_button_lights[9]: begin
-                if (!stack_full) push_to_stack(4'd9);
+                if (elevator_moving) begin
+                    // If elevator is moving, push to moving stack instead
+                    if (!moving_stack_full) push_to_moving_stack(4'd9);
+                end
+                else begin
+                    // If elevator is stopped, push to main stack
+                    if (!stack_full) push_to_stack(4'd9);
+                end
                 panel_button_lights[9] <= 1'b1;
             end
             panel_buttons[10] && current_floor_state != FLOOR_11 && !panel_button_lights[10]: begin
-                if (!stack_full) push_to_stack(4'd10);
+                if (elevator_moving) begin
+                    // If elevator is moving, push to moving stack instead
+                    if (!moving_stack_full) push_to_moving_stack(4'd10);
+                end
+                else begin
+                    // If elevator is stopped, push to main stack
+                    if (!stack_full) push_to_stack(4'd10);
+                end
                 panel_button_lights[10] <= 1'b1;
             end
         endcase
@@ -219,47 +299,124 @@ always @(posedge clock or negedge reset_n) begin
         // Check floor call buttons (external requests)
         case (1'b1)
             floor_call_buttons[0] && current_floor_state != FLOOR_1 && !call_button_lights[0]: begin
-                if (!stack_full) push_to_stack(4'd0);
+                if (elevator_moving) begin
+                    // If elevator is moving, push to moving stack instead
+                    if (!moving_stack_full) push_to_moving_stack(4'd0);
+                end
+                else begin
+                    // If elevator is stopped, push to main stack
+                    if (!stack_full) push_to_stack(4'd0);
+                end
                 call_button_lights[0] <= 1'b1;
             end
             floor_call_buttons[1] && current_floor_state != FLOOR_2 && !call_button_lights[1]: begin
-                if (!stack_full) push_to_stack(4'd1);
+                if (elevator_moving) begin
+                    // If elevator is moving, push to moving stack instead
+                    if (!moving_stack_full) push_to_moving_stack(4'd1);
+                end
+                else begin
+                    // If elevator is stopped, push to main stack
+                    if (!stack_full) push_to_stack(4'd1);
+                end
                 call_button_lights[1] <= 1'b1;
             end
             floor_call_buttons[2] && current_floor_state != FLOOR_3 && !call_button_lights[2]: begin
-                if (!stack_full) push_to_stack(4'd2);
+                if (elevator_moving) begin
+                    // If elevator is moving, push to moving stack instead
+                    if (!moving_stack_full) push_to_moving_stack(4'd2);
+                end
+                else begin
+                    // If elevator is stopped, push to main stack
+                    if (!stack_full) push_to_stack(4'd2);
+                end
                 call_button_lights[2] <= 1'b1;
             end
             floor_call_buttons[3] && current_floor_state != FLOOR_4 && !call_button_lights[3]: begin
-                if (!stack_full) push_to_stack(4'd3);
+                if (elevator_moving) begin
+                    // If elevator is moving, push to moving stack instead
+                    if (!moving_stack_full) push_to_moving_stack(4'd3);
+                end
+                else begin
+                    // If elevator is stopped, push to main stack
+                    if (!stack_full) push_to_stack(4'd3);
+                end
                 call_button_lights[3] <= 1'b1;
             end
             floor_call_buttons[4] && current_floor_state != FLOOR_5 && !call_button_lights[4]: begin
-                if (!stack_full) push_to_stack(4'd4);
+                if (elevator_moving) begin
+                    // If elevator is moving, push to moving stack instead
+                    if (!moving_stack_full) push_to_moving_stack(4'd4);
+                end
+                else begin
+                    // If elevator is stopped, push to main stack
+                    if (!stack_full) push_to_stack(4'd4);
+                end 
                 call_button_lights[4] <= 1'b1;
             end
             floor_call_buttons[5] && current_floor_state != FLOOR_6 && !call_button_lights[5]: begin
-                if (!stack_full) push_to_stack(4'd5);
+                if (elevator_moving) begin
+                    // If elevator is moving, push to moving stack instead
+                    if (!moving_stack_full) push_to_moving_stack(4'd5);
+                end
+                else begin
+                    // If elevator is stopped, push to main stack
+                    if (!stack_full) push_to_stack(4'd5);
+                end
                 call_button_lights[5] <= 1'b1;
             end
             floor_call_buttons[6] && current_floor_state != FLOOR_7 && !call_button_lights[6]: begin
-                if (!stack_full) push_to_stack(4'd6);
+                if (elevator_moving) begin
+                    // If elevator is moving, push to moving stack instead
+                    if (!moving_stack_full) push_to_moving_stack(4'd6);
+                end
+                else begin
+                    // If elevator is stopped, push to main stack
+                    if (!stack_full) push_to_stack(4'd6);
+                end
                 call_button_lights[6] <= 1'b1;
             end
             floor_call_buttons[7] && current_floor_state != FLOOR_8 && !call_button_lights[7]: begin
-                if (!stack_full) push_to_stack(4'd7);
+                if (elevator_moving) begin
+                    // If elevator is moving, push to moving stack instead
+                    if (!moving_stack_full) push_to_moving_stack(4'd7);
+                end
+                else begin
+                    // If elevator is stopped, push to main stack
+                    if (!stack_full) push_to_stack(4'd7);
+                end
                 call_button_lights[7] <= 1'b1;
             end
             floor_call_buttons[8] && current_floor_state != FLOOR_9 && !call_button_lights[8]: begin
-                if (!stack_full) push_to_stack(4'd8);
+                if (elevator_moving) begin
+                    // If elevator is moving, push to moving stack instead
+                    if (!moving_stack_full) push_to_moving_stack(4'd8);
+                end
+                else begin
+                    // If elevator is stopped, push to main stack
+                    if (!stack_full) push_to_stack(4'd8);
+                end
                 call_button_lights[8] <= 1'b1;
             end
             floor_call_buttons[9] && current_floor_state != FLOOR_10 && !call_button_lights[9]: begin
-                if (!stack_full) push_to_stack(4'd9);
+                if (elevator_moving) begin
+                    // If elevator is moving, push to moving stack instead
+                    if (!moving_stack_full) push_to_moving_stack(4'd9);
+                end
+                else begin
+                    // If elevator is stopped, push to main stack
+                    if (!stack_full) push_to_stack(4'd9);
+                end
                 call_button_lights[9] <= 1'b1;
             end
             floor_call_buttons[10] && current_floor_state != FLOOR_11 && !call_button_lights[10]: begin
-                if (!stack_full) push_to_stack(4'd10);
+                if (elevator_moving) begin
+                    // If elevator is moving, push to moving stack instead
+                    if (!moving_stack_full) push_to_moving_stack(4'd10);
+                end
+                else begin
+                    // If elevator is stopped, push to main stack
+                    if (!stack_full) push_to_stack(4'd10);
+                end
                 call_button_lights[10] <= 1'b1;
             end
         endcase
@@ -322,6 +479,57 @@ always @(posedge clock or negedge reset_n) begin
 end
 
 // Stack push function
+task push_to_moving_stack;
+    input [3:0] floor_num;
+    begin
+        if (!moving_stack_full) begin
+            case (moving_stack_pointer)
+                4'd0: moving_stack[3:0] <= floor_num;
+                4'd1: moving_stack[7:4] <= floor_num;
+                4'd2: moving_stack[11:8] <= floor_num;
+                4'd3: moving_stack[15:12] <= floor_num;
+                4'd4: moving_stack[19:16] <= floor_num;
+                4'd5: moving_stack[23:20] <= floor_num;
+                4'd6: moving_stack[27:24] <= floor_num;
+                4'd7: moving_stack[31:28] <= floor_num;
+                4'd8: moving_stack[35:32] <= floor_num;
+                4'd9: moving_stack[39:36] <= floor_num;
+                4'd10: moving_stack[43:40] <= floor_num;
+            endcase
+            moving_stack_pointer <= moving_stack_pointer + 1;
+            remaining_requests <= remaining_requests + 1;
+            moving_stack_empty <= 1'b0;
+            moving_stack_full <= (moving_stack_pointer == 4'd10);
+        end
+    end
+endtask
+
+// Stack pop function
+task pop_from_moving_stack;
+    output [3:0] popped_floor;
+    begin
+        if (!moving_stack_empty) begin
+            case (moving_stack_pointer)
+                4'd1: popped_floor = moving_stack[3:0];
+                4'd2: popped_floor = moving_stack[7:4];
+                4'd3: popped_floor = moving_stack[11:8];
+                4'd4: popped_floor = moving_stack[15:12];
+                4'd5: popped_floor = moving_stack[19:16];
+                4'd6: popped_floor = moving_stack[23:20];
+                4'd7: popped_floor = moving_stack[27:24];
+                4'd8: popped_floor = moving_stack[31:28];
+                4'd9: popped_floor = moving_stack[35:32];
+                4'd10: popped_floor = moving_stack[39:36];
+                4'd11: popped_floor = moving_stack[43:40];
+                default: popped_floor = current_floor_state;
+            endcase
+            moving_stack_pointer <= moving_stack_pointer - 1;
+            remaining_requests <= remaining_requests - 1;
+
+        end
+endtask
+
+// Stack push function
 task push_to_stack;
     input [3:0] floor_num;
     begin
@@ -378,6 +586,11 @@ always @(*) begin
     elevator_floor_selector = current_floor_state; // Default to current floor
     
     if (power_switch && !emergency_btn) begin
+        if (elevator_moving) begin
+            // If elevator is moving, do not change target floor
+            direction_selector = elevator_direction; // Maintain current direction
+        end
+        else
         if (!stack_empty) begin
             // Get next floor from stack WITHOUT popping (just read)
             case (stack_pointer)
@@ -395,8 +608,14 @@ always @(*) begin
                 default: next_floor = current_floor_state;
             endcase
             
-            elevator_floor_selector = next_floor;
-            
+            if (remaining_requests > 1) begin
+                // If multiple requests, prioritize based on current direction
+                pop_from_stack(next_floor); // Pop next floor
+            end
+            if (remaining_requests == 0) begin
+                elevator_floor_selector = next_floor;
+            end
+
             // Only activate if it's a different floor AND we're in a stop state
             if ((elevator_floor_selector != current_floor_state) && is_stop_state(elevator_state)) begin
                 activate_elevator = 1'b1;
