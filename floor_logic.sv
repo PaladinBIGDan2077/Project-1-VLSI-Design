@@ -142,6 +142,10 @@ always @(posedge clock or negedge reset_n) begin
         stack_empty <= 1'b1;
         elevator_floor_selector <= FLOOR_1; // Default to first floor on reset
         next_floor <= FLOOR_1;
+        moving_stack <= 44'b0;
+        moving_stack_pointer <= 4'b0;
+        remaining_requests <= 4'b0;
+        direction_selector <= 1'b1; // Default direction up
     end 
     else if (!power_switch) begin
         call_button_lights <= 11'b0;
@@ -159,6 +163,10 @@ always @(posedge clock or negedge reset_n) begin
         floor_stack <= 44'b0;
         stack_pointer <= 4'b0;
         stack_empty <= 1'b1;
+        moving_stack <= 44'b0;
+        moving_stack_pointer <= 4'b0;
+        remaining_requests <= 4'b0;
+        direction_selector <= 1'b1; 
         elevator_floor_selector <= EMERGENCY;
     end
 end
@@ -587,7 +595,7 @@ always @(*) begin
 
             if (remaining_requests >= 1) begin
                 // If multiple requests, prioritize based on current direction
-                pop_from_stack(next_floor); // Pop next floor
+                pop_from_moving_stack(next_floor); // Pop next floor
                 elevator_floor_selector = next_floor;
             end
             if (remaining_requests == 0) begin
