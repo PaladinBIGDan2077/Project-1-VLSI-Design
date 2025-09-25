@@ -67,9 +67,6 @@ reg                     [43:0]              floor_stack; // 44-bit stack (11 flo
 reg                     [3:0]               stack_pointer; // Points to next available slot (0-10)
 reg                                         stack_full;
 reg                                         stack_empty;
-reg [3:0] target_floor_reg;          // Current target floor being served
-reg new_requests_pending;            // Flag indicating new requests arrived
-reg [3:0] request_count;             // Count of active requests
 
 
     parameter                   STOP_FL1                      = 6'h00,
@@ -266,14 +263,6 @@ always @(posedge clock or negedge reset_n) begin
                 call_button_lights[10] <= 1'b1;
             end
         endcase
-        // In your button reader always block, add this at the end:
-        // Set flag when new requests come in while elevator is moving
-        if (elevator_moving && (|panel_buttons || |floor_call_buttons)) begin
-            new_requests_pending <= 1'b1;
-        end
-
-        // Update request count
-        request_count <= stack_pointer; // Or count set bits in request_flags if using bitmask approach
     end
 end
 // Button reader - clear floor requests when served
@@ -382,73 +371,12 @@ task pop_from_stack;
         end
     end
 endtask
-
-// Function to find the next optimal floor (add this with your other functions)
-function [3:0] find_next_floor;
-    input [3:0] current_floor;
-    input current_direction;
-    reg [3:0] best_floor;
-    integer i;
-    begin
-        best_floor = current_floor; // Default to current floor
-        
-        if (current_direction) begin // Moving UP
-            // Look for closest floor above current floor
-            for (i = 10; i >= 0; i = i - 1) begin
-                if (request_flags[i] && (i > current_floor)) begin
-                    best_floor = i;
-                end
-            end
-            // If nothing above, look for highest floor below (we'll reverse direction)
-            if (best_floor == current_floor) begin
-                for (i = 0; i < 11; i = i + 1) begin
-                    if (request_flags[i] && (i < current_floor)) begin
-                        best_floor = i;
-                    end
-                end
-            end
-        end else begin // Moving DOWN
-            // Look for closest floor below current floor
-            for (i = 0; i < 11; i = i + 1) begin
-                if (request_flags[i] && (i < current_floor)) begin
-                    best_floor = i;
-                end
-            end
-            // If nothing below, look for lowest floor above (we'll reverse direction)
-            if (best_floor == current_floor) begin
-                for (i = 10; i >= 0; i = i - 1) begin
-                    if (request_flags[i] && (i > current_floor)) begin
-                        best_floor = i;
-                    end
-                end
-            end
-        end
-        
-        find_next_floor = best_floor;
-    end
-endfunction
-
-// Continuous target evaluation - runs even while elevator is moving
-always @(posedge clock or negedge reset_n) begin
-    if (!reset_n) begin
-        target_floor_reg <= FLOOR_1;
-        new_requests_pending <= 1'b0;
-    end else if (power_switch && !emergency_btn) begin
-        // Always recalculate target if we're stopped or new requests came in
-        if (is_stop_state(elevator_state) || new_requests_pending) begin
-            if (!stack_empty) begin
-                // Find the most optimal next floor based on current direction
-                target_floor_reg = find_next_floor(current_floor_state, elevator_direction);
-                new_requests_pending <= 1'b0; // Clear the flag
-            end
-        end
-    end
-end
+    
 // Floor selection logic - pull from stack and set direction
 always @(*) begin
     activate_elevator = 1'b0;
-    elevator_floor_selector = target_floor_reg;  
-
+    elevator_floor_selector = current_floor_state; // Default to current floor
+    
     if (power_switch && !emergency_btn) begin
         if (!stack_empty) begin
             // Get next floor from stack WITHOUT popping (just read)
@@ -511,10 +439,8 @@ always @(posedge clock or negedge reset_n) begin
                 end else begin
                     floor_stack <= 44'b0;
                 end
-                if (request_count > 1) begin
-                    new_requests_pending <= 1'b1; // Force recalculation
-                end
             end
+            
             // Turn off button lights for current floor
             call_button_lights[current_floor_state] <= 1'b0;
             panel_button_lights[current_floor_state] <= 1'b0;
