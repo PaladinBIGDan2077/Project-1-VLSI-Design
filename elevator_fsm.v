@@ -85,6 +85,8 @@ module elevator_fsm(clock, reset_n, elevator_floor_selector, emergency_stop, act
     always @(posedge clock or negedge reset_n) begin
 		if (!reset_n) begin
 			counter_state <= STOP_FL1; // Reset to initial state
+            next_counter_state <= STOP_FL1;
+            control_output <= 11'b00000000000; // Safety Interlock on
         end
 		else begin
             counter_state <= next_counter_state; // Update state to next state

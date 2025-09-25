@@ -25,13 +25,11 @@ module clk(enable, clock_output);
     output               clock_output;		
     reg                  clock_output;
 
-    parameter FREQ = 40; // Clock period in nanoseconds
-
     initial clock_output = 0; // Initial value of the clock
 
     // Toggle the clock every half period if enabled
     always begin
-        #(FREQ/2); 
+        #40; 
         clock_output = enable ? ~clock_output : clock_output;
     end
 endmodule

@@ -146,6 +146,10 @@ always @(posedge clock or negedge reset_n) begin
         moving_stack_pointer <= 4'b0;
         remaining_requests <= 4'b0;
         direction_selector <= 1'b1; // Default direction up
+        door_open_allowed <= 1'b0;
+        door_close_allowed <= 1'b0;
+        activate_elevator <= 1'b0;
+        remaining_requests <= 4'b0;
     end 
     else if (!power_switch) begin
         call_button_lights <= 11'b0;
