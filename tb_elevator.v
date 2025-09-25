@@ -274,6 +274,11 @@ module elevator_top_tb;
         // 
         $display("All Floor panel buttons begin pressing @ %t", $time);
 
+        reset_n = 0;
+        #50
+        reset_n = 1;
+        $display("=== Reset complete ===");
+
         raw_panel_buttons[10:0] = 11'b10000000000; // Request floor 11
         #50
         raw_panel_buttons[10:0] = 11'b00000000000;     
