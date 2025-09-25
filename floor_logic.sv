@@ -567,6 +567,7 @@ task pop_from_stack;
                 4'd11: popped_floor = floor_stack[43:40];
                 default: popped_floor = current_floor_state;
             endcase
+            stack_pointer <= stack_pointer - 1;
         end
         else begin
             popped_floor = current_floor_state;
@@ -587,24 +588,12 @@ always @(*) begin
         else
         if (!stack_empty) begin
             // Get next floor from stack WITHOUT popping (just read)
-            case (stack_pointer)
-                4'd1: next_floor = floor_stack[3:0];
-                4'd2: next_floor = floor_stack[7:4];
-                4'd3: next_floor = floor_stack[11:8];
-                4'd4: next_floor = floor_stack[15:12];
-                4'd5: next_floor = floor_stack[19:16];
-                4'd6: next_floor = floor_stack[23:20];
-                4'd7: next_floor = floor_stack[27:24];
-                4'd8: next_floor = floor_stack[31:28];
-                4'd9: next_floor = floor_stack[35:32];
-                4'd10: next_floor = floor_stack[39:36];
-                4'd11: next_floor = floor_stack[43:40];
-                default: next_floor = current_floor_state;
-            endcase
-            
-            if (remaining_requests > 1) begin
+            pop_from_stack(next_floor);
+
+            if (remaining_requests >= 1) begin
                 // If multiple requests, prioritize based on current direction
                 pop_from_stack(next_floor); // Pop next floor
+                elevator_floor_selector = next_floor;
             end
             if (remaining_requests == 0) begin
                 elevator_floor_selector = next_floor;
