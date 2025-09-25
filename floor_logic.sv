@@ -548,7 +548,6 @@ task push_to_stack;
                 4'd8: floor_stack[35:32] = floor_num;
                 4'd9: floor_stack[39:36] = floor_num;
                 4'd10: floor_stack[43:40] = floor_num;
-                default: 4'hF;
             endcase
             stack_pointer = stack_pointer + 1;
             stack_empty = 1'b0;
