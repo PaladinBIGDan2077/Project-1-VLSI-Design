@@ -593,7 +593,7 @@ always @(*) begin
             // Get next floor from stack WITHOUT popping (just read)
             pop_from_stack(next_floor);
 
-            if (remaining_requests >= 1) begin
+            if (remaining_requests >= 1 && is_stop_state(elevator_state)) begin
                 // If multiple requests, prioritize based on current direction
                 pop_from_moving_stack(next_floor); // Pop next floor
                 elevator_floor_selector = next_floor;
