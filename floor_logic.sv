@@ -162,110 +162,109 @@ end
 
 
 
-// Button reader - push floor requests onto stack
+// Button reader - push floor requests onto stack (FIXED)
 always @(posedge clock or negedge reset_n) begin
     if (!reset_n) begin
         // Stack initialization handled above
     end
-    else if (power_switch && !stack_full) begin
+    else if (power_switch && !emergency_btn) begin  // Remove stack_full condition
         // Check elevator panel buttons (internal requests)
         case (1'b1)
-            panel_buttons[0] && current_floor_state != FLOOR_1: begin
-                push_to_stack(4'd0);
+            panel_buttons[0] && current_floor_state != FLOOR_1 && !panel_button_lights[0]: begin
+                if (!stack_full) push_to_stack(4'd0);
                 panel_button_lights[0] <= 1'b1;
             end
-            panel_buttons[1] && current_floor_state != FLOOR_2: begin
-                push_to_stack(4'd1);
+            panel_buttons[1] && current_floor_state != FLOOR_2 && !panel_button_lights[1]: begin
+                if (!stack_full) push_to_stack(4'd1);
                 panel_button_lights[1] <= 1'b1;
             end
-            panel_buttons[2] && current_floor_state != FLOOR_3: begin
-                push_to_stack(4'd2);
+            panel_buttons[2] && current_floor_state != FLOOR_3 && !panel_button_lights[2]: begin
+                if (!stack_full) push_to_stack(4'd2);
                 panel_button_lights[2] <= 1'b1;
             end
-            panel_buttons[3] && current_floor_state != FLOOR_4: begin
-                push_to_stack(4'd3);
+            panel_buttons[3] && current_floor_state != FLOOR_4 && !panel_button_lights[3]: begin
+                if (!stack_full) push_to_stack(4'd3);
                 panel_button_lights[3] <= 1'b1;
             end
-            panel_buttons[4] && current_floor_state != FLOOR_5: begin
-                push_to_stack(4'd4);
+            panel_buttons[4] && current_floor_state != FLOOR_5 && !panel_button_lights[4]: begin
+                if (!stack_full) push_to_stack(4'd4);
                 panel_button_lights[4] <= 1'b1;
             end
-            panel_buttons[5] && current_floor_state != FLOOR_6: begin
-                push_to_stack(4'd5);
+            panel_buttons[5] && current_floor_state != FLOOR_6 && !panel_button_lights[5]: begin
+                if (!stack_full) push_to_stack(4'd5);
                 panel_button_lights[5] <= 1'b1;
             end
-            panel_buttons[6] && current_floor_state != FLOOR_7: begin
-                push_to_stack(4'd6);
+            panel_buttons[6] && current_floor_state != FLOOR_7 && !panel_button_lights[6]: begin
+                if (!stack_full) push_to_stack(4'd6);
                 panel_button_lights[6] <= 1'b1;
             end
-            panel_buttons[7] && current_floor_state != FLOOR_8: begin
-                push_to_stack(4'd7);
+            panel_buttons[7] && current_floor_state != FLOOR_8 && !panel_button_lights[7]: begin
+                if (!stack_full) push_to_stack(4'd7);
                 panel_button_lights[7] <= 1'b1;
             end
-            panel_buttons[8] && current_floor_state != FLOOR_9: begin
-                push_to_stack(4'd8);
+            panel_buttons[8] && current_floor_state != FLOOR_9 && !panel_button_lights[8]: begin
+                if (!stack_full) push_to_stack(4'd8);
                 panel_button_lights[8] <= 1'b1;
             end
-            panel_buttons[9] && current_floor_state != FLOOR_10: begin
-                push_to_stack(4'd9);
+            panel_buttons[9] && current_floor_state != FLOOR_10 && !panel_button_lights[9]: begin
+                if (!stack_full) push_to_stack(4'd9);
                 panel_button_lights[9] <= 1'b1;
             end
-            panel_buttons[10] && current_floor_state != FLOOR_11: begin
-                push_to_stack(4'd10);
+            panel_buttons[10] && current_floor_state != FLOOR_11 && !panel_button_lights[10]: begin
+                if (!stack_full) push_to_stack(4'd10);
                 panel_button_lights[10] <= 1'b1;
             end
         endcase
         
         // Check floor call buttons (external requests)
         case (1'b1)
-            floor_call_buttons[0] && current_floor_state != FLOOR_1: begin
-                push_to_stack(4'd0);
+            floor_call_buttons[0] && current_floor_state != FLOOR_1 && !call_button_lights[0]: begin
+                if (!stack_full) push_to_stack(4'd0);
                 call_button_lights[0] <= 1'b1;
             end
-            floor_call_buttons[1] && current_floor_state != FLOOR_2: begin
-                push_to_stack(4'd1);
+            floor_call_buttons[1] && current_floor_state != FLOOR_2 && !call_button_lights[1]: begin
+                if (!stack_full) push_to_stack(4'd1);
                 call_button_lights[1] <= 1'b1;
             end
-            floor_call_buttons[2] && current_floor_state != FLOOR_3: begin
-                push_to_stack(4'd2);
+            floor_call_buttons[2] && current_floor_state != FLOOR_3 && !call_button_lights[2]: begin
+                if (!stack_full) push_to_stack(4'd2);
                 call_button_lights[2] <= 1'b1;
             end
-            floor_call_buttons[3] && current_floor_state != FLOOR_4: begin
-                push_to_stack(4'd3);
+            floor_call_buttons[3] && current_floor_state != FLOOR_4 && !call_button_lights[3]: begin
+                if (!stack_full) push_to_stack(4'd3);
                 call_button_lights[3] <= 1'b1;
             end
-            floor_call_buttons[4] && current_floor_state != FLOOR_5: begin
-                push_to_stack(4'd4);
+            floor_call_buttons[4] && current_floor_state != FLOOR_5 && !call_button_lights[4]: begin
+                if (!stack_full) push_to_stack(4'd4);
                 call_button_lights[4] <= 1'b1;
             end
-            floor_call_buttons[5] && current_floor_state != FLOOR_6: begin
-                push_to_stack(4'd5);
+            floor_call_buttons[5] && current_floor_state != FLOOR_6 && !call_button_lights[5]: begin
+                if (!stack_full) push_to_stack(4'd5);
                 call_button_lights[5] <= 1'b1;
             end
-            floor_call_buttons[6] && current_floor_state != FLOOR_7: begin
-                push_to_stack(4'd6);
+            floor_call_buttons[6] && current_floor_state != FLOOR_7 && !call_button_lights[6]: begin
+                if (!stack_full) push_to_stack(4'd6);
                 call_button_lights[6] <= 1'b1;
             end
-            floor_call_buttons[7] && current_floor_state != FLOOR_8: begin
-                push_to_stack(4'd7);
+            floor_call_buttons[7] && current_floor_state != FLOOR_8 && !call_button_lights[7]: begin
+                if (!stack_full) push_to_stack(4'd7);
                 call_button_lights[7] <= 1'b1;
             end
-            floor_call_buttons[8] && current_floor_state != FLOOR_9: begin
-                push_to_stack(4'd8);
+            floor_call_buttons[8] && current_floor_state != FLOOR_9 && !call_button_lights[8]: begin
+                if (!stack_full) push_to_stack(4'd8);
                 call_button_lights[8] <= 1'b1;
             end
-            floor_call_buttons[9] && current_floor_state != FLOOR_10: begin
-                push_to_stack(4'd9);
+            floor_call_buttons[9] && current_floor_state != FLOOR_10 && !call_button_lights[9]: begin
+                if (!stack_full) push_to_stack(4'd9);
                 call_button_lights[9] <= 1'b1;
             end
-            floor_call_buttons[10] && current_floor_state != FLOOR_11: begin
-                push_to_stack(4'd10);
+            floor_call_buttons[10] && current_floor_state != FLOOR_11 && !call_button_lights[10]: begin
+                if (!stack_full) push_to_stack(4'd10);
                 call_button_lights[10] <= 1'b1;
             end
         endcase
     end
 end
-
 // Button reader - clear floor requests when served
 always @(posedge clock or negedge reset_n) begin
     if (!reset_n) begin
@@ -376,10 +375,9 @@ endtask
 // Floor selection logic - pull from stack and set direction
 always @(*) begin
     activate_elevator = 1'b0;
-    //elevator_floor_selector = current_floor_state;
-    //direction_selector = elevator_direction;
+    elevator_floor_selector = current_floor_state; // Default to current floor
     
-    if (power_switch && !emergency_btn && is_stop_state(elevator_state)) begin
+    if (power_switch && !emergency_btn) begin
         if (!stack_empty) begin
             // Get next floor from stack WITHOUT popping (just read)
             case (stack_pointer)
@@ -399,8 +397,8 @@ always @(*) begin
             
             elevator_floor_selector = next_floor;
             
-            // Only activate if it's a different floor
-            if (elevator_floor_selector != current_floor_state) begin
+            // Only activate if it's a different floor AND we're in a stop state
+            if ((elevator_floor_selector != current_floor_state) && is_stop_state(elevator_state)) begin
                 activate_elevator = 1'b1;
                 
                 // Natural direction selection
@@ -415,41 +413,41 @@ always @(*) begin
     end
 end
 
+
 // Clear floor request when elevator arrives - reset stack pointer when full
 always @(posedge clock or negedge reset_n) begin
     if (!reset_n) begin
         // Handled in main reset
     end
     else if (power_switch && is_stop_state(elevator_state)) begin
-        // When elevator reaches target floor, clear the served floor
         if (stack_full) begin // Stack was full
             stack_pointer <= 4'b0;
             stack_full <= 1'b0;
             stack_empty <= 1'b1;
             floor_stack <= 44'b0; // Clear the entire stack
         end
+        // When elevator reaches target floor, clear the served floor from stack
         if (elevator_floor_selector == current_floor_state && activate_elevator) begin
-            // Simply reset stack pointer to empty when we've served all requests
-
             if (!stack_empty) begin
                 stack_pointer <= stack_pointer - 1;
                 stack_empty <= (stack_pointer == 4'd1);
+                stack_full <= 1'b0;
+                
+                // Shift stack down to remove the served floor
+                if (stack_pointer > 1) begin
+                    floor_stack <= {4'b0, floor_stack[43:4]}; // Shift right by 4 bits
+                end else begin
+                    floor_stack <= 44'b0;
+                end
             end
             
+            // Turn off button lights for current floor
             call_button_lights[current_floor_state] <= 1'b0;
             panel_button_lights[current_floor_state] <= 1'b0;
-            activate_elevator <= 1'b0;
-        end
-        
-        // Additional safety: if stack pointer gets corrupted, reset it
-        if (stack_pointer > 4'd11) begin
-            stack_pointer <= 4'b0;
-            stack_full <= 1'b0;
-            stack_empty <= 1'b1;
-            floor_stack <= 44'b0;
         end
     end
 end
+
 
 // Door control logic
 always @(*) begin
