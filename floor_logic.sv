@@ -498,8 +498,6 @@ task push_to_moving_stack;
             endcase
             moving_stack_pointer <= moving_stack_pointer + 1;
             remaining_requests <= remaining_requests + 1;
-            moving_stack_empty <= 1'b0;
-            moving_stack_full <= (moving_stack_pointer == 4'd10);
         end
     end
 endtask
