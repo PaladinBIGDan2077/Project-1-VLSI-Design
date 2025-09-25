@@ -31,44 +31,44 @@ module elevator_fsm(clock, reset_n, elevator_floor_selector, emergency_stop, act
     input                                                     power_switch;
     input                                                     direction_selector; // 1 bit for up / 0 for down
 	output                      [10:0]                        control_output;    
-    output                      [5:0]                         counter_state;         
+    output                      [4:0]                         counter_state;         
 
-	reg                         [5:0]                         counter_state;
-    reg                         [5:0]                         next_counter_state;
+	reg                         [4:0]                         counter_state;
+    reg                         [4:0]                         next_counter_state;
     reg                         [10:0]                        control_output;      
 
-    parameter                   STOP_FL1                      = 6'h00,      
-                                STOP_FL2                      = 6'h01,      
-                                STOP_FL3                      = 6'h02,     
-                                STOP_FL4                      = 6'h03,
-                                STOP_FL5                      = 6'h04,
-                                STOP_FL6                      = 6'h05,
-                                STOP_FL7                      = 6'h06, 
-                                STOP_FL8                      = 6'h07,
-                                STOP_FL9                      = 6'h08,      
-                                STOP_FL10                     = 6'h09,
-                                STOP_FL11                     = 6'h0A, 
-                                UP_F1_F2                      = 6'h0B,
-                                UP_F2_F3                      = 6'h0C,
-                                UP_F3_F4                      = 6'h0D,
-                                UP_F4_F5                      = 6'h0E,
-                                UP_F5_F6                      = 6'h0F,
-                                UP_F6_F7                      = 6'h10,
-                                UP_F7_F8                      = 6'h11,
-                                UP_F8_F9                      = 6'h12,
-                                UP_F9_F10                     = 6'h13,
-                                UP_F10_F11                    = 6'h14,
-                                DOWN_F11_F10                  = 6'h15,
-                                DOWN_F10_F9                   = 6'h16,
-                                DOWN_F9_F8                    = 6'h17,
-                                DOWN_F8_F7                    = 6'h18,
-                                DOWN_F7_F6                    = 6'h19,
-                                DOWN_F6_F5                    = 6'h1A,
-                                DOWN_F5_F4                    = 6'h1B,
-                                DOWN_F4_F3                    = 6'h1C,
-                                DOWN_F3_F2                    = 6'h1D,
-                                DOWN_F2_F1                    = 6'h1E,
-                                EMERGENCY                     = 6'h1F;
+    parameter                   STOP_FL1                      = 5'h00,      
+                                STOP_FL2                      = 5'h01,      
+                                STOP_FL3                      = 5'h02,     
+                                STOP_FL4                      = 5'h03,
+                                STOP_FL5                      = 5'h04,
+                                STOP_FL6                      = 5'h05,
+                                STOP_FL7                      = 5'h06, 
+                                STOP_FL8                      = 5'h07,
+                                STOP_FL9                      = 5'h08,      
+                                STOP_FL10                     = 5'h09,
+                                STOP_FL11                     = 5'h0A, 
+                                UP_F1_F2                      = 5'h0B,
+                                UP_F2_F3                      = 5'h0C,
+                                UP_F3_F4                      = 5'h0D,
+                                UP_F4_F5                      = 5'h0E,
+                                UP_F5_F6                      = 5'h0F,
+                                UP_F6_F7                      = 5'h10,
+                                UP_F7_F8                      = 5'h11,
+                                UP_F8_F9                      = 5'h12,
+                                UP_F9_F10                     = 5'h13,
+                                UP_F10_F11                    = 5'h14,
+                                DOWN_F11_F10                  = 5'h15,
+                                DOWN_F10_F9                   = 5'h16,
+                                DOWN_F9_F8                    = 5'h17,
+                                DOWN_F8_F7                    = 5'h18,
+                                DOWN_F7_F6                    = 5'h19,
+                                DOWN_F6_F5                    = 5'h1A,
+                                DOWN_F5_F4                    = 5'h1B,
+                                DOWN_F4_F3                    = 5'h1C,
+                                DOWN_F3_F2                    = 5'h1D,
+                                DOWN_F2_F1                    = 5'h1E,
+                                EMERGENCY                     = 5'h1F;
     
     parameter                   FLOOR_1                       = 4'h0,
                                 FLOOR_2                       = 4'h1,

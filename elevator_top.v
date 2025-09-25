@@ -64,7 +64,7 @@ module elevator_top(clock, reset_n, raw_floor_call_buttons, raw_panel_buttons, r
     wire                    [3:0]                   elevator_floor_selector;
     wire                                            direction_selector;
     wire                                            activate_elevator;
-    wire                    [5:0]                   elevator_state;
+    wire                    [4:0]                   elevator_state;
     wire                                            elevator_moving;
     wire                                            elevator_direction;
     wire                    [3:0]                   current_floor_state;
