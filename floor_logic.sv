@@ -594,7 +594,7 @@ always @(*) begin
             // 
             if (remaining_requests >= 1) begin
                 // If multiple requests, prioritize based on current direction
-                if (is_stop_state(elevator_state) begin
+                if (is_stop_state(elevator_state)) begin
                     case (moving_stack_pointer)
                         4'd1: next_floor = moving_stack[3:0];
                         4'd2: next_floor = moving_stack[7:4];
