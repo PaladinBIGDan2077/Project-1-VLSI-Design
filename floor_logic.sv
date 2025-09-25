@@ -632,19 +632,16 @@ always @(*) begin
             elevator_floor_selector = next_floor;
         end
 
-
-
-            // Only activate if it's a different floor AND we're in a stop state
-            if ((elevator_floor_selector != current_floor_state) && is_stop_state(elevator_state)) begin
-                activate_elevator = 1'b1;
-                
-                // Natural direction selection
-                if (elevator_floor_selector > current_floor_state) begin
-                    direction_selector = 1'b1; // Up direction
-                end
-                else begin
-                    direction_selector = 1'b0; // Down direction
-                end
+        // Only activate if it's a different floor AND we're in a stop state
+        if ((elevator_floor_selector != current_floor_state) && is_stop_state(elevator_state)) begin
+            activate_elevator = 1'b1;
+            
+            // Natural direction selection
+            if (elevator_floor_selector > current_floor_state) begin
+                direction_selector = 1'b1; // Up direction
+            end
+            else begin
+                direction_selector = 1'b0; // Down direction
             end
         end
     end
