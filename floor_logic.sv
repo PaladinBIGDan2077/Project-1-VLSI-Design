@@ -527,6 +527,7 @@ task pop_from_moving_stack;
             remaining_requests <= remaining_requests - 1;
 
         end
+    end
 endtask
 
 // Stack push function
