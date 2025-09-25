@@ -610,6 +610,8 @@ always @(*) begin
                         default: next_floor = current_floor_state;
                     endcase
                     elevator_floor_selector = next_floor;
+                    moving_stack_pointer = moving_stack_pointer - 1;
+                    remaining_requests = remaining_requests - 1;
                 end
                 elevator_floor_selector = next_floor;
             end
