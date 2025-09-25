@@ -665,7 +665,7 @@ always @(posedge clock or negedge reset_n) begin
             floor_stack <= 44'b0; // Clear the entire stack
         end
         // When elevator reaches target floor, clear the served floor from stack
-        if (elevator_floor_selector == current_floor_state && activate_elevator) begin
+        if (elevator_floor_selector == current_floor_state && !activate_elevator) begin
             if (!stack_empty) begin
                 stack_pointer <= stack_pointer - 1;
                 stack_empty <= (stack_pointer == 4'd1);
