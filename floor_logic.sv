@@ -594,7 +594,7 @@ always @(*) begin
             // 
             if (remaining_requests >= 1) begin
                 // If multiple requests, prioritize based on current direction
-                if (!is_stop_state(elevator_state)) begin
+                if (is_stop_state(elevator_state)) begin
                     case (moving_stack_pointer)
                         4'd1: next_floor = moving_stack[3:0];
                         4'd2: next_floor = moving_stack[7:4];
@@ -613,7 +613,9 @@ always @(*) begin
                     moving_stack_pointer = moving_stack_pointer - 1;
                     remaining_requests = remaining_requests - 1;
                 end
-                elevator_floor_selector = next_floor;
+                else begin
+                    elevator_floor_selector = next_floor;
+                end
             end
             else if (is_stop_state(elevator_state)) begin
                 case (stack_pointer)
@@ -665,7 +667,7 @@ always @(posedge clock or negedge reset_n) begin
             floor_stack <= 44'b0; // Clear the entire stack
         end
         // When elevator reaches target floor, clear the served floor from stack
-        if (elevator_floor_selector == current_floor_state && !activate_elevator) begin
+        if (elevator_floor_selector == current_floor_state && activate_elevator) begin
             if (!stack_empty) begin
                 stack_pointer <= stack_pointer - 1;
                 stack_empty <= (stack_pointer == 4'd1);
