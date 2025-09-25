@@ -611,6 +611,7 @@ always @(*) begin
                     endcase
                     elevator_floor_selector = next_floor;
                     moving_stack_pointer = moving_stack_pointer - 1;
+                    floor_stack <= 44'b0; // Clear the entire stack
                     remaining_requests = remaining_requests - 1;
                 end
                 else begin
