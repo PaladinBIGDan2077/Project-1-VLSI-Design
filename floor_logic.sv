@@ -67,8 +67,6 @@ reg                     [43:0]              floor_stack; // 44-bit stack (11 flo
 reg                     [3:0]               stack_pointer; // Points to next available slot (0-10)
 reg                                         stack_full;
 reg                                         stack_empty;
-// Add near your other registers
-reg recalculate_target;  // Flag to force target recalculation
 
 
     parameter                   STOP_FL1                      = 6'h00,
@@ -265,10 +263,6 @@ always @(posedge clock or negedge reset_n) begin
                 call_button_lights[10] <= 1'b1;
             end
         endcase
-        // In your button reader, add this at the end:
-        if (elevator_moving && (|panel_buttons || |floor_call_buttons)) begin
-            recalculate_target <= 1'b1;  // Set flag when new requests come in during motion
-        end
     end
 end
 // Button reader - clear floor requests when served
@@ -327,34 +321,6 @@ always @(posedge clock or negedge reset_n) begin
     end
 end
 
-// Simple target update logic
-always @(posedge clock or negedge reset_n) begin
-    if (!reset_n) begin
-        recalculate_target <= 1'b0;
-    end else if (power_switch && !emergency_btn) begin
-        // Recalculate target when: stopped, or new requests during motion
-        if (is_stop_state(elevator_state) || recalculate_target) begin
-            if (!stack_empty) begin
-                // Just use the next floor from stack (simple approach)
-                case (stack_pointer)
-                    4'd1: elevator_floor_selector <= floor_stack[3:0];
-                    4'd2: elevator_floor_selector <= floor_stack[7:4];
-                    4'd3: elevator_floor_selector <= floor_stack[11:8];
-                    4'd4: elevator_floor_selector <= floor_stack[15:12];
-                    4'd5: elevator_floor_selector <= floor_stack[19:16];
-                    4'd6: elevator_floor_selector <= floor_stack[23:20];
-                    4'd7: elevator_floor_selector <= floor_stack[27:24];
-                    4'd8: elevator_floor_selector <= floor_stack[31:28];
-                    4'd9: elevator_floor_selector <= floor_stack[35:32];
-                    4'd10: elevator_floor_selector <= floor_stack[39:36];
-                    4'd11: elevator_floor_selector <= floor_stack[43:40];
-                endcase
-                recalculate_target <= 1'b0;  // Clear the flag
-            end
-        end
-    end
-end
-
 // Stack push function
 task push_to_stack;
     input [3:0] floor_num;
@@ -407,58 +373,46 @@ task pop_from_stack;
 endtask
     
 // Floor selection logic - pull from stack and set direction
-// always @(*) begin
-//     activate_elevator = 1'b0;
-//     elevator_floor_selector = current_floor_state; // Default to current floor
-    
-//     if (power_switch && !emergency_btn) begin
-//         if (!stack_empty) begin
-//             // Get next floor from stack WITHOUT popping (just read)
-//             case (stack_pointer)
-//                 4'd1: next_floor = floor_stack[3:0];
-//                 4'd2: next_floor = floor_stack[7:4];
-//                 4'd3: next_floor = floor_stack[11:8];
-//                 4'd4: next_floor = floor_stack[15:12];
-//                 4'd5: next_floor = floor_stack[19:16];
-//                 4'd6: next_floor = floor_stack[23:20];
-//                 4'd7: next_floor = floor_stack[27:24];
-//                 4'd8: next_floor = floor_stack[31:28];
-//                 4'd9: next_floor = floor_stack[35:32];
-//                 4'd10: next_floor = floor_stack[39:36];
-//                 4'd11: next_floor = floor_stack[43:40];
-//                 default: next_floor = current_floor_state;
-//             endcase
-            
-//             elevator_floor_selector = next_floor;
-            
-//             // Only activate if it's a different floor AND we're in a stop state
-//             if ((elevator_floor_selector != current_floor_state) && is_stop_state(elevator_state)) begin
-//                 activate_elevator = 1'b1;
-                
-//                 // Natural direction selection
-//                 if (elevator_floor_selector > current_floor_state) begin
-//                     direction_selector = 1'b1; // Up direction
-//                 end
-//                 else begin
-//                     direction_selector = 1'b0; // Down direction
-//                 end
-//             end
-//         end
-//     end
-// end
-// Replace your existing floor selection logic with just this:
 always @(*) begin
     activate_elevator = 1'b0;
-    direction_selector = elevator_direction;  // Keep current direction
+    elevator_floor_selector = current_floor_state; // Default to current floor
     
-    if (power_switch && !emergency_btn && is_stop_state(elevator_state)) begin
-        if (elevator_floor_selector != current_floor_state) begin
-            activate_elevator = 1'b1;
-            // Direction based on target vs current
-            direction_selector = (elevator_floor_selector > current_floor_state);
+    if (power_switch && !emergency_btn) begin
+        if (!stack_empty) begin
+            // Get next floor from stack WITHOUT popping (just read)
+            case (stack_pointer)
+                4'd1: next_floor = floor_stack[3:0];
+                4'd2: next_floor = floor_stack[7:4];
+                4'd3: next_floor = floor_stack[11:8];
+                4'd4: next_floor = floor_stack[15:12];
+                4'd5: next_floor = floor_stack[19:16];
+                4'd6: next_floor = floor_stack[23:20];
+                4'd7: next_floor = floor_stack[27:24];
+                4'd8: next_floor = floor_stack[31:28];
+                4'd9: next_floor = floor_stack[35:32];
+                4'd10: next_floor = floor_stack[39:36];
+                4'd11: next_floor = floor_stack[43:40];
+                default: next_floor = current_floor_state;
+            endcase
+            
+            elevator_floor_selector = next_floor;
+            
+            // Only activate if it's a different floor AND we're in a stop state
+            if ((elevator_floor_selector != current_floor_state) && is_stop_state(elevator_state)) begin
+                activate_elevator = 1'b1;
+                
+                // Natural direction selection
+                if (elevator_floor_selector > current_floor_state) begin
+                    direction_selector = 1'b1; // Up direction
+                end
+                else begin
+                    direction_selector = 1'b0; // Down direction
+                end
+            end
         end
     end
 end
+
 
 // Clear floor request when elevator arrives - reset stack pointer when full
 always @(posedge clock or negedge reset_n) begin
