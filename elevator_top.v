@@ -126,7 +126,7 @@ module elevator_top(clock, reset_n, raw_floor_call_buttons, raw_panel_buttons, r
     assign door_close = door_close_logic_check ? 1'b1 : elevator_control_output[5];
     assign alarm = elevator_control_output[6];
     assign weight_overload_lamp = weight_sensor;
-    assign floor_indicator_lamps = current_floor_state;
+    assign floor_indicator_lamps = elevator_control_output[10:7];
 
 
 
