@@ -578,14 +578,9 @@ endtask
 // Floor selection logic - pull from stack and set direction
 always @(*) begin
     activate_elevator = 1'b0;
-    elevator_floor_selector = current_floor_state; // Default to current floor
     
     if (power_switch && !emergency_btn) begin
-        if (elevator_moving) begin
-            // If elevator is moving, do not change target floor
-            direction_selector = elevator_direction; // Maintain current direction
-        end
-        else
+
         if (!stack_empty) begin
             // Get next floor from stack WITHOUT popping (just read)
             pop_from_stack(next_floor);
