@@ -594,7 +594,20 @@ always @(*) begin
             // 
             if (remaining_requests >= 1 && is_stop_state(elevator_state)) begin
                 // If multiple requests, prioritize based on current direction
-                pop_from_moving_stack(next_floor); // Pop next floor
+                case (moving_stack_pointer)
+                    4'd1: next_floor = moving_stack[3:0];
+                    4'd2: next_floor = moving_stack[7:4];
+                    4'd3: next_floor = moving_stack[11:8];
+                    4'd4: next_floor = moving_stack[15:12];
+                    4'd5: next_floor = moving_stack[19:16];
+                    4'd6: next_floor = moving_stack[23:20];
+                    4'd7: next_floor = moving_stack[27:24];
+                    4'd8: next_floor = moving_stack[31:28];
+                    4'd9: next_floor = moving_stack[35:32];
+                    4'd10: next_floor = moving_stack[39:36];
+                    4'd11: next_floor = moving_stack[43:40];
+                    default: next_floor = current_floor_state;
+                endcase
                 elevator_floor_selector = next_floor;
             end
             else begin
