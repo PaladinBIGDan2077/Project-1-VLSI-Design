@@ -423,7 +423,7 @@ end
 // Floor selection logic - pull from stack and set direction
 always @(*) begin
     activate_elevator = 1'b0;
-    elevator_floor_selector = current_floor_state; // Default to current floor
+    //elevator_floor_selector = current_floor_state; // Default to current floor
     
     if (power_switch && !emergency_btn) begin
         if (!stack_empty) begin
