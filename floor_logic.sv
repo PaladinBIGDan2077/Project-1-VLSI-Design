@@ -68,10 +68,6 @@ reg                     [3:0]               stack_pointer; // Points to next ava
 reg                                         stack_full;
 reg                                         stack_empty;
 
-// Add near your other registers
-reg [3:0] current_target_temp;    // Temporary storage for current target
-reg serving_multiple_floors;      // Flag when handling multiple requests
-reg [3:0] floors_remaining;       // Counter for floors left to serve
 
     parameter                   STOP_FL1                      = 6'h00,
                                 STOP_FL2                      = 6'h01,
@@ -376,54 +372,10 @@ task pop_from_stack;
     end
 endtask
     
-// Handle new requests during motion
-always @(posedge clock or negedge reset_n) begin
-    if (!reset_n) begin
-        current_target_temp <= FLOOR_1;
-        serving_multiple_floors <= 1'b0;
-        floors_remaining <= 4'b0;
-    end else if (power_switch && !emergency_btn) begin
-        // If new request comes in while elevator is moving
-        if (elevator_moving && (|panel_buttons || |floor_call_buttons)) begin
-            if (!serving_multiple_floors) begin
-                // First additional request - save current target and start counter
-                current_target_temp <= elevator_floor_selector;
-                serving_multiple_floors <= 1'b1;
-                floors_remaining <= stack_pointer - 1; // Count of additional floors
-            end
-        end
-        
-        // When arriving at a floor, decrement counter and get next target
-        if (is_stop_state(elevator_state) && serving_multiple_floors) begin
-            if (floors_remaining > 0) begin
-                floors_remaining <= floors_remaining - 1;
-                // Get next floor from stack based on current stack position
-                case (stack_pointer - floors_remaining)
-                    4'd1: elevator_floor_selector <= floor_stack[3:0];
-                    4'd2: elevator_floor_selector <= floor_stack[7:4];
-                    4'd3: elevator_floor_selector <= floor_stack[11:8];
-                    4'd4: elevator_floor_selector <= floor_stack[15:12];
-                    4'd5: elevator_floor_selector <= floor_stack[19:16];
-                    4'd6: elevator_floor_selector <= floor_stack[23:20];
-                    4'd7: elevator_floor_selector <= floor_stack[27:24];
-                    4'd8: elevator_floor_selector <= floor_stack[31:28];
-                    4'd9: elevator_floor_selector <= floor_stack[35:32];
-                    4'd10: elevator_floor_selector <= floor_stack[39:36];
-                    4'd11: elevator_floor_selector <= floor_stack[43:40];
-                endcase
-            end else begin
-                // All additional floors served, restore original target
-                serving_multiple_floors <= 1'b0;
-                elevator_floor_selector <= current_target_temp;
-            end
-        end
-    end
-end
-
 // Floor selection logic - pull from stack and set direction
 always @(*) begin
     activate_elevator = 1'b0;
-    //elevator_floor_selector = current_floor_state; // Default to current floor
+    elevator_floor_selector = current_floor_state; // Default to current floor
     
     if (power_switch && !emergency_btn) begin
         if (!stack_empty) begin
@@ -488,13 +440,7 @@ always @(posedge clock or negedge reset_n) begin
                     floor_stack <= 44'b0;
                 end
             end
-            if (!serving_multiple_floors) begin
-                // Normal single-floor operation
-                if (!stack_empty) begin
-                    stack_pointer <= stack_pointer - 1;
-                    stack_empty <= (stack_pointer == 4'd1);
-                end
-             end
+            
             // Turn off button lights for current floor
             call_button_lights[current_floor_state] <= 1'b0;
             panel_button_lights[current_floor_state] <= 1'b0;
