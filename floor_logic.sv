@@ -615,7 +615,7 @@ always @(*) begin
                 end
                 elevator_floor_selector = next_floor;
             end
-            else begin
+            else if (is_stop_state(elevator_state)) begin
                 case (stack_pointer)
                     4'd1: next_floor = floor_stack[3:0];
                     4'd2: next_floor = floor_stack[7:4];
@@ -631,6 +631,9 @@ always @(*) begin
                     default: next_floor = current_floor_state;
                 endcase
                 elevator_floor_selector = next_floor;
+            end
+            else begin
+                elevator_floor_selector = current_floor_state; // No change if stack empty
             end
         end
         // Only activate if it's a different floor AND we're in a stop state
