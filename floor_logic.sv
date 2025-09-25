@@ -633,7 +633,7 @@ always @(*) begin
                 elevator_floor_selector = next_floor;
             end
             else begin
-                elevator_floor_selector = current_floor_state; // No change if stack empty
+                elevator_floor_selector = next_floor; // No change if stack empty
             end
         end
         // Only activate if it's a different floor AND we're in a stop state
