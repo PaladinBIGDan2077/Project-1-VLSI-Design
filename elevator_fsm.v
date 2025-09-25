@@ -125,11 +125,11 @@ module elevator_fsm(clock, reset_n, elevator_floor_selector, emergency_stop, act
             DOWN_F11_F10:     next_counter_state = ((elevator_floor_selector == FLOOR_10) & (!direction_selector)                                      ) ? STOP_FL10    : ((!direction_selector)                                                                              ) ? DOWN_F10_F9 : (emergency_stop) ? EMERGENCY : DOWN_F11_F10;
             STOP_FL11:        next_counter_state = ((activate_elevator) & (power_switch) & (!emergency_stop) & (!direction_selector) & (!weight_sensor)) ? DOWN_F11_F10                                                                                                                       : (emergency_stop) ? EMERGENCY : STOP_FL11;
             EMERGENCY:        next_counter_state = ((!power_switch) & (!emergency_stop)                                                                ) ? STOP_FL1                                                                                                                           : (emergency_stop) ? EMERGENCY : EMERGENCY; // Stay in emergency until reset
-            default:          next_counter_state = 6'hxx; 
+            default:          next_counter_state = STOP_FL1; 
         endcase     
     end
 
-	always @(counter_state) begin
+	always @(*) begin
         case(counter_state)
             // Upcounting states                     xxxxACODUMS
             STOP_FL1:           control_output = 11'b00000010001;
@@ -164,7 +164,7 @@ module elevator_fsm(clock, reset_n, elevator_floor_selector, emergency_stop, act
             DOWN_F11_F10:       control_output = 11'b10010101010;
             STOP_FL11:          control_output = 11'b10100010001;
             EMERGENCY:          control_output = 11'b11111010001;  
-            default:            control_output = 11'bxxxxxxxxxxx;
+            default:            control_output = 11'b00000000000;
         endcase
     end
 endmodule

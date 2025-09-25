@@ -491,20 +491,20 @@ task push_to_moving_stack;
     input [3:0] floor_num;
     begin
         case (moving_stack_pointer)
-            4'd0: moving_stack[3:0] <= floor_num;
-            4'd1: moving_stack[7:4] <= floor_num;
-            4'd2: moving_stack[11:8] <= floor_num;
-            4'd3: moving_stack[15:12] <= floor_num;
-            4'd4: moving_stack[19:16] <= floor_num;
-            4'd5: moving_stack[23:20] <= floor_num;
-            4'd6: moving_stack[27:24] <= floor_num;
-            4'd7: moving_stack[31:28] <= floor_num;
-            4'd8: moving_stack[35:32] <= floor_num;
-            4'd9: moving_stack[39:36] <= floor_num;
-            4'd10: moving_stack[43:40] <= floor_num;
+            4'd0: moving_stack[3:0] = floor_num;
+            4'd1: moving_stack[7:4] = floor_num;
+            4'd2: moving_stack[11:8] = floor_num;
+            4'd3: moving_stack[15:12] = floor_num;
+            4'd4: moving_stack[19:16] = floor_num;
+            4'd5: moving_stack[23:20] = floor_num;
+            4'd6: moving_stack[27:24] = floor_num;
+            4'd7: moving_stack[31:28] = floor_num;
+            4'd8: moving_stack[35:32] = floor_num;
+            4'd9: moving_stack[39:36] = floor_num;
+            4'd10: moving_stack[43:40] = floor_num;
         endcase
-        moving_stack_pointer <= moving_stack_pointer + 1;
-        remaining_requests <= remaining_requests + 1;
+        moving_stack_pointer = moving_stack_pointer + 1;
+        remaining_requests = remaining_requests + 1;
     end
 endtask
 
@@ -526,8 +526,8 @@ task pop_from_moving_stack;
             4'd11: popped_floor = moving_stack[43:40];
             default: popped_floor = current_floor_state;
         endcase
-        moving_stack_pointer <= moving_stack_pointer - 1;
-        remaining_requests <= remaining_requests - 1;
+        moving_stack_pointer = moving_stack_pointer - 1;
+        remaining_requests = remaining_requests - 1;
     end
 endtask
 
@@ -537,21 +537,22 @@ task push_to_stack;
     begin
         if (!stack_full) begin
             case (stack_pointer)
-                4'd0: floor_stack[3:0] <= floor_num;
-                4'd1: floor_stack[7:4] <= floor_num;
-                4'd2: floor_stack[11:8] <= floor_num;
-                4'd3: floor_stack[15:12] <= floor_num;
-                4'd4: floor_stack[19:16] <= floor_num;
-                4'd5: floor_stack[23:20] <= floor_num;
-                4'd6: floor_stack[27:24] <= floor_num;
-                4'd7: floor_stack[31:28] <= floor_num;
-                4'd8: floor_stack[35:32] <= floor_num;
-                4'd9: floor_stack[39:36] <= floor_num;
-                4'd10: floor_stack[43:40] <= floor_num;
+                4'd0: floor_stack[3:0] = floor_num;
+                4'd1: floor_stack[7:4] = floor_num;
+                4'd2: floor_stack[11:8] = floor_num;
+                4'd3: floor_stack[15:12] = floor_num;
+                4'd4: floor_stack[19:16] = floor_num;
+                4'd5: floor_stack[23:20] = floor_num;
+                4'd6: floor_stack[27:24] = floor_num;
+                4'd7: floor_stack[31:28] = floor_num;
+                4'd8: floor_stack[35:32] = floor_num;
+                4'd9: floor_stack[39:36] = floor_num;
+                4'd10: floor_stack[43:40] = floor_num;
+                default: 4'hF;
             endcase
-            stack_pointer <= stack_pointer + 1;
-            stack_empty <= 1'b0;
-            stack_full <= (stack_pointer == 4'd10);
+            stack_pointer = stack_pointer + 1;
+            stack_empty = 1'b0;
+            stack_full = (stack_pointer == 4'd10);
         end
     end
 endtask
@@ -573,9 +574,9 @@ task pop_from_stack;
                 4'd9: popped_floor = floor_stack[35:32];
                 4'd10: popped_floor = floor_stack[39:36];
                 4'd11: popped_floor = floor_stack[43:40];
-                default: popped_floor = current_floor_state;
+                default: popped_floor = 4'hF;
             endcase
-            stack_pointer <= stack_pointer - 1;
+            stack_pointer = stack_pointer - 1;
         end
         else begin
             popped_floor = current_floor_state;

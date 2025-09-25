@@ -29,7 +29,6 @@ module button_debouncer (clk, rst_n, btn_n_in, pulse_out);
     input                            btn_n_in;  // Active-low button input
     output                           pulse_out;   // Extended pulse output
 
-    wire                             clk;        
     wire                             rst_n;      
     wire                             btn_n_in;  
     reg                              pulse_out;   

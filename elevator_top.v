@@ -54,6 +54,11 @@ module elevator_top(clock, reset_n, raw_floor_call_buttons, raw_panel_buttons, r
     wire                                            door_close_btn;
     wire                                            emergency_btn;
     wire                                            power_switch;
+    wire                                            door_open_logic_check;
+    wire                                            door_close_logic_check;
+    wire                                            reset_n;
+    wire                                            clock;
+
 
     // Internal wires between modules
     wire                    [3:0]                   elevator_floor_selector;
@@ -120,7 +125,6 @@ module elevator_top(clock, reset_n, raw_floor_call_buttons, raw_panel_buttons, r
     assign door_open = door_open_logic_check ? 1'b1 : door_close_logic_check ? 1'b0 : elevator_control_output[4];
     assign door_close = door_close_logic_check ? 1'b1 : elevator_control_output[5];
     assign alarm = elevator_control_output[6];
-    assign floor_indicator_lamps = elevator_control_output[10:7];
     assign weight_overload_lamp = weight_sensor;
 
 
