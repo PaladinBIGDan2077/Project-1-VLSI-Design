@@ -70,6 +70,7 @@ reg                     [3:0]               moving_stack_pointer; // Points to n
 reg                                         stack_full;
 reg                                         stack_empty;
 reg                     [3:0]               remaining_requests;
+reg                     [3:0]               floor_number;
 
 
     parameter                   STOP_FL1                      = 5'h00,
@@ -150,6 +151,7 @@ always @(posedge clock or negedge reset_n) begin
         door_close_allowed <= 1'b0;
         activate_elevator <= 1'b0;
         remaining_requests <= 4'b0;
+        floor_number <= 4'b0;
     end 
     else if (!power_switch) begin
         call_button_lights <= 11'b0;
@@ -188,246 +190,930 @@ always @(posedge clock or negedge reset_n) begin
             panel_buttons[0] && current_floor_state != FLOOR_1 && !panel_button_lights[0]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    push_to_moving_stack(4'd0);
+                    floor_number = 4'd0;
+                    case (moving_stack_pointer)
+                        4'd0: moving_stack[3:0] = floor_number;
+                        4'd1: moving_stack[7:4] = floor_number;
+                        4'd2: moving_stack[11:8] = floor_number;
+                        4'd3: moving_stack[15:12] = floor_number;
+                        4'd4: moving_stack[19:16] = floor_number;
+                        4'd5: moving_stack[23:20] = floor_number;
+                        4'd6: moving_stack[27:24] = floor_number;
+                        4'd7: moving_stack[31:28] = floor_number;
+                        4'd8: moving_stack[35:32] = floor_number;
+                        4'd9: moving_stack[39:36] = floor_number;
+                        4'd10: moving_stack[43:40] = floor_number;
+                    endcase
                 end
                 else begin
                     // If elevator is stopped, push to main stack
-                    if (!stack_full) push_to_stack(4'd0);
+                    floor_number = 4'd0;
+                    if (!stack_full) begin
+                        case (stack_pointer)
+                            4'd0: floor_stack[3:0] = floor_number;
+                            4'd1: floor_stack[7:4] = floor_number;
+                            4'd2: floor_stack[11:8] = floor_number;
+                            4'd3: floor_stack[15:12] = floor_number;
+                            4'd4: floor_stack[19:16] = floor_number;
+                            4'd5: floor_stack[23:20] = floor_number;
+                            4'd6: floor_stack[27:24] = floor_number;
+                            4'd7: floor_stack[31:28] = floor_number;
+                            4'd8: floor_stack[35:32] = floor_number;
+                            4'd9: floor_stack[39:36] = floor_number;
+                            4'd10: floor_stack[43:40] = floor_number;
+                        endcase
+                        stack_pointer = stack_pointer + 1;
+                        stack_empty = 1'b0;
+                        stack_full = (stack_pointer == 4'd10);
+                    end
                 end
                 panel_button_lights[0] <= 1'b1;
             end
             panel_buttons[1] && current_floor_state != FLOOR_2 && !panel_button_lights[1]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    push_to_moving_stack(4'd1);
+                    floor_number = 4'd1;
+                    case (moving_stack_pointer)
+                        4'd0: moving_stack[3:0] = floor_number;
+                        4'd1: moving_stack[7:4] = floor_number;
+                        4'd2: moving_stack[11:8] = floor_number;
+                        4'd3: moving_stack[15:12] = floor_number;
+                        4'd4: moving_stack[19:16] = floor_number;
+                        4'd5: moving_stack[23:20] = floor_number;
+                        4'd6: moving_stack[27:24] = floor_number;
+                        4'd7: moving_stack[31:28] = floor_number;
+                        4'd8: moving_stack[35:32] = floor_number;
+                        4'd9: moving_stack[39:36] = floor_number;
+                        4'd10: moving_stack[43:40] = floor_number;
+                    endcase
                 end
                 else begin
                     // If elevator is stopped, push to main stack
-                    if (!stack_full) push_to_stack(4'd1);
+                    floor_number = 4'd1;
+                    if (!stack_full) begin
+                        case (stack_pointer)
+                            4'd0: floor_stack[3:0] = floor_number;
+                            4'd1: floor_stack[7:4] = floor_number;
+                            4'd2: floor_stack[11:8] = floor_number;
+                            4'd3: floor_stack[15:12] = floor_number;
+                            4'd4: floor_stack[19:16] = floor_number;
+                            4'd5: floor_stack[23:20] = floor_number;
+                            4'd6: floor_stack[27:24] = floor_number;
+                            4'd7: floor_stack[31:28] = floor_number;
+                            4'd8: floor_stack[35:32] = floor_number;
+                            4'd9: floor_stack[39:36] = floor_number;
+                            4'd10: floor_stack[43:40] = floor_number;
+                        endcase
+                        stack_pointer = stack_pointer + 1;
+                        stack_empty = 1'b0;
+                        stack_full = (stack_pointer == 4'd10);
+                    end
                 end
                 panel_button_lights[1] <= 1'b1;
             end
             panel_buttons[2] && current_floor_state != FLOOR_3 && !panel_button_lights[2]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    push_to_moving_stack(4'd2);
+                    floor_number = 4'd2;
+                    case (moving_stack_pointer)
+                        4'd0: moving_stack[3:0] = floor_number;
+                        4'd1: moving_stack[7:4] = floor_number;
+                        4'd2: moving_stack[11:8] = floor_number;
+                        4'd3: moving_stack[15:12] = floor_number;
+                        4'd4: moving_stack[19:16] = floor_number;
+                        4'd5: moving_stack[23:20] = floor_number;
+                        4'd6: moving_stack[27:24] = floor_number;
+                        4'd7: moving_stack[31:28] = floor_number;
+                        4'd8: moving_stack[35:32] = floor_number;
+                        4'd9: moving_stack[39:36] = floor_number;
+                        4'd10: moving_stack[43:40] = floor_number;
+                    endcase               
                 end
                 else begin
                     // If elevator is stopped, push to main stack
-                    if (!stack_full) push_to_stack(4'd2);
+                    floor_number = 4'd2;
+                    if (!stack_full) begin
+                        case (stack_pointer)
+                            4'd0: floor_stack[3:0] = floor_number;
+                            4'd1: floor_stack[7:4] = floor_number;
+                            4'd2: floor_stack[11:8] = floor_number;
+                            4'd3: floor_stack[15:12] = floor_number;
+                            4'd4: floor_stack[19:16] = floor_number;
+                            4'd5: floor_stack[23:20] = floor_number;
+                            4'd6: floor_stack[27:24] = floor_number;
+                            4'd7: floor_stack[31:28] = floor_number;
+                            4'd8: floor_stack[35:32] = floor_number;
+                            4'd9: floor_stack[39:36] = floor_number;
+                            4'd10: floor_stack[43:40] = floor_number;
+                        endcase
+                        stack_pointer = stack_pointer + 1;
+                        stack_empty = 1'b0;
+                        stack_full = (stack_pointer == 4'd10);
+                    end
                 end
                 panel_button_lights[2] <= 1'b1;
             end
             panel_buttons[3] && current_floor_state != FLOOR_4 && !panel_button_lights[3]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    push_to_moving_stack(4'd3);
+                    floor_number = 4'd3;
+                    case (moving_stack_pointer)
+                        4'd0: moving_stack[3:0] = floor_number;
+                        4'd1: moving_stack[7:4] = floor_number;
+                        4'd2: moving_stack[11:8] = floor_number;
+                        4'd3: moving_stack[15:12] = floor_number;
+                        4'd4: moving_stack[19:16] = floor_number;
+                        4'd5: moving_stack[23:20] = floor_number;
+                        4'd6: moving_stack[27:24] = floor_number;
+                        4'd7: moving_stack[31:28] = floor_number;
+                        4'd8: moving_stack[35:32] = floor_number;
+                        4'd9: moving_stack[39:36] = floor_number;
+                        4'd10: moving_stack[43:40] = floor_number;
+                    endcase               
                 end
                 else begin
                     // If elevator is stopped, push to main stack
-                    if (!stack_full) push_to_stack(4'd3);
+                    floor_number = 4'd3;
+                    if (!stack_full) begin
+                        case (stack_pointer)
+                            4'd0: floor_stack[3:0] = floor_number;
+                            4'd1: floor_stack[7:4] = floor_number;
+                            4'd2: floor_stack[11:8] = floor_number;
+                            4'd3: floor_stack[15:12] = floor_number;
+                            4'd4: floor_stack[19:16] = floor_number;
+                            4'd5: floor_stack[23:20] = floor_number;
+                            4'd6: floor_stack[27:24] = floor_number;
+                            4'd7: floor_stack[31:28] = floor_number;
+                            4'd8: floor_stack[35:32] = floor_number;
+                            4'd9: floor_stack[39:36] = floor_number;
+                            4'd10: floor_stack[43:40] = floor_number;
+                        endcase
+                        stack_pointer = stack_pointer + 1;
+                        stack_empty = 1'b0;
+                        stack_full = (stack_pointer == 4'd10);
+                    end
                 end
                 panel_button_lights[3] <= 1'b1;
             end
             panel_buttons[4] && current_floor_state != FLOOR_5 && !panel_button_lights[4]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    push_to_moving_stack(4'd4);
+                    floor_number = 4'd4;
+                    case (moving_stack_pointer)
+                        4'd0: moving_stack[3:0] = floor_number;
+                        4'd1: moving_stack[7:4] = floor_number;
+                        4'd2: moving_stack[11:8] = floor_number;
+                        4'd3: moving_stack[15:12] = floor_number;
+                        4'd4: moving_stack[19:16] = floor_number;
+                        4'd5: moving_stack[23:20] = floor_number;
+                        4'd6: moving_stack[27:24] = floor_number;
+                        4'd7: moving_stack[31:28] = floor_number;
+                        4'd8: moving_stack[35:32] = floor_number;
+                        4'd9: moving_stack[39:36] = floor_number;
+                        4'd10: moving_stack[43:40] = floor_number;
+                    endcase                
                 end
                 else begin
                     // If elevator is stopped, push to main stack
-                    if (!stack_full) push_to_stack(4'd4);
+                    floor_number = 4'd4;
+                    if (!stack_full) begin
+                        case (stack_pointer)
+                            4'd0: floor_stack[3:0] = floor_number;
+                            4'd1: floor_stack[7:4] = floor_number;
+                            4'd2: floor_stack[11:8] = floor_number;
+                            4'd3: floor_stack[15:12] = floor_number;
+                            4'd4: floor_stack[19:16] = floor_number;
+                            4'd5: floor_stack[23:20] = floor_number;
+                            4'd6: floor_stack[27:24] = floor_number;
+                            4'd7: floor_stack[31:28] = floor_number;
+                            4'd8: floor_stack[35:32] = floor_number;
+                            4'd9: floor_stack[39:36] = floor_number;
+                            4'd10: floor_stack[43:40] = floor_number;
+                        endcase
+                        stack_pointer = stack_pointer + 1;
+                        stack_empty = 1'b0;
+                        stack_full = (stack_pointer == 4'd10);
+                    end
                 end
                 panel_button_lights[4] <= 1'b1;
             end
             panel_buttons[5] && current_floor_state != FLOOR_6 && !panel_button_lights[5]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    push_to_moving_stack(4'd5);
+                    floor_number = 4'd5;
+                    case (moving_stack_pointer)
+                        4'd0: moving_stack[3:0] = floor_number;
+                        4'd1: moving_stack[7:4] = floor_number;
+                        4'd2: moving_stack[11:8] = floor_number;
+                        4'd3: moving_stack[15:12] = floor_number;
+                        4'd4: moving_stack[19:16] = floor_number;
+                        4'd5: moving_stack[23:20] = floor_number;
+                        4'd6: moving_stack[27:24] = floor_number;
+                        4'd7: moving_stack[31:28] = floor_number;
+                        4'd8: moving_stack[35:32] = floor_number;
+                        4'd9: moving_stack[39:36] = floor_number;
+                        4'd10: moving_stack[43:40] = floor_number;
+                    endcase                
                 end
                 else begin
                     // If elevator is stopped, push to main stack
-                    if (!stack_full) push_to_stack(4'd5);
+                    floor_number = 4'd5;
+                    if (!stack_full) begin
+                        case (stack_pointer)
+                            4'd0: floor_stack[3:0] = floor_number;
+                            4'd1: floor_stack[7:4] = floor_number;
+                            4'd2: floor_stack[11:8] = floor_number;
+                            4'd3: floor_stack[15:12] = floor_number;
+                            4'd4: floor_stack[19:16] = floor_number;
+                            4'd5: floor_stack[23:20] = floor_number;
+                            4'd6: floor_stack[27:24] = floor_number;
+                            4'd7: floor_stack[31:28] = floor_number;
+                            4'd8: floor_stack[35:32] = floor_number;
+                            4'd9: floor_stack[39:36] = floor_number;
+                            4'd10: floor_stack[43:40] = floor_number;
+                        endcase
+                        stack_pointer = stack_pointer + 1;
+                        stack_empty = 1'b0;
+                        stack_full = (stack_pointer == 4'd10);
+                    end
                 end
                 panel_button_lights[5] <= 1'b1;
             end
             panel_buttons[6] && current_floor_state != FLOOR_7 && !panel_button_lights[6]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    push_to_moving_stack(4'd6);
+                    floor_number = 4'd6;
+                    case (moving_stack_pointer)
+                        4'd0: moving_stack[3:0] = floor_number;
+                        4'd1: moving_stack[7:4] = floor_number;
+                        4'd2: moving_stack[11:8] = floor_number;
+                        4'd3: moving_stack[15:12] = floor_number;
+                        4'd4: moving_stack[19:16] = floor_number;
+                        4'd5: moving_stack[23:20] = floor_number;
+                        4'd6: moving_stack[27:24] = floor_number;
+                        4'd7: moving_stack[31:28] = floor_number;
+                        4'd8: moving_stack[35:32] = floor_number;
+                        4'd9: moving_stack[39:36] = floor_number;
+                        4'd10: moving_stack[43:40] = floor_number;
+                    endcase
                 end
                 else begin
                     // If elevator is stopped, push to main stack
-                    if (!stack_full) push_to_stack(4'd6);
+                    floor_number = 4'd6;
+                    if (!stack_full) begin
+                        case (stack_pointer)
+                            4'd0: floor_stack[3:0] = floor_number;
+                            4'd1: floor_stack[7:4] = floor_number;
+                            4'd2: floor_stack[11:8] = floor_number;
+                            4'd3: floor_stack[15:12] = floor_number;
+                            4'd4: floor_stack[19:16] = floor_number;
+                            4'd5: floor_stack[23:20] = floor_number;
+                            4'd6: floor_stack[27:24] = floor_number;
+                            4'd7: floor_stack[31:28] = floor_number;
+                            4'd8: floor_stack[35:32] = floor_number;
+                            4'd9: floor_stack[39:36] = floor_number;
+                            4'd10: floor_stack[43:40] = floor_number;
+                        endcase
+                        stack_pointer = stack_pointer + 1;
+                        stack_empty = 1'b0;
+                        stack_full = (stack_pointer == 4'd10);
+                    end
                 end
                 panel_button_lights[6] <= 1'b1;
             end
             panel_buttons[7] && current_floor_state != FLOOR_8 && !panel_button_lights[7]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    push_to_moving_stack(4'd7);
+                    floor_number = 4'd7;
+                    case (moving_stack_pointer)
+                        4'd0: moving_stack[3:0] = floor_number;
+                        4'd1: moving_stack[7:4] = floor_number;
+                        4'd2: moving_stack[11:8] = floor_number;
+                        4'd3: moving_stack[15:12] = floor_number;
+                        4'd4: moving_stack[19:16] = floor_number;
+                        4'd5: moving_stack[23:20] = floor_number;
+                        4'd6: moving_stack[27:24] = floor_number;
+                        4'd7: moving_stack[31:28] = floor_number;
+                        4'd8: moving_stack[35:32] = floor_number;
+                        4'd9: moving_stack[39:36] = floor_number;
+                        4'd10: moving_stack[43:40] = floor_number;
+                    endcase
                 end
                 else begin
                     // If elevator is stopped, push to main stack
-                    if (!stack_full) push_to_stack(4'd7);
+                    floor_number = 4'd7;
+                    if (!stack_full) begin
+                        case (stack_pointer)
+                            4'd0: floor_stack[3:0] = floor_number;
+                            4'd1: floor_stack[7:4] = floor_number;
+                            4'd2: floor_stack[11:8] = floor_number;
+                            4'd3: floor_stack[15:12] = floor_number;
+                            4'd4: floor_stack[19:16] = floor_number;
+                            4'd5: floor_stack[23:20] = floor_number;
+                            4'd6: floor_stack[27:24] = floor_number;
+                            4'd7: floor_stack[31:28] = floor_number;
+                            4'd8: floor_stack[35:32] = floor_number;
+                            4'd9: floor_stack[39:36] = floor_number;
+                            4'd10: floor_stack[43:40] = floor_number;
+                        endcase
+                        stack_pointer = stack_pointer + 1;
+                        stack_empty = 1'b0;
+                        stack_full = (stack_pointer == 4'd10);
+                    end
                 end
                 panel_button_lights[7] <= 1'b1;
             end
             panel_buttons[8] && current_floor_state != FLOOR_9 && !panel_button_lights[8]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    push_to_moving_stack(4'd8);
+                    floor_number = 4'd8;
+                    case (moving_stack_pointer)
+                        4'd0: moving_stack[3:0] = floor_number;
+                        4'd1: moving_stack[7:4] = floor_number;
+                        4'd2: moving_stack[11:8] = floor_number;
+                        4'd3: moving_stack[15:12] = floor_number;
+                        4'd4: moving_stack[19:16] = floor_number;
+                        4'd5: moving_stack[23:20] = floor_number;
+                        4'd6: moving_stack[27:24] = floor_number;
+                        4'd7: moving_stack[31:28] = floor_number;
+                        4'd8: moving_stack[35:32] = floor_number;
+                        4'd9: moving_stack[39:36] = floor_number;
+                        4'd10: moving_stack[43:40] = floor_number;
+                    endcase
                 end
                 else begin
                     // If elevator is stopped, push to main stack
-                    if (!stack_full) push_to_stack(4'd8);
+                    floor_number = 4'd8;
+                    if (!stack_full) begin
+                        case (stack_pointer)
+                            4'd0: floor_stack[3:0] = floor_number;
+                            4'd1: floor_stack[7:4] = floor_number;
+                            4'd2: floor_stack[11:8] = floor_number;
+                            4'd3: floor_stack[15:12] = floor_number;
+                            4'd4: floor_stack[19:16] = floor_number;
+                            4'd5: floor_stack[23:20] = floor_number;
+                            4'd6: floor_stack[27:24] = floor_number;
+                            4'd7: floor_stack[31:28] = floor_number;
+                            4'd8: floor_stack[35:32] = floor_number;
+                            4'd9: floor_stack[39:36] = floor_number;
+                            4'd10: floor_stack[43:40] = floor_number;
+                        endcase
+                        stack_pointer = stack_pointer + 1;
+                        stack_empty = 1'b0;
+                        stack_full = (stack_pointer == 4'd10);
+                    end
                 end
                 panel_button_lights[8] <= 1'b1;
             end
             panel_buttons[9] && current_floor_state != FLOOR_10 && !panel_button_lights[9]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    push_to_moving_stack(4'd9);
+                    floor_number = 4'd9;
+                    case (moving_stack_pointer)
+                        4'd0: moving_stack[3:0] = floor_number;
+                        4'd1: moving_stack[7:4] = floor_number;
+                        4'd2: moving_stack[11:8] = floor_number;
+                        4'd3: moving_stack[15:12] = floor_number;
+                        4'd4: moving_stack[19:16] = floor_number;
+                        4'd5: moving_stack[23:20] = floor_number;
+                        4'd6: moving_stack[27:24] = floor_number;
+                        4'd7: moving_stack[31:28] = floor_number;
+                        4'd8: moving_stack[35:32] = floor_number;
+                        4'd9: moving_stack[39:36] = floor_number;
+                        4'd10: moving_stack[43:40] = floor_number;
+                    endcase
                 end
                 else begin
                     // If elevator is stopped, push to main stack
-                    if (!stack_full) push_to_stack(4'd9);
+                    floor_number = 4'd9;
+                    if (!stack_full) begin
+                        case (stack_pointer)
+                            4'd0: floor_stack[3:0] = floor_number;
+                            4'd1: floor_stack[7:4] = floor_number;
+                            4'd2: floor_stack[11:8] = floor_number;
+                            4'd3: floor_stack[15:12] = floor_number;
+                            4'd4: floor_stack[19:16] = floor_number;
+                            4'd5: floor_stack[23:20] = floor_number;
+                            4'd6: floor_stack[27:24] = floor_number;
+                            4'd7: floor_stack[31:28] = floor_number;
+                            4'd8: floor_stack[35:32] = floor_number;
+                            4'd9: floor_stack[39:36] = floor_number;
+                            4'd10: floor_stack[43:40] = floor_number;
+                        endcase
+                        stack_pointer = stack_pointer + 1;
+                        stack_empty = 1'b0;
+                        stack_full = (stack_pointer == 4'd10);
+                    end
                 end
                 panel_button_lights[9] <= 1'b1;
             end
             panel_buttons[10] && current_floor_state != FLOOR_11 && !panel_button_lights[10]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    push_to_moving_stack(4'd10);
+                    floor_number = 4'd10;
+                    case (moving_stack_pointer)
+                        4'd0: moving_stack[3:0] = floor_number;
+                        4'd1: moving_stack[7:4] = floor_number;
+                        4'd2: moving_stack[11:8] = floor_number;
+                        4'd3: moving_stack[15:12] = floor_number;
+                        4'd4: moving_stack[19:16] = floor_number;
+                        4'd5: moving_stack[23:20] = floor_number;
+                        4'd6: moving_stack[27:24] = floor_number;
+                        4'd7: moving_stack[31:28] = floor_number;
+                        4'd8: moving_stack[35:32] = floor_number;
+                        4'd9: moving_stack[39:36] = floor_number;
+                        4'd10: moving_stack[43:40] = floor_number;
+                    endcase
+                    moving_stack_pointer = moving_stack_pointer + 1;
+                    remaining_requests = remaining_requests + 1;
                 end
                 else begin
                     // If elevator is stopped, push to main stack
-                    if (!stack_full) push_to_stack(4'd10);
+                    floor_number = 4'd10;
+                    if (!stack_full) begin
+                        case (stack_pointer)
+                            4'd0: floor_stack[3:0] = floor_number;
+                            4'd1: floor_stack[7:4] = floor_number;
+                            4'd2: floor_stack[11:8] = floor_number;
+                            4'd3: floor_stack[15:12] = floor_number;
+                            4'd4: floor_stack[19:16] = floor_number;
+                            4'd5: floor_stack[23:20] = floor_number;
+                            4'd6: floor_stack[27:24] = floor_number;
+                            4'd7: floor_stack[31:28] = floor_number;
+                            4'd8: floor_stack[35:32] = floor_number;
+                            4'd9: floor_stack[39:36] = floor_number;
+                            4'd10: floor_stack[43:40] = floor_number;
+                        endcase
+                        stack_pointer = stack_pointer + 1;
+                        stack_empty = 1'b0;
+                        stack_full = (stack_pointer == 4'd10);
+                    end
                 end
                 panel_button_lights[10] <= 1'b1;
             end
         endcase
-        
+
         // Check floor call buttons (external requests)
         case (1'b1)
             floor_call_buttons[0] && current_floor_state != FLOOR_1 && !call_button_lights[0]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    push_to_moving_stack(4'd0);
+                    floor_number = 4'd0;
+                    case (moving_stack_pointer)
+                        4'd0: moving_stack[3:0] = floor_number;
+                        4'd1: moving_stack[7:4] = floor_number;
+                        4'd2: moving_stack[11:8] = floor_number;
+                        4'd3: moving_stack[15:12] = floor_number;
+                        4'd4: moving_stack[19:16] = floor_number;
+                        4'd5: moving_stack[23:20] = floor_number;
+                        4'd6: moving_stack[27:24] = floor_number;
+                        4'd7: moving_stack[31:28] = floor_number;
+                        4'd8: moving_stack[35:32] = floor_number;
+                        4'd9: moving_stack[39:36] = floor_number;
+                        4'd10: moving_stack[43:40] = floor_number;
+                    endcase
                 end
                 else begin
                     // If elevator is stopped, push to main stack
-                    if (!stack_full) push_to_stack(4'd0);
+                    floor_number = 4'd0;
+                    if (!stack_full) begin
+                        case (stack_pointer)
+                            4'd0: floor_stack[3:0] = floor_number;
+                            4'd1: floor_stack[7:4] = floor_number;
+                            4'd2: floor_stack[11:8] = floor_number;
+                            4'd3: floor_stack[15:12] = floor_number;
+                            4'd4: floor_stack[19:16] = floor_number;
+                            4'd5: floor_stack[23:20] = floor_number;
+                            4'd6: floor_stack[27:24] = floor_number;
+                            4'd7: floor_stack[31:28] = floor_number;
+                            4'd8: floor_stack[35:32] = floor_number;
+                            4'd9: floor_stack[39:36] = floor_number;
+                            4'd10: floor_stack[43:40] = floor_number;
+                        endcase
+                        stack_pointer = stack_pointer + 1;
+                        stack_empty = 1'b0;
+                        stack_full = (stack_pointer == 4'd10);
+                    end
                 end
                 call_button_lights[0] <= 1'b1;
             end
             floor_call_buttons[1] && current_floor_state != FLOOR_2 && !call_button_lights[1]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    push_to_moving_stack(4'd1);
+                    floor_number = 4'd1;
+                    case (moving_stack_pointer)
+                        4'd0: moving_stack[3:0] = floor_number;
+                        4'd1: moving_stack[7:4] = floor_number;
+                        4'd2: moving_stack[11:8] = floor_number;
+                        4'd3: moving_stack[15:12] = floor_number;
+                        4'd4: moving_stack[19:16] = floor_number;
+                        4'd5: moving_stack[23:20] = floor_number;
+                        4'd6: moving_stack[27:24] = floor_number;
+                        4'd7: moving_stack[31:28] = floor_number;
+                        4'd8: moving_stack[35:32] = floor_number;
+                        4'd9: moving_stack[39:36] = floor_number;
+                        4'd10: moving_stack[43:40] = floor_number;
+                    endcase
                 end
                 else begin
                     // If elevator is stopped, push to main stack
-                    if (!stack_full) push_to_stack(4'd1);
+                    floor_number = 4'd1;
+                    if (!stack_full) begin
+                        case (stack_pointer)
+                            4'd0: floor_stack[3:0] = floor_number;
+                            4'd1: floor_stack[7:4] = floor_number;
+                            4'd2: floor_stack[11:8] = floor_number;
+                            4'd3: floor_stack[15:12] = floor_number;
+                            4'd4: floor_stack[19:16] = floor_number;
+                            4'd5: floor_stack[23:20] = floor_number;
+                            4'd6: floor_stack[27:24] = floor_number;
+                            4'd7: floor_stack[31:28] = floor_number;
+                            4'd8: floor_stack[35:32] = floor_number;
+                            4'd9: floor_stack[39:36] = floor_number;
+                            4'd10: floor_stack[43:40] = floor_number;
+                        endcase
+                        stack_pointer = stack_pointer + 1;
+                        stack_empty = 1'b0;
+                        stack_full = (stack_pointer == 4'd10);
+                    end
                 end
                 call_button_lights[1] <= 1'b1;
             end
             floor_call_buttons[2] && current_floor_state != FLOOR_3 && !call_button_lights[2]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    push_to_moving_stack(4'd2);
+                    floor_number = 4'd2;
+                    case (moving_stack_pointer)
+                        4'd0: moving_stack[3:0] = floor_number;
+                        4'd1: moving_stack[7:4] = floor_number;
+                        4'd2: moving_stack[11:8] = floor_number;
+                        4'd3: moving_stack[15:12] = floor_number;
+                        4'd4: moving_stack[19:16] = floor_number;
+                        4'd5: moving_stack[23:20] = floor_number;
+                        4'd6: moving_stack[27:24] = floor_number;
+                        4'd7: moving_stack[31:28] = floor_number;
+                        4'd8: moving_stack[35:32] = floor_number;
+                        4'd9: moving_stack[39:36] = floor_number;
+                        4'd10: moving_stack[43:40] = floor_number;
+                    endcase
                 end
                 else begin
                     // If elevator is stopped, push to main stack
-                    if (!stack_full) push_to_stack(4'd2);
+                    floor_number = 4'd2;
+                    if (!stack_full) begin
+                        case (stack_pointer)
+                            4'd0: floor_stack[3:0] = floor_number;
+                            4'd1: floor_stack[7:4] = floor_number;
+                            4'd2: floor_stack[11:8] = floor_number;
+                            4'd3: floor_stack[15:12] = floor_number;
+                            4'd4: floor_stack[19:16] = floor_number;
+                            4'd5: floor_stack[23:20] = floor_number;
+                            4'd6: floor_stack[27:24] = floor_number;
+                            4'd7: floor_stack[31:28] = floor_number;
+                            4'd8: floor_stack[35:32] = floor_number;
+                            4'd9: floor_stack[39:36] = floor_number;
+                            4'd10: floor_stack[43:40] = floor_number;
+                        endcase
+                        stack_pointer = stack_pointer + 1;
+                        stack_empty = 1'b0;
+                        stack_full = (stack_pointer == 4'd10);
+                    end
                 end
                 call_button_lights[2] <= 1'b1;
             end
             floor_call_buttons[3] && current_floor_state != FLOOR_4 && !call_button_lights[3]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    push_to_moving_stack(4'd3);
+                    floor_number = 4'd3;
+                    case (moving_stack_pointer)
+                        4'd0: moving_stack[3:0] = floor_number;
+                        4'd1: moving_stack[7:4] = floor_number;
+                        4'd2: moving_stack[11:8] = floor_number;
+                        4'd3: moving_stack[15:12] = floor_number;
+                        4'd4: moving_stack[19:16] = floor_number;
+                        4'd5: moving_stack[23:20] = floor_number;
+                        4'd6: moving_stack[27:24] = floor_number;
+                        4'd7: moving_stack[31:28] = floor_number;
+                        4'd8: moving_stack[35:32] = floor_number;
+                        4'd9: moving_stack[39:36] = floor_number;
+                        4'd10: moving_stack[43:40] = floor_number;
+                    endcase
                 end
                 else begin
                     // If elevator is stopped, push to main stack
-                    if (!stack_full) push_to_stack(4'd3);
+                    floor_number = 4'd3;
+                    if (!stack_full) begin
+                        case (stack_pointer)
+                            4'd0: floor_stack[3:0] = floor_number;
+                            4'd1: floor_stack[7:4] = floor_number;
+                            4'd2: floor_stack[11:8] = floor_number;
+                            4'd3: floor_stack[15:12] = floor_number;
+                            4'd4: floor_stack[19:16] = floor_number;
+                            4'd5: floor_stack[23:20] = floor_number;
+                            4'd6: floor_stack[27:24] = floor_number;
+                            4'd7: floor_stack[31:28] = floor_number;
+                            4'd8: floor_stack[35:32] = floor_number;
+                            4'd9: floor_stack[39:36] = floor_number;
+                            4'd10: floor_stack[43:40] = floor_number;
+                        endcase
+                        stack_pointer = stack_pointer + 1;
+                        stack_empty = 1'b0;
+                        stack_full = (stack_pointer == 4'd10);
+                    end
                 end
                 call_button_lights[3] <= 1'b1;
             end
             floor_call_buttons[4] && current_floor_state != FLOOR_5 && !call_button_lights[4]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    push_to_moving_stack(4'd4);
+                    floor_number = 4'd4;
+                    case (moving_stack_pointer)
+                        4'd0: moving_stack[3:0] = floor_number;
+                        4'd1: moving_stack[7:4] = floor_number;
+                        4'd2: moving_stack[11:8] = floor_number;
+                        4'd3: moving_stack[15:12] = floor_number;
+                        4'd4: moving_stack[19:16] = floor_number;
+                        4'd5: moving_stack[23:20] = floor_number;
+                        4'd6: moving_stack[27:24] = floor_number;
+                        4'd7: moving_stack[31:28] = floor_number;
+                        4'd8: moving_stack[35:32] = floor_number;
+                        4'd9: moving_stack[39:36] = floor_number;
+                        4'd10: moving_stack[43:40] = floor_number;
+                    endcase
                 end
                 else begin
                     // If elevator is stopped, push to main stack
-                    if (!stack_full) push_to_stack(4'd4);
-                end 
+                    floor_number = 4'd4;
+                    if (!stack_full) begin
+                        case (stack_pointer)
+                            4'd0: floor_stack[3:0] = floor_number;
+                            4'd1: floor_stack[7:4] = floor_number;
+                            4'd2: floor_stack[11:8] = floor_number;
+                            4'd3: floor_stack[15:12] = floor_number;
+                            4'd4: floor_stack[19:16] = floor_number;
+                            4'd5: floor_stack[23:20] = floor_number;
+                            4'd6: floor_stack[27:24] = floor_number;
+                            4'd7: floor_stack[31:28] = floor_number;
+                            4'd8: floor_stack[35:32] = floor_number;
+                            4'd9: floor_stack[39:36] = floor_number;
+                            4'd10: floor_stack[43:40] = floor_number;
+                        endcase
+                        stack_pointer = stack_pointer + 1;
+                        stack_empty = 1'b0;
+                        stack_full = (stack_pointer == 4'd10);
+                    end
+                end
                 call_button_lights[4] <= 1'b1;
             end
             floor_call_buttons[5] && current_floor_state != FLOOR_6 && !call_button_lights[5]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    push_to_moving_stack(4'd5);
+                    floor_number = 4'd5;
+                    case (moving_stack_pointer)
+                        4'd0: moving_stack[3:0] = floor_number;
+                        4'd1: moving_stack[7:4] = floor_number;
+                        4'd2: moving_stack[11:8] = floor_number;
+                        4'd3: moving_stack[15:12] = floor_number;
+                        4'd4: moving_stack[19:16] = floor_number;
+                        4'd5: moving_stack[23:20] = floor_number;
+                        4'd6: moving_stack[27:24] = floor_number;
+                        4'd7: moving_stack[31:28] = floor_number;
+                        4'd8: moving_stack[35:32] = floor_number;
+                        4'd9: moving_stack[39:36] = floor_number;
+                        4'd10: moving_stack[43:40] = floor_number;
+                    endcase
                 end
                 else begin
                     // If elevator is stopped, push to main stack
-                    if (!stack_full) push_to_stack(4'd5);
+                    floor_number = 4'd5;
+                    if (!stack_full) begin
+                        case (stack_pointer)
+                            4'd0: floor_stack[3:0] = floor_number;
+                            4'd1: floor_stack[7:4] = floor_number;
+                            4'd2: floor_stack[11:8] = floor_number;
+                            4'd3: floor_stack[15:12] = floor_number;
+                            4'd4: floor_stack[19:16] = floor_number;
+                            4'd5: floor_stack[23:20] = floor_number;
+                            4'd6: floor_stack[27:24] = floor_number;
+                            4'd7: floor_stack[31:28] = floor_number;
+                            4'd8: floor_stack[35:32] = floor_number;
+                            4'd9: floor_stack[39:36] = floor_number;
+                            4'd10: floor_stack[43:40] = floor_number;
+                        endcase
+                        stack_pointer = stack_pointer + 1;
+                        stack_empty = 1'b0;
+                        stack_full = (stack_pointer == 4'd10);
+                    end
                 end
                 call_button_lights[5] <= 1'b1;
             end
             floor_call_buttons[6] && current_floor_state != FLOOR_7 && !call_button_lights[6]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    push_to_moving_stack(4'd6);
+                    floor_number = 4'd6;
+                    case (moving_stack_pointer)
+                        4'd0: moving_stack[3:0] = floor_number;
+                        4'd1: moving_stack[7:4] = floor_number;
+                        4'd2: moving_stack[11:8] = floor_number;
+                        4'd3: moving_stack[15:12] = floor_number;
+                        4'd4: moving_stack[19:16] = floor_number;
+                        4'd5: moving_stack[23:20] = floor_number;
+                        4'd6: moving_stack[27:24] = floor_number;
+                        4'd7: moving_stack[31:28] = floor_number;
+                        4'd8: moving_stack[35:32] = floor_number;
+                        4'd9: moving_stack[39:36] = floor_number;
+                        4'd10: moving_stack[43:40] = floor_number;
+                    endcase
                 end
                 else begin
                     // If elevator is stopped, push to main stack
-                    if (!stack_full) push_to_stack(4'd6);
+                    floor_number = 4'd6;
+                    if (!stack_full) begin
+                        case (stack_pointer)
+                            4'd0: floor_stack[3:0] = floor_number;
+                            4'd1: floor_stack[7:4] = floor_number;
+                            4'd2: floor_stack[11:8] = floor_number;
+                            4'd3: floor_stack[15:12] = floor_number;
+                            4'd4: floor_stack[19:16] = floor_number;
+                            4'd5: floor_stack[23:20] = floor_number;
+                            4'd6: floor_stack[27:24] = floor_number;
+                            4'd7: floor_stack[31:28] = floor_number;
+                            4'd8: floor_stack[35:32] = floor_number;
+                            4'd9: floor_stack[39:36] = floor_number;
+                            4'd10: floor_stack[43:40] = floor_number;
+                        endcase
+                        stack_pointer = stack_pointer + 1;
+                        stack_empty = 1'b0;
+                        stack_full = (stack_pointer == 4'd10);
+                    end
                 end
                 call_button_lights[6] <= 1'b1;
             end
             floor_call_buttons[7] && current_floor_state != FLOOR_8 && !call_button_lights[7]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    push_to_moving_stack(4'd7);
+                    floor_number = 4'd7;
+                    case (moving_stack_pointer)
+                        4'd0: moving_stack[3:0] = floor_number;
+                        4'd1: moving_stack[7:4] = floor_number;
+                        4'd2: moving_stack[11:8] = floor_number;
+                        4'd3: moving_stack[15:12] = floor_number;
+                        4'd4: moving_stack[19:16] = floor_number;
+                        4'd5: moving_stack[23:20] = floor_number;
+                        4'd6: moving_stack[27:24] = floor_number;
+                        4'd7: moving_stack[31:28] = floor_number;
+                        4'd8: moving_stack[35:32] = floor_number;
+                        4'd9: moving_stack[39:36] = floor_number;
+                        4'd10: moving_stack[43:40] = floor_number;
+                    endcase
                 end
                 else begin
                     // If elevator is stopped, push to main stack
-                    if (!stack_full) push_to_stack(4'd7);
+                    floor_number = 4'd7;
+                    if (!stack_full) begin
+                        case (stack_pointer)
+                            4'd0: floor_stack[3:0] = floor_number;
+                            4'd1: floor_stack[7:4] = floor_number;
+                            4'd2: floor_stack[11:8] = floor_number;
+                            4'd3: floor_stack[15:12] = floor_number;
+                            4'd4: floor_stack[19:16] = floor_number;
+                            4'd5: floor_stack[23:20] = floor_number;
+                            4'd6: floor_stack[27:24] = floor_number;
+                            4'd7: floor_stack[31:28] = floor_number;
+                            4'd8: floor_stack[35:32] = floor_number;
+                            4'd9: floor_stack[39:36] = floor_number;
+                            4'd10: floor_stack[43:40] = floor_number;
+                        endcase
+                        stack_pointer = stack_pointer + 1;
+                        stack_empty = 1'b0;
+                        stack_full = (stack_pointer == 4'd10);
+                    end
                 end
                 call_button_lights[7] <= 1'b1;
             end
             floor_call_buttons[8] && current_floor_state != FLOOR_9 && !call_button_lights[8]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    push_to_moving_stack(4'd8);
+                    floor_number = 4'd8;
+                    case (moving_stack_pointer)
+                        4'd0: moving_stack[3:0] = floor_number;
+                        4'd1: moving_stack[7:4] = floor_number;
+                        4'd2: moving_stack[11:8] = floor_number;
+                        4'd3: moving_stack[15:12] = floor_number;
+                        4'd4: moving_stack[19:16] = floor_number;
+                        4'd5: moving_stack[23:20] = floor_number;
+                        4'd6: moving_stack[27:24] = floor_number;
+                        4'd7: moving_stack[31:28] = floor_number;
+                        4'd8: moving_stack[35:32] = floor_number;
+                        4'd9: moving_stack[39:36] = floor_number;
+                        4'd10: moving_stack[43:40] = floor_number;
+                    endcase
                 end
                 else begin
                     // If elevator is stopped, push to main stack
-                    if (!stack_full) push_to_stack(4'd8);
+                    floor_number = 4'd8;
+                    if (!stack_full) begin
+                        case (stack_pointer)
+                            4'd0: floor_stack[3:0] = floor_number;
+                            4'd1: floor_stack[7:4] = floor_number;
+                            4'd2: floor_stack[11:8] = floor_number;
+                            4'd3: floor_stack[15:12] = floor_number;
+                            4'd4: floor_stack[19:16] = floor_number;
+                            4'd5: floor_stack[23:20] = floor_number;
+                            4'd6: floor_stack[27:24] = floor_number;
+                            4'd7: floor_stack[31:28] = floor_number;
+                            4'd8: floor_stack[35:32] = floor_number;
+                            4'd9: floor_stack[39:36] = floor_number;
+                            4'd10: floor_stack[43:40] = floor_number;
+                        endcase
+                        stack_pointer = stack_pointer + 1;
+                        stack_empty = 1'b0;
+                        stack_full = (stack_pointer == 4'd10);
+                    end
                 end
                 call_button_lights[8] <= 1'b1;
             end
             floor_call_buttons[9] && current_floor_state != FLOOR_10 && !call_button_lights[9]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    push_to_moving_stack(4'd9);
+                    floor_number = 4'd9;
+                    case (moving_stack_pointer)
+                        4'd0: moving_stack[3:0] = floor_number;
+                        4'd1: moving_stack[7:4] = floor_number;
+                        4'd2: moving_stack[11:8] = floor_number;
+                        4'd3: moving_stack[15:12] = floor_number;
+                        4'd4: moving_stack[19:16] = floor_number;
+                        4'd5: moving_stack[23:20] = floor_number;
+                        4'd6: moving_stack[27:24] = floor_number;
+                        4'd7: moving_stack[31:28] = floor_number;
+                        4'd8: moving_stack[35:32] = floor_number;
+                        4'd9: moving_stack[39:36] = floor_number;
+                        4'd10: moving_stack[43:40] = floor_number;
+                    endcase
                 end
                 else begin
                     // If elevator is stopped, push to main stack
-                    if (!stack_full) push_to_stack(4'd9);
+                    floor_number = 4'd9;
+                    if (!stack_full) begin
+                        case (stack_pointer)
+                            4'd0: floor_stack[3:0] = floor_number;
+                            4'd1: floor_stack[7:4] = floor_number;
+                            4'd2: floor_stack[11:8] = floor_number;
+                            4'd3: floor_stack[15:12] = floor_number;
+                            4'd4: floor_stack[19:16] = floor_number;
+                            4'd5: floor_stack[23:20] = floor_number;
+                            4'd6: floor_stack[27:24] = floor_number;
+                            4'd7: floor_stack[31:28] = floor_number;
+                            4'd8: floor_stack[35:32] = floor_number;
+                            4'd9: floor_stack[39:36] = floor_number;
+                            4'd10: floor_stack[43:40] = floor_number;
+                        endcase
+                        stack_pointer = stack_pointer + 1;
+                        stack_empty = 1'b0;
+                        stack_full = (stack_pointer == 4'd10);
+                    end
                 end
                 call_button_lights[9] <= 1'b1;
             end
             floor_call_buttons[10] && current_floor_state != FLOOR_11 && !call_button_lights[10]: begin
                 if (elevator_moving) begin
                     // If elevator is moving, push to moving stack instead
-                    push_to_moving_stack(4'd10);
+                    floor_number = 4'd10;
+                    case (moving_stack_pointer)
+                        4'd0: moving_stack[3:0] = floor_number;
+                        4'd1: moving_stack[7:4] = floor_number;
+                        4'd2: moving_stack[11:8] = floor_number;
+                        4'd3: moving_stack[15:12] = floor_number;
+                        4'd4: moving_stack[19:16] = floor_number;
+                        4'd5: moving_stack[23:20] = floor_number;
+                        4'd6: moving_stack[27:24] = floor_number;
+                        4'd7: moving_stack[31:28] = floor_number;
+                        4'd8: moving_stack[35:32] = floor_number;
+                        4'd9: moving_stack[39:36] = floor_number;
+                        4'd10: moving_stack[43:40] = floor_number;
+                    endcase
                 end
                 else begin
                     // If elevator is stopped, push to main stack
-                    if (!stack_full) push_to_stack(4'd10);
+                    floor_number = 4'd10;
+                    if (!stack_full) begin
+                        case (stack_pointer)
+                            4'd0: floor_stack[3:0] = floor_number;
+                            4'd1: floor_stack[7:4] = floor_number;
+                            4'd2: floor_stack[11:8] = floor_number;
+                            4'd3: floor_stack[15:12] = floor_number;
+                            4'd4: floor_stack[19:16] = floor_number;
+                            4'd5: floor_stack[23:20] = floor_number;
+                            4'd6: floor_stack[27:24] = floor_number;
+                            4'd7: floor_stack[31:28] = floor_number;
+                            4'd8: floor_stack[35:32] = floor_number;
+                            4'd9: floor_stack[39:36] = floor_number;
+                            4'd10: floor_stack[43:40] = floor_number;
+                        endcase
+                        stack_pointer = stack_pointer + 1;
+                        stack_empty = 1'b0;
+                        stack_full = (stack_pointer == 4'd10);
+                    end
                 end
                 call_button_lights[10] <= 1'b1;
             end
@@ -489,102 +1175,7 @@ always @(posedge clock or negedge reset_n) begin
     end
 end
 
-// Stack push function
-task push_to_moving_stack;
-    input [3:0] floor_num;
-    begin
-        case (moving_stack_pointer)
-            4'd0: moving_stack[3:0] = floor_num;
-            4'd1: moving_stack[7:4] = floor_num;
-            4'd2: moving_stack[11:8] = floor_num;
-            4'd3: moving_stack[15:12] = floor_num;
-            4'd4: moving_stack[19:16] = floor_num;
-            4'd5: moving_stack[23:20] = floor_num;
-            4'd6: moving_stack[27:24] = floor_num;
-            4'd7: moving_stack[31:28] = floor_num;
-            4'd8: moving_stack[35:32] = floor_num;
-            4'd9: moving_stack[39:36] = floor_num;
-            4'd10: moving_stack[43:40] = floor_num;
-        endcase
-        moving_stack_pointer = moving_stack_pointer + 1;
-        remaining_requests = remaining_requests + 1;
-    end
-endtask
 
-// Stack pop function
-task pop_from_moving_stack;
-    output [3:0] popped_floor;
-    begin
-        case (moving_stack_pointer)
-            4'd1: popped_floor = moving_stack[3:0];
-            4'd2: popped_floor = moving_stack[7:4];
-            4'd3: popped_floor = moving_stack[11:8];
-            4'd4: popped_floor = moving_stack[15:12];
-            4'd5: popped_floor = moving_stack[19:16];
-            4'd6: popped_floor = moving_stack[23:20];
-            4'd7: popped_floor = moving_stack[27:24];
-            4'd8: popped_floor = moving_stack[31:28];
-            4'd9: popped_floor = moving_stack[35:32];
-            4'd10: popped_floor = moving_stack[39:36];
-            4'd11: popped_floor = moving_stack[43:40];
-            default: popped_floor = current_floor_state;
-        endcase
-        moving_stack_pointer = moving_stack_pointer - 1;
-        remaining_requests = remaining_requests - 1;
-    end
-endtask
-
-// Stack push function
-task push_to_stack;
-    input [3:0] floor_num;
-    begin
-        if (!stack_full) begin
-            case (stack_pointer)
-                4'd0: floor_stack[3:0] = floor_num;
-                4'd1: floor_stack[7:4] = floor_num;
-                4'd2: floor_stack[11:8] = floor_num;
-                4'd3: floor_stack[15:12] = floor_num;
-                4'd4: floor_stack[19:16] = floor_num;
-                4'd5: floor_stack[23:20] = floor_num;
-                4'd6: floor_stack[27:24] = floor_num;
-                4'd7: floor_stack[31:28] = floor_num;
-                4'd8: floor_stack[35:32] = floor_num;
-                4'd9: floor_stack[39:36] = floor_num;
-                4'd10: floor_stack[43:40] = floor_num;
-            endcase
-            stack_pointer = stack_pointer + 1;
-            stack_empty = 1'b0;
-            stack_full = (stack_pointer == 4'd10);
-        end
-    end
-endtask
-
-// Stack pop function
-task pop_from_stack;
-    output [3:0] popped_floor;
-    begin
-        if (!stack_empty) begin
-            case (stack_pointer)
-                4'd1: popped_floor = floor_stack[3:0];
-                4'd2: popped_floor = floor_stack[7:4];
-                4'd3: popped_floor = floor_stack[11:8];
-                4'd4: popped_floor = floor_stack[15:12];
-                4'd5: popped_floor = floor_stack[19:16];
-                4'd6: popped_floor = floor_stack[23:20];
-                4'd7: popped_floor = floor_stack[27:24];
-                4'd8: popped_floor = floor_stack[31:28];
-                4'd9: popped_floor = floor_stack[35:32];
-                4'd10: popped_floor = floor_stack[39:36];
-                4'd11: popped_floor = floor_stack[43:40];
-                default: popped_floor = 4'hF;
-            endcase
-            stack_pointer = stack_pointer - 1;
-        end
-        else begin
-            popped_floor = current_floor_state;
-        end
-    end
-endtask
     
 // Floor selection logic - pull from stack and set direction
 always @(*) begin
