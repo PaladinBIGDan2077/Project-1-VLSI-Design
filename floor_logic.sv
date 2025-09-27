@@ -1176,7 +1176,7 @@ always @(posedge clock or negedge reset_n) begin
             // 
             if (remaining_requests >= 1) begin
                 // If multiple requests, prioritize based on current direction
-                if (((state == STOP_FL1) || (state == STOP_FL2) || (state == STOP_FL3) || (state == STOP_FL4) || (state == STOP_FL5) || (state == STOP_FL6) || (state == STOP_FL7) || (state == STOP_FL8) || (state == STOP_FL9) || (state == STOP_FL10) || (state == STOP_FL11))) begin
+                if (((elevator_state == STOP_FL1) || (elevator_state == STOP_FL2) || (elevator_state == STOP_FL3) || (elevator_state == STOP_FL4) || (elevator_state == STOP_FL5) || (elevator_state == STOP_FL6) || (elevator_state == STOP_FL7) || (elevator_state == STOP_FL8) || (elevator_state == STOP_FL9) || (elevator_state == STOP_FL10) || (elevator_state == STOP_FL11))) begin
                     case (moving_stack_pointer)
                         4'd1: next_floor = moving_stack[3:0];
                         4'd2: next_floor = moving_stack[7:4];
@@ -1202,7 +1202,7 @@ always @(posedge clock or negedge reset_n) begin
                     elevator_floor_selector = next_floor;
                 end
             end
-            else if (((state == STOP_FL1) || (state == STOP_FL2) || (state == STOP_FL3) || (state == STOP_FL4) || (state == STOP_FL5) || (state == STOP_FL6) || (state == STOP_FL7) || (state == STOP_FL8) || (state == STOP_FL9) || (state == STOP_FL10) || (state == STOP_FL11))) begin
+            else if (((elevator_state == STOP_FL1) || (elevator_state == STOP_FL2) || (elevator_state == STOP_FL3) || (elevator_state == STOP_FL4) || (elevator_state == STOP_FL5) || (elevator_state == STOP_FL6) || (elevator_state == STOP_FL7) || (elevator_state == STOP_FL8) || (elevator_state == STOP_FL9) || (elevator_state == STOP_FL10) || (elevator_state == STOP_FL11))) begin
                 case (stack_pointer)
                     4'd1: next_floor = floor_stack[3:0];
                     4'd2: next_floor = floor_stack[7:4];
@@ -1224,7 +1224,7 @@ always @(posedge clock or negedge reset_n) begin
             end
         end
         // Only activate if it's a different floor AND we're in a stop state
-        if ((elevator_floor_selector != current_floor_state) && ((state == STOP_FL1) || (state == STOP_FL2) || (state == STOP_FL3) || (state == STOP_FL4) || (state == STOP_FL5) || (state == STOP_FL6) || (state == STOP_FL7) || (state == STOP_FL8) || (state == STOP_FL9) || (state == STOP_FL10) || (state == STOP_FL11))) begin
+        if ((elevator_floor_selector != current_floor_state) && ((elevator_state == STOP_FL1) || (elevator_state == STOP_FL2) || (elevator_state == STOP_FL3) || (elevator_state == STOP_FL4) || (elevator_state == STOP_FL5) || (elevator_state == STOP_FL6) || (elevator_state == STOP_FL7) || (elevator_state == STOP_FL8) || (elevator_state == STOP_FL9) || (elevator_state == STOP_FL10) || (elevator_state == STOP_FL11))) begin
             activate_elevator = 1'b1;
             
             // Natural direction selection
@@ -1244,7 +1244,7 @@ always @(posedge clock or negedge reset_n) begin
     if (!reset_n) begin
         // Handled in main reset
     end
-    else if (power_switch && ((state == STOP_FL1) || (state == STOP_FL2) || (state == STOP_FL3) || (state == STOP_FL4) || (state == STOP_FL5) || (state == STOP_FL6) || (state == STOP_FL7) || (state == STOP_FL8) || (state == STOP_FL9) || (state == STOP_FL10) || (state == STOP_FL11))) begin
+    else if (power_switch && ((elevator_state == STOP_FL1) || (elevator_state == STOP_FL2) || (elevator_state == STOP_FL3) || (elevator_state == STOP_FL4) || (elevator_state == STOP_FL5) || (elevator_state == STOP_FL6) || (elevator_state == STOP_FL7) || (elevator_state == STOP_FL8) || (elevator_state == STOP_FL9) || (elevator_state == STOP_FL10) || (elevator_state == STOP_FL11))) begin
         if (stack_full) begin // Stack was full
             stack_pointer <= 4'b0;
             stack_full <= 1'b0;
@@ -1280,7 +1280,7 @@ always @(posedge clock or negedge reset_n) begin
     door_close_allowed = 1'b0;
     
     // Door control only active when elevator is stopped and power is on
-    if (((state == STOP_FL1) || (state == STOP_FL2) || (state == STOP_FL3) || (state == STOP_FL4) || (state == STOP_FL5) || (state == STOP_FL6) || (state == STOP_FL7) || (state == STOP_FL8) || (state == STOP_FL9) || (state == STOP_FL10) || (state == STOP_FL11)) && power_switch) begin
+    if (((elevator_state == STOP_FL1) || (elevator_state == STOP_FL2) || (elevator_state == STOP_FL3) || (elevator_state == STOP_FL4) || (elevator_state == STOP_FL5) || (elevator_state == STOP_FL6) || (elevator_state == STOP_FL7) || (elevator_state == STOP_FL8) || (elevator_state == STOP_FL9) || (elevator_state == STOP_FL10) || (elevator_state == STOP_FL11)) && power_switch) begin
         door_open_allowed = door_open_btn;
         door_close_allowed = door_close_btn;
     end
