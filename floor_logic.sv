@@ -1166,15 +1166,9 @@ end
 
     
 // Floor selection logic - pull from stack and set direction
-always @(posedge clock or negedge reset_n) begin
+always @(*) begin
     activate_elevator = 1'b0;
-    if (!reset_n) begin
-        elevator_floor_selector = 4'd0;
-        next_floor = 4'd0;
-        direction_selector = 1'b0; // Default to down
-        remaining_requests = 4'd0;
-        moving_stack_pointer = 4'd0;
-    end
+
     else begin
         if (power_switch && !emergency_btn) begin
 
