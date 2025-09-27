@@ -69,7 +69,7 @@ module button_debouncer (clk, rst_n, btn_n_in, pulse_out);
         end
     end
 
-    always @(*) begin
+    always @(next_state) begin
         // Default assignments
         next_state = current_state;
         pulse_trigger = 1'b0;
