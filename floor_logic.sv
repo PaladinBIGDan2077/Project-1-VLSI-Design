@@ -1166,7 +1166,7 @@ end
 
     
 // Floor selection logic - pull from stack and set direction
-always @(posedge clock or negedge reset_n) begin
+always @(*) begin
     activate_elevator = 1'b0;
     
     if (power_switch && !emergency_btn) begin
@@ -1275,7 +1275,7 @@ end
 
 
 // Door control logic
-always @(posedge clock or negedge reset_n) begin
+always @(*) begin
     door_open_allowed = 1'b0;
     door_close_allowed = 1'b0;
     
