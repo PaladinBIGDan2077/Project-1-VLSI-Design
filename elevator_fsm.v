@@ -131,7 +131,7 @@ module elevator_fsm(clock, reset_n, elevator_floor_selector, emergency_stop, act
         endcase     
     end
 
-	always @(*) begin
+	always @(counter_state) begin
         case(counter_state)
             // Upcounting states                     xxxxACODUMS
             STOP_FL1:           control_output = 11'b00000010001;

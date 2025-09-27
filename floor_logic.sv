@@ -119,18 +119,6 @@ reg                     [3:0]               floor_number;
                                 FLOOR_11                      = 4'hA;
                                 
 
-// Function to check if state is a STOP state
-function is_stop_state;
-    input [4:0] state;
-    begin
-        is_stop_state = (state == STOP_FL1) || (state == STOP_FL2) || 
-                        (state == STOP_FL3) || (state == STOP_FL4) || 
-                        (state == STOP_FL5) || (state == STOP_FL6) || 
-                        (state == STOP_FL7) || (state == STOP_FL8) || 
-                        (state == STOP_FL9) || (state == STOP_FL10) || 
-                        (state == STOP_FL11);
-    end
-endfunction
 
 // Emergency handling - clear all requests
 always @(posedge clock or negedge reset_n) begin
@@ -1178,7 +1166,7 @@ end
 
     
 // Floor selection logic - pull from stack and set direction
-always @(*) begin
+always @(posedge clock or negedge reset_n) begin
     activate_elevator = 1'b0;
     
     if (power_switch && !emergency_btn) begin
@@ -1188,7 +1176,7 @@ always @(*) begin
             // 
             if (remaining_requests >= 1) begin
                 // If multiple requests, prioritize based on current direction
-                if (is_stop_state(elevator_state)) begin
+                if (((state == STOP_FL1) || (state == STOP_FL2) || (state == STOP_FL3) || (state == STOP_FL4) || (state == STOP_FL5) || (state == STOP_FL6) || (state == STOP_FL7) || (state == STOP_FL8) || (state == STOP_FL9) || (state == STOP_FL10) || (state == STOP_FL11))) begin
                     case (moving_stack_pointer)
                         4'd1: next_floor = moving_stack[3:0];
                         4'd2: next_floor = moving_stack[7:4];
@@ -1214,7 +1202,7 @@ always @(*) begin
                     elevator_floor_selector = next_floor;
                 end
             end
-            else if (is_stop_state(elevator_state)) begin
+            else if (((state == STOP_FL1) || (state == STOP_FL2) || (state == STOP_FL3) || (state == STOP_FL4) || (state == STOP_FL5) || (state == STOP_FL6) || (state == STOP_FL7) || (state == STOP_FL8) || (state == STOP_FL9) || (state == STOP_FL10) || (state == STOP_FL11))) begin
                 case (stack_pointer)
                     4'd1: next_floor = floor_stack[3:0];
                     4'd2: next_floor = floor_stack[7:4];
@@ -1236,7 +1224,7 @@ always @(*) begin
             end
         end
         // Only activate if it's a different floor AND we're in a stop state
-        if ((elevator_floor_selector != current_floor_state) && is_stop_state(elevator_state)) begin
+        if ((elevator_floor_selector != current_floor_state) && ((state == STOP_FL1) || (state == STOP_FL2) || (state == STOP_FL3) || (state == STOP_FL4) || (state == STOP_FL5) || (state == STOP_FL6) || (state == STOP_FL7) || (state == STOP_FL8) || (state == STOP_FL9) || (state == STOP_FL10) || (state == STOP_FL11))) begin
             activate_elevator = 1'b1;
             
             // Natural direction selection
@@ -1256,7 +1244,7 @@ always @(posedge clock or negedge reset_n) begin
     if (!reset_n) begin
         // Handled in main reset
     end
-    else if (power_switch && is_stop_state(elevator_state)) begin
+    else if (power_switch && ((state == STOP_FL1) || (state == STOP_FL2) || (state == STOP_FL3) || (state == STOP_FL4) || (state == STOP_FL5) || (state == STOP_FL6) || (state == STOP_FL7) || (state == STOP_FL8) || (state == STOP_FL9) || (state == STOP_FL10) || (state == STOP_FL11))) begin
         if (stack_full) begin // Stack was full
             stack_pointer <= 4'b0;
             stack_full <= 1'b0;
@@ -1287,12 +1275,12 @@ end
 
 
 // Door control logic
-always @(*) begin
+always @(posedge clock or negedge reset_n) begin
     door_open_allowed = 1'b0;
     door_close_allowed = 1'b0;
     
     // Door control only active when elevator is stopped and power is on
-    if (is_stop_state(elevator_state) && power_switch) begin
+    if (((state == STOP_FL1) || (state == STOP_FL2) || (state == STOP_FL3) || (state == STOP_FL4) || (state == STOP_FL5) || (state == STOP_FL6) || (state == STOP_FL7) || (state == STOP_FL8) || (state == STOP_FL9) || (state == STOP_FL10) || (state == STOP_FL11)) && power_switch) begin
         door_open_allowed = door_open_btn;
         door_close_allowed = door_close_btn;
     end
