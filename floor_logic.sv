@@ -1168,74 +1168,82 @@ end
 // Floor selection logic - pull from stack and set direction
 always @(posedge clock or negedge reset_n) begin
     activate_elevator = 1'b0;
-    
-    if (power_switch && !emergency_btn) begin
+    if (!reset_n) begin
+        elevator_floor_selector = 4'd0;
+        next_floor = 4'd0;
+        direction_selector = 1'b0; // Default to down
+        remaining_requests = 4'd0;
+        moving_stack_pointer = 4'd0;
+    end
+    else begin
+        if (power_switch && !emergency_btn) begin
 
-        if (!stack_empty) begin
-            // Get next floor from stack WITHOUT popping (just read)
-            // 
-            if (remaining_requests >= 1) begin
-                // If multiple requests, prioritize based on current direction
-                if (((elevator_state == STOP_FL1) || (elevator_state == STOP_FL2) || (elevator_state == STOP_FL3) || (elevator_state == STOP_FL4) || (elevator_state == STOP_FL5) || (elevator_state == STOP_FL6) || (elevator_state == STOP_FL7) || (elevator_state == STOP_FL8) || (elevator_state == STOP_FL9) || (elevator_state == STOP_FL10) || (elevator_state == STOP_FL11))) begin
-                    case (moving_stack_pointer)
-                        4'd1: next_floor = moving_stack[3:0];
-                        4'd2: next_floor = moving_stack[7:4];
-                        4'd3: next_floor = moving_stack[11:8];
-                        4'd4: next_floor = moving_stack[15:12];
-                        4'd5: next_floor = moving_stack[19:16];
-                        4'd6: next_floor = moving_stack[23:20];
-                        4'd7: next_floor = moving_stack[27:24];
-                        4'd8: next_floor = moving_stack[31:28];
-                        4'd9: next_floor = moving_stack[35:32];
-                        4'd10: next_floor = moving_stack[39:36];
-                        4'd11: next_floor = moving_stack[43:40];
+            if (!stack_empty) begin
+                // Get next floor from stack WITHOUT popping (just read)
+                // 
+                if (remaining_requests >= 1) begin
+                    // If multiple requests, prioritize based on current direction
+                    if (((elevator_state == STOP_FL1) || (elevator_state == STOP_FL2) || (elevator_state == STOP_FL3) || (elevator_state == STOP_FL4) || (elevator_state == STOP_FL5) || (elevator_state == STOP_FL6) || (elevator_state == STOP_FL7) || (elevator_state == STOP_FL8) || (elevator_state == STOP_FL9) || (elevator_state == STOP_FL10) || (elevator_state == STOP_FL11))) begin
+                        case (moving_stack_pointer)
+                            4'd1: next_floor = moving_stack[3:0];
+                            4'd2: next_floor = moving_stack[7:4];
+                            4'd3: next_floor = moving_stack[11:8];
+                            4'd4: next_floor = moving_stack[15:12];
+                            4'd5: next_floor = moving_stack[19:16];
+                            4'd6: next_floor = moving_stack[23:20];
+                            4'd7: next_floor = moving_stack[27:24];
+                            4'd8: next_floor = moving_stack[31:28];
+                            4'd9: next_floor = moving_stack[35:32];
+                            4'd10: next_floor = moving_stack[39:36];
+                            4'd11: next_floor = moving_stack[43:40];
+                            default: next_floor = current_floor_state;
+                        endcase
+                        elevator_floor_selector = next_floor;
+                        if (current_floor_state == next_floor) begin
+                            moving_stack_pointer = moving_stack_pointer - 1;
+                            floor_stack <= 44'b0; // Clear the entire stack
+                            remaining_requests = remaining_requests - 1;
+                        end
+                    end
+                    else begin
+                        elevator_floor_selector = next_floor;
+                    end
+                end
+                else if (((elevator_state == STOP_FL1) || (elevator_state == STOP_FL2) || (elevator_state == STOP_FL3) || (elevator_state == STOP_FL4) || (elevator_state == STOP_FL5) || (elevator_state == STOP_FL6) || (elevator_state == STOP_FL7) || (elevator_state == STOP_FL8) || (elevator_state == STOP_FL9) || (elevator_state == STOP_FL10) || (elevator_state == STOP_FL11))) begin
+                    case (stack_pointer)
+                        4'd1: next_floor = floor_stack[3:0];
+                        4'd2: next_floor = floor_stack[7:4];
+                        4'd3: next_floor = floor_stack[11:8];
+                        4'd4: next_floor = floor_stack[15:12];
+                        4'd5: next_floor = floor_stack[19:16];
+                        4'd6: next_floor = floor_stack[23:20];
+                        4'd7: next_floor = floor_stack[27:24];
+                        4'd8: next_floor = floor_stack[31:28];
+                        4'd9: next_floor = floor_stack[35:32];
+                        4'd10: next_floor = floor_stack[39:36];
+                        4'd11: next_floor = floor_stack[43:40];
                         default: next_floor = current_floor_state;
                     endcase
                     elevator_floor_selector = next_floor;
-                    if (current_floor_state == next_floor) begin
-                        moving_stack_pointer = moving_stack_pointer - 1;
-                        floor_stack <= 44'b0; // Clear the entire stack
-                        remaining_requests = remaining_requests - 1;
-                    end
                 end
                 else begin
-                    elevator_floor_selector = next_floor;
+                    elevator_floor_selector = next_floor; // No change if stack empty
                 end
             end
-            else if (((elevator_state == STOP_FL1) || (elevator_state == STOP_FL2) || (elevator_state == STOP_FL3) || (elevator_state == STOP_FL4) || (elevator_state == STOP_FL5) || (elevator_state == STOP_FL6) || (elevator_state == STOP_FL7) || (elevator_state == STOP_FL8) || (elevator_state == STOP_FL9) || (elevator_state == STOP_FL10) || (elevator_state == STOP_FL11))) begin
-                case (stack_pointer)
-                    4'd1: next_floor = floor_stack[3:0];
-                    4'd2: next_floor = floor_stack[7:4];
-                    4'd3: next_floor = floor_stack[11:8];
-                    4'd4: next_floor = floor_stack[15:12];
-                    4'd5: next_floor = floor_stack[19:16];
-                    4'd6: next_floor = floor_stack[23:20];
-                    4'd7: next_floor = floor_stack[27:24];
-                    4'd8: next_floor = floor_stack[31:28];
-                    4'd9: next_floor = floor_stack[35:32];
-                    4'd10: next_floor = floor_stack[39:36];
-                    4'd11: next_floor = floor_stack[43:40];
-                    default: next_floor = current_floor_state;
-                endcase
-                elevator_floor_selector = next_floor;
-            end
-            else begin
-                elevator_floor_selector = next_floor; // No change if stack empty
+            // Only activate if it's a different floor AND we're in a stop state
+            if ((elevator_floor_selector != current_floor_state) && ((elevator_state == STOP_FL1) || (elevator_state == STOP_FL2) || (elevator_state == STOP_FL3) || (elevator_state == STOP_FL4) || (elevator_state == STOP_FL5) || (elevator_state == STOP_FL6) || (elevator_state == STOP_FL7) || (elevator_state == STOP_FL8) || (elevator_state == STOP_FL9) || (elevator_state == STOP_FL10) || (elevator_state == STOP_FL11))) begin
+                activate_elevator = 1'b1;
+                
+                // Natural direction selection
+                if (elevator_floor_selector > current_floor_state) begin
+                    direction_selector = 1'b1; // Up direction
+                end
+                else begin
+                    direction_selector = 1'b0; // Down direction
+                end
             end
         end
-        // Only activate if it's a different floor AND we're in a stop state
-        if ((elevator_floor_selector != current_floor_state) && ((elevator_state == STOP_FL1) || (elevator_state == STOP_FL2) || (elevator_state == STOP_FL3) || (elevator_state == STOP_FL4) || (elevator_state == STOP_FL5) || (elevator_state == STOP_FL6) || (elevator_state == STOP_FL7) || (elevator_state == STOP_FL8) || (elevator_state == STOP_FL9) || (elevator_state == STOP_FL10) || (elevator_state == STOP_FL11))) begin
-            activate_elevator = 1'b1;
-            
-            // Natural direction selection
-            if (elevator_floor_selector > current_floor_state) begin
-                direction_selector = 1'b1; // Up direction
-            end
-            else begin
-                direction_selector = 1'b0; // Down direction
-            end
-        end
-    end
+    end 
 end
 
 
