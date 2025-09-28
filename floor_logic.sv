@@ -428,7 +428,6 @@ always @(*) begin
             endcase
         end
         if (!elevator_moving) begin
-            memory_pointer = memory_pointer + 1;
             stack_empty = 1'b0;
             stack_full = (memory_pointer == 4'd10);
             next_floor = elevator_memory[memory_pointer];
@@ -452,6 +451,7 @@ always @(*) begin
             end
             // When elevator reaches target floor, clear the served floor from stack
             if (elevator_floor_selector == current_floor_state && activate_elevator) begin
+                memory_pointer = memory_pointer + 1;
                 if (!stack_empty) begin
                     memory_pointer = memory_pointer - 1;
                     stack_empty = (memory_pointer == 4'd1);
