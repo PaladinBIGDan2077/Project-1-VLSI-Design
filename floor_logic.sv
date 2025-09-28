@@ -277,6 +277,7 @@ always @(*) begin
         activate_elevator <= 1'b0;
     end
     else begin
+        direction_selector = 1'b1; // Default to up direction
         if (!elevator_moving && (elevator_floor_selector == current_floor_state) && direction_selector) begin
             if (call_button_lights[0] || panel_button_lights[0]) next_floor = FLOOR_1;
             if (call_button_lights[1] || panel_button_lights[1]) next_floor = FLOOR_2;
@@ -291,6 +292,7 @@ always @(*) begin
             if (call_button_lights[10] || panel_button_lights[10]) next_floor = FLOOR_11;
             if (&call_button_lights && &panel_button_lights) next_floor = current_floor_state;
         end
+        direction_selector = 1'b0; // Default to up direction
         else if (!elevator_moving && (elevator_floor_selector == current_floor_state) && !direction_selector) begin
             if (call_button_lights[10] || panel_button_lights[10]) next_floor = FLOOR_11;
             if (call_button_lights[9] || panel_button_lights[9]) next_floor = FLOOR_10;
@@ -309,9 +311,6 @@ always @(*) begin
         activate_elevator = 1'b0;
         if ((power_switch && !emergency_btn && !elevator_moving) && elevator_floor_selector != current_floor_state) begin
             activate_elevator = 1'b1;
-            if (elevator_floor_selector < current_floor_state) begin
-                direction_selector = 1'b0; // Up direction
-            end
         end
     end 
 end
