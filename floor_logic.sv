@@ -60,13 +60,6 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
     reg                         [10:0]                          call_button_lights;
     reg                         [10:0]                          panel_button_lights;
     reg                         [3:0]                           next_floor;
-
-    // Memory Unit for Elevator Requests
-    reg                         [8:0]                           memory_pointer;
-    reg                         [8:0]                           memory_pointer_temporary;
-    reg                         [15:0]                          remaining_requests;
-    reg                         [3:0]                           floor_number;
-    reg                         [3:0]                           check_timer;
     
     parameter                   FLOOR_1                       = 4'h0,
                                 FLOOR_2                       = 4'h1,
@@ -80,13 +73,11 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
                                 FLOOR_10                      = 4'h9,
                                 FLOOR_11                      = 4'hA,
                                 EMERGENCY_STATE               = 4'hF;                               
-
-// Button reader - push floor requests onto stack (FIXED)
+// Button Reader - Register Buffer
 always @(posedge clock or negedge reset_n) begin
     if (!reset_n) begin
         call_button_lights <= 11'b0;
         panel_button_lights <= 11'b0;
-        floor_number <= 4'd0;
     end
     else if (power_switch && !emergency_btn) begin  // Remove stack_full condition
         // Check elevator panel buttons (internal requests)
@@ -265,8 +256,8 @@ always @(*) begin
     end
     // Door control only active when elevator is stopped and power is on
     if ((!elevator_moving) && power_switch) begin
-        door_open_allowed = door_open_btn;
-        door_close_allowed = door_close_btn;
+        door_open_allowed <= door_open_btn;
+        door_close_allowed <= door_close_btn;
     end
 end
 
