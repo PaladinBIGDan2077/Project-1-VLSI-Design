@@ -273,7 +273,6 @@ always @(*) begin
         memory_pointer <= 4'b0;
         remaining_requests <= 16'b0;
         elevator_floor_selector <= 4'b0;
-        memory_pointer_temporary <= 9'b0;
     end
     else begin
         elevator_memory[memory_pointer] = floor_number;
@@ -285,6 +284,13 @@ always @(*) begin
         end
         if (((|call_button_lights > 0 ) || (|panel_button_lights > 0)) && (next_floor == current_floor_state) && !elevator_moving) begin
             memory_pointer = memory_pointer_temporary;
+        end
+        if (!elevator_moving && (|call_button_lights || |panel_button_lights)) begin
+            memory_pointer_temporary = memory_pointer;
+        end
+        if (elevator_moving && (|call_button_lights || |panel_button_lights)) begin
+            memory_pointer_temporary = memory_pointer;
+            remaining_requests = remaining_requests + 1'b1;
         end
         if (!elevator_moving && (remaining_requests > 0)) begin
             remaining_requests = remaining_requests - 1'b1;
