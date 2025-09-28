@@ -320,7 +320,7 @@ always @(*) begin
 end
 always @(posedge clk or negedge reset_n) begin
     if (!reset_n) begin
-        check_timer < 4'b0;
+        check_timer <= 4'b0;
     end
     else begin
         if (check_timer < 4'd10) begin
