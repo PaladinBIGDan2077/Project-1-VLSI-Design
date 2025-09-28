@@ -66,6 +66,13 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
     reg                         [8:0]                           memory_pointer_temporary;
     reg                         [15:0]                          remaining_requests;
     reg                         [3:0]                           floor_number;
+    reg any_above, any_below;
+integer i;
+
+wire [10:0] requests = call_button_lights | panel_button_lights;
+
+wire any_above = |requests[10:current_floor_state+1]; // any requests above current floor
+wire any_below = |requests[current_floor_state-1:0];  // any requests below current floor
 
     parameter                   STOP_FL1                      = 5'h00,
                                 STOP_FL2                      = 5'h01,
@@ -277,7 +284,15 @@ always @(*) begin
         activate_elevator <= 1'b0;
     end
     else begin
-        direction_selector = 1'b1; // Default to up direction
+        if (direction_selector) begin
+            // Going up
+            if (!any_above && any_below)
+                direction_selector = 1'b0; // flip to down
+        end else begin
+            // Going down
+            if (!any_below && any_above)
+                direction_selector = 1'b1; // flip to up
+        end
         if (!elevator_moving && (elevator_floor_selector == current_floor_state) && direction_selector) begin
             if (call_button_lights[0] || panel_button_lights[0]) next_floor = FLOOR_1;
             if (call_button_lights[1] || panel_button_lights[1]) next_floor = FLOOR_2;
@@ -315,6 +330,14 @@ always @(*) begin
     end 
 end
 
+always @(*) begin
+  any_above = 1'b0;
+  any_below = 1'b0;
+  for (i = current_floor_state+1; i < 11; i = i + 1)
+    if (requests[i]) any_above = 1'b1;
+  for (i = 0; i < current_floor_state; i = i + 1)
+    if (requests[i]) any_below = 1'b1;
+end
 
 // Door control logic
 always @(*) begin
