@@ -287,7 +287,7 @@ always @(posedge clock or negedge reset_n) begin
     end
 end
 // OG Stack - Will need work.
-always @(*) begin
+always_ff @(*) begin
     if (!reset_n) begin
         //elevator_memory <= 512'b0;
         memory_pointer <= 4'b0;
