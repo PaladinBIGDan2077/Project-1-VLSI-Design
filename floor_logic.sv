@@ -276,32 +276,31 @@ always @(*) begin
     end
     else begin
         if (!elevator_moving && (elevator_floor_selector == current_floor_state)) begin
-            if (call_button_lights[0] || panel_button_lights[0])      next_floor = FLOOR_1;
-            if (call_button_lights[1] || panel_button_lights[1]) next_floor = FLOOR_2;
-            if (call_button_lights[2] || panel_button_lights[2]) next_floor = FLOOR_3;
-            if (call_button_lights[3] || panel_button_lights[3]) next_floor = FLOOR_4;
-            if (call_button_lights[4] || panel_button_lights[4]) next_floor = FLOOR_5;
-            if (call_button_lights[5] || panel_button_lights[5]) next_floor = FLOOR_6;
-            if (call_button_lights[6] || panel_button_lights[6]) next_floor = FLOOR_7;
-            if (call_button_lights[7] || panel_button_lights[7]) next_floor = FLOOR_8;
-            if (call_button_lights[8] || panel_button_lights[8]) next_floor = FLOOR_9;
-            if (call_button_lights[9] || panel_button_lights[9]) next_floor = FLOOR_10;
-            if (call_button_lights[10] || panel_button_lights[10]) next_floor = FLOOR_11;
-            if (&call_button_lights && &panel_button_lights) next_floor = current_floor_state;
-        end
-        else if (!elevator_moving && (elevator_floor_selector == current_floor_state) && !direction_selector) begin
-            if (call_button_lights[10] || panel_button_lights[10]) next_floor = FLOOR_11;
-            if (call_button_lights[9] || panel_button_lights[9]) next_floor = FLOOR_10;
-            if (call_button_lights[8] || panel_button_lights[8]) next_floor = FLOOR_9;
-            if (call_button_lights[7] || panel_button_lights[7]) next_floor = FLOOR_8;
-            if (call_button_lights[6] || panel_button_lights[6]) next_floor = FLOOR_7;
-            if (call_button_lights[5] || panel_button_lights[5]) next_floor = FLOOR_6;
-            if (call_button_lights[4] || panel_button_lights[4]) next_floor = FLOOR_5;
-            if (call_button_lights[3] || panel_button_lights[3]) next_floor = FLOOR_4;
-            if (call_button_lights[2] || panel_button_lights[2]) next_floor = FLOOR_3;
-            if (call_button_lights[1] || panel_button_lights[1]) next_floor = FLOOR_2;
             if (call_button_lights[0] || panel_button_lights[0]) next_floor = FLOOR_1;
-            if (&call_button_lights && &panel_button_lights) next_floor = current_floor_state;
+            if (call_button_lights[1] || panel_button_lights[1]) next_floor = FLOOR_2;
+            if (call_button_lights[2] || panel_button_lights[2]) next_floor = FLOOR_3;
+            if (call_button_lights[3] || panel_button_lights[3]) next_floor = FLOOR_4;
+            if (call_button_lights[4] || panel_button_lights[4]) next_floor = FLOOR_5;
+            if (call_button_lights[5] || panel_button_lights[5]) next_floor = FLOOR_6;
+            if (call_button_lights[6] || panel_button_lights[6]) next_floor = FLOOR_7;
+            if (call_button_lights[7] || panel_button_lights[7]) next_floor = FLOOR_8;
+            if (call_button_lights[8] || panel_button_lights[8]) next_floor = FLOOR_9;
+            if (call_button_lights[9] || panel_button_lights[9]) next_floor = FLOOR_10;
+            if (call_button_lights[10] || panel_button_lights[10]) next_floor = FLOOR_11;
+            else begin
+                if (call_button_lights[10] || panel_button_lights[10]) next_floor = FLOOR_11;
+                if (call_button_lights[9] || panel_button_lights[9]) next_floor = FLOOR_10;
+                if (call_button_lights[8] || panel_button_lights[8]) next_floor = FLOOR_9;
+                if (call_button_lights[7] || panel_button_lights[7]) next_floor = FLOOR_8;
+                if (call_button_lights[6] || panel_button_lights[6]) next_floor = FLOOR_7;
+                if (call_button_lights[5] || panel_button_lights[5]) next_floor = FLOOR_6;
+                if (call_button_lights[4] || panel_button_lights[4]) next_floor = FLOOR_5;
+                if (call_button_lights[3] || panel_button_lights[3]) next_floor = FLOOR_4;
+                if (call_button_lights[2] || panel_button_lights[2]) next_floor = FLOOR_3;
+                if (call_button_lights[1] || panel_button_lights[1]) next_floor = FLOOR_2;
+                if (call_button_lights[0] || panel_button_lights[0]) next_floor = FLOOR_1;
+                if (&call_button_lights && &panel_button_lights) next_floor = current_floor_state;
+            end 
         end
         elevator_floor_selector = next_floor;
     end 
