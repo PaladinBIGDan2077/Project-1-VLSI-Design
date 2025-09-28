@@ -283,7 +283,7 @@ always @(*) begin
                 memory_pointer = memory_pointer + 1;
             end
         end
-        if (!elevator_moving) begin
+        if (((|call_button_lights > 0 ) || (|panel_button_lights > 0)) && (next_floor == current_floor_state) && !elevator_moving) begin
             //memory_pointer = memory_pointer_temporary;
         end
         if (!elevator_moving && (remaining_requests > 0)) begin
