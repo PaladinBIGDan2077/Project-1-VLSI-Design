@@ -467,7 +467,7 @@ always @(*) begin
             end
         end
     end
-
+end
 // Floor selection logic - pull from stack and set direction
 always @(*) begin
     if (!reset_n) begin
