@@ -1,101 +1,135 @@
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Title:                           Button Press Debounce and Pulse Generator
-// Filename:                        button_debouncer.v
-// Version:                         1
-// Author:                          Daniel J. Lomis, Sammy Craypoff
-// Date:                            9/7/2025  
-// Location:                        Blacksburg, Virginia 
-// Organization:                    Virginia Polytechnic Institute and State University, Bradley Department of Electrical and Computer Engineering 
-// Course:                          ECE 4540 - VLSI Circuit Design
-// Instructor:                      Doctor Jeffrey Walling 
-//  
-// Hardware Description Language:   Verilog 2001 (IEEE 1364-2001)  
-// Simulation Tool:                 iVerilog 12.0
-// 
-// Description:                     Finite State Machine (FSM) that generates a single-clock-cycle
-//                                  high pulse after an active-low button is pressed and released.
-//                                  Provides clean signal debouncing and edge detection.
-// 
-// Modification History:  
-//                                  Date        By   Version  Change Description  
-//                                  ============================================  
-//                                  9/7/2025    DJL  1        Original Code
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Filename: keypress.v
+// Author:   Jason Thweatt
+// Date:     16 March 2023
+// Revision: 1
+//
+// Description: This synchronous finite-state machine generates an ACTIVE-HIGH enable pulse that
+//              lasts for one clock period each time an ACTIVE-LOW key is pressed and released.
+//
+//              Specifically, the enable pulse occurs during the clock period AFTER the key is
+//              released.
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
-module button_debouncer (clk, rst_n, btn_n_in, pulse_out);
+/////////////////////////////////////////////////
+//                                             //
+// DO NOT MODIFY THIS FILE WITHOUT PERMISSION! //
+//                                             //
+/////////////////////////////////////////////////
 
-    input                            clk;        // System clock
-    input                            rst_n;      // Active-low asynchronous reset
-    input                            btn_n_in;  // Active-low button input
-    output                           pulse_out;   // Extended pulse output
+module button_debouncer(clock, reset_n, key_in, enable_out);
+   input  clock, reset_n, key_in;
+	output enable_out;
 
-    wire                             rst_n;      
-    wire                             btn_n_in;  
-    reg                              pulse_out;   
+	reg [1:0] key_state, key_next_state;
+	reg       enable_out;
 
-    // One-Hot State Encoding Parameters
-    localparam [2:0] STATE_IDLE    = 3'b001;
-    localparam [2:0] STATE_PRESSED = 3'b010;
-    localparam [2:0] STATE_RELEASE = 3'b100;
+// Set up parameters for the state of the pushbutton.
+// For three states, we're using two bits to represent the state in a "dense" assignment.
 
-    // State Registers
-    reg [2:0] current_state, next_state;
-    reg [7:0] pulse_counter; // Counter for pulse duration
-    reg       pulse_trigger; // Internal trigger signal
-    
-    parameter PULSE_CYCLES = 1; // Number of clock cycles to keep pulse high
+	parameter KEY_UNPRESSED = 2'b00, KEY_PRESSED = 2'b01, KEY_RELEASED = 2'b10;
+	
+// REGISTER BLOCK: This block represents SEQUENTIAL LOGIC so it uses non-blocking assignment. It
+// is sensitized to appropriate edges of the clock input and the reset input. Picture this block
+// as two D flip-flops with common clock and reset.
 
-    // Sequential Logic: State Register with Asynchronous Reset
-    always @(posedge clk or negedge rst_n) begin
-        if (!rst_n) begin
-            current_state <= STATE_IDLE;
-            pulse_counter <= 8'b0;
-            pulse_out <= 1'b0;
-        end 
-        else begin
-            current_state <= next_state;
-            
-            // Pulse counter logic
-            if (pulse_trigger) begin
-                pulse_out <= 1'b1;
-                pulse_counter <= PULSE_CYCLES;
-            end 
-            else if (pulse_counter > 0) begin
-                pulse_counter <= pulse_counter - 1;
-            end 
-            else begin
-                pulse_out <= 1'b0;
-            end
-        end
-    end
+	always@(posedge clock, negedge reset_n) begin
 
-    always @(*) begin
-        // Default assignments
-        next_state = current_state;
-        pulse_trigger = 1'b0;
+	// If reset_n is 0, there must have been a negative edge on the reset. The effect of the reset
+	// occurs without a clock edge so the reset is ASYNCHRONOUS.
 
-        case (current_state)
-            STATE_IDLE: begin
-                if (!btn_n_in) begin             // Button is pressed
-                    next_state = STATE_PRESSED;
-                end
-            end
+		if(reset_n == 1'b0)
+			key_state <= KEY_UNPRESSED;
+	
+	// If reset_m is not zero but this always block is active, there must have been a positive 
+	// clock edge. On each positive clock edge, the next state becomes the present state.
 
-            STATE_PRESSED: begin
-                if (btn_n_in) begin              // Button is released
-                    next_state = STATE_RELEASE;
-                end
-            end
+		else
+			key_state <= key_next_state;
+	end // end always
 
-            STATE_RELEASE: begin
-                pulse_trigger = 1'b1;           // Trigger the pulse
-                next_state = STATE_IDLE;
-            end
+// EXCITATION LOGIC: This block represents COMBINATIONAL LOGIC so it uses blocking assignment. It
+// is sensitized to changes in the FSM present state and the key input. Picture this block as the
+// combinational logic that feeds the flip-flop inputs. It determines the next state based on the
+// current state and the key value.
 
-            default: begin
-                next_state = STATE_IDLE;
-            end
-        endcase
-    end
+	always@(key_state, key_in) begin
+	
+	// Use the present state to determine the next state.
 
+		case(key_state)
+	
+		// KEY_UNPRESSED is the state where the key is currently unpressed and was not just released.
+		// In this state, if the key value is 0, make the next state KEY_PRESSED.
+
+			KEY_UNPRESSED: begin
+				if(key_in == 1'b0)
+					key_next_state = KEY_PRESSED;
+				else
+					key_next_state = KEY_UNPRESSED;
+			end // end KEY_UNPRESSED case
+
+		// KEY_PRESSED is the state where the key is currently pressed down. In this state, if the
+		// key value is 1, make the next state KEY_RELEASED.
+
+			KEY_PRESSED: begin
+				if(key_in == 1'b1)
+					key_next_state = KEY_RELEASED;
+				else
+					key_next_state = KEY_PRESSED;
+			end // end KEY_PRESSED case
+
+		// KEY_RELEASED is the state where the key has JUST BEEN released. In this state, make the
+		// next state KEY_UNPRESSED. Note that this state makes its transition independent of the
+		// input value. This state lasts for exactly one clock cycle - the clock cycle right after
+		// the button was released.
+
+			KEY_RELEASED:
+				key_next_state = KEY_UNPRESSED;
+
+		// If none of the above (something that should NEVER happen) make the next state unknown.
+
+			default: key_next_state = 2'bxx;
+
+		endcase
+	end // end always
+
+// OUTPUT MACHINE: This block represents combinational logic so it uses blocking assignment. This
+// is a Moore output so the block is sensitized only to the state. (In a Mealy machine the output
+// would have been sensitized to a state and to an input.) Picture this block as a combinational
+// circuit that operates on the state to determine the output.
+
+// I have structured the output machine as an always block to provide an example of how you should
+// do it in general. The behavior of this output is simple enough that a continuous assignment
+// could have been used more effectively.
+//
+// assign enable_out = (key_state == KEY_RELEASED);
+
+	always@(key_state) begin
+	
+	// Use the present state to determine the output.
+	
+		case(key_state)
+		
+		// If the key is currently unpressed and was not just released, enable_out should be 0.
+
+			KEY_UNPRESSED: enable_out = 1'b0;
+
+		// If the key is currently being pressed, enable_out should be 0.
+
+			KEY_PRESSED:   enable_out = 1'b0;
+
+		// If the key has has just been released, enable_out should be 1. This state only lasts for
+		// one clock cycle, so enable_out is 1 for only one clock cycle.
+
+			KEY_RELEASED:  enable_out = 1'b1;
+
+		// If none of the above (something that should NEVER happen) make the output unknown.
+
+			default:       enable_out = 1'bx;
+		endcase
+	end  // end always
+	
 endmodule

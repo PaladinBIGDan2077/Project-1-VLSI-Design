@@ -68,7 +68,6 @@ module elevator_top(clock, reset_n, raw_floor_call_buttons, raw_panel_buttons, r
     wire                                            elevator_moving;
     wire                                            elevator_direction;
     wire                    [3:0]                   current_floor_state;
-    wire                                            door_close;
 
 
     // FSM/Control Signalling
@@ -123,7 +122,7 @@ module elevator_top(clock, reset_n, raw_floor_call_buttons, raw_panel_buttons, r
     assign elevator_downward_indicator_lamp = elevator_control_output[3];
 // Door control logic with button override
     assign door_open = door_open_logic_check ? 1'b1 : door_close_logic_check ? 1'b0 : elevator_control_output[4];
-    assign door_close = door_close_logic_check ? 1'b1 : elevator_control_output[5];
+
     assign alarm = elevator_control_output[6];
     assign weight_overload_lamp = weight_sensor;
     assign floor_indicator_lamps = elevator_control_output[10:7];

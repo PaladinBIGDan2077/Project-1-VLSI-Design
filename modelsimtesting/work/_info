@@ -11,70 +11,70 @@ cModel Technology
 dC:/intelFPGA_lite/20.1
 vbutton_debouncer
 Z0 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
-!s110 1757964367
+Z1 !s110 1759021472
 !i10b 1
-!s100 cdafkmo:5fcD]b[e4G@NH2
-Z1 !s11b Dg1SIo80bB@j0V0VzS_@n1
-IEY=DP<GXgRaN7I8z`eSB;3
-Z2 VDg1SIo80bB@j0V0VzS_@n1
+!s100 H2PRj]3b<CUbefO_D1[jY0
+Z2 !s11b Dg1SIo80bB@j0V0VzS_@n1
+IB1if0l4;iGC>Fo[U0Mnmk1
+Z3 VDg1SIo80bB@j0V0VzS_@n1
 S1
-Z3 dD:/VLSI/Project-1-VLSI-Design/modelsimtesting
-w1757886348
+Z4 dD:/VLSI/Project-1-VLSI-Design/modelsimtesting
+w1759007292
 8D:/VLSI/Project-1-VLSI-Design/button_debouncer.v
 FD:/VLSI/Project-1-VLSI-Design/button_debouncer.v
-!i122 450
-L0 25 79
-Z4 OV;L;2020.1;71
+!i122 458
+L0 25 77
+Z5 OV;L;2020.1;71
 r1
 !s85 0
 31
-!s108 1757964359.000000
+Z6 !s108 1759021472.000000
 !s107 D:/VLSI/Project-1-VLSI-Design/button_debouncer.v|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|D:/VLSI/Project-1-VLSI-Design/button_debouncer.v|
 !i113 1
-Z5 o-work work -sv
-Z6 tCvgOpt 0
+Z7 o-work work -sv
+Z8 tCvgOpt 0
 vclk
 R0
-!s110 1757964373
-!i10b 1
-!s100 ZElSaWI6G:dBUAW7hei[22
 R1
-IJ0c9NZ>>`0KA7icLhda[21
+!i10b 1
+!s100 RA9nZA0dz[lMKcnG5KLeQ0
 R2
-S1
+I5jOaPO9ME5aIM]LJz:RSN1
 R3
-w1757886460
+S1
+R4
+w1758814803
 8D:/VLSI/Project-1-VLSI-Design/clk.v
 FD:/VLSI/Project-1-VLSI-Design/clk.v
-!i122 451
-L0 23 15
-R4
+!i122 459
+L0 23 13
+R5
 r1
 !s85 0
 31
-!s108 1757964371.000000
+R6
 !s107 D:/VLSI/Project-1-VLSI-Design/clk.v|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|D:/VLSI/Project-1-VLSI-Design/clk.v|
 !i113 1
-R5
-R6
+R7
+R8
 vclk_divider
 R0
 !s110 1757878362
 !i10b 1
 !s100 DAkPH8?NfjiP6BoZceRT52
-R1
-I4PGIge^6NzF==W=QdN2]G3
 R2
-S1
+I4PGIge^6NzF==W=QdN2]G3
 R3
+S1
+R4
 w1757787885
 8D:/VLSI/Project-1-VLSI-Design/clk_divider.v
 FD:/VLSI/Project-1-VLSI-Design/clk_divider.v
 !i122 430
 L0 23 39
-R4
+R5
 r1
 !s85 0
 31
@@ -82,105 +82,105 @@ r1
 !s107 D:/VLSI/Project-1-VLSI-Design/clk_divider.v|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|D:/VLSI/Project-1-VLSI-Design/clk_divider.v|
 !i113 1
-R5
-R6
+R7
+R8
 velevator_fsm
 R0
-!s110 1757990871
-!i10b 1
-!s100 ML_z=K=dUO]U3?899S<Q=3
 R1
-ImT`0ooJ_PonKb`i8j3g6j1
+!i10b 1
+!s100 BQj;i<I4BmM`JIf>L0YWQ0
 R2
-S1
+IQaY:bF066l>:<g>QUi=4G3
 R3
-w1757982091
+S1
+R4
+w1759007350
 8D:/VLSI/Project-1-VLSI-Design/elevator_fsm.v
 FD:/VLSI/Project-1-VLSI-Design/elevator_fsm.v
-!i122 456
-L0 24 147
-R4
+!i122 460
+L0 24 149
+R5
 r1
 !s85 0
 31
-!s108 1757990870.000000
+R6
 !s107 D:/VLSI/Project-1-VLSI-Design/elevator_fsm.v|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|D:/VLSI/Project-1-VLSI-Design/elevator_fsm.v|
 !i113 1
-R5
-R6
+R7
+R8
 velevator_top
 R0
-!s110 1757964380
-!i10b 1
-!s100 BP@7SGQfJM9igFNR^O]F=2
 R1
-IVmC[j=`Viae<nl8hf>YYK1
+!i10b 1
+!s100 _]@9A@:^1S:dQ3V<oFe@X2
 R2
-S1
+IdD_EGJTXXJ:00Ldhff=Jf2
 R3
-w1757886327
+S1
+R4
+w1759021087
 8D:/VLSI/Project-1-VLSI-Design/elevator_top.v
 FD:/VLSI/Project-1-VLSI-Design/elevator_top.v
-!i122 453
-L0 23 108
-R4
+!i122 461
+L0 23 111
+R5
 r1
 !s85 0
 31
-!s108 1757964379.000000
+R6
 !s107 D:/VLSI/Project-1-VLSI-Design/elevator_top.v|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|D:/VLSI/Project-1-VLSI-Design/elevator_top.v|
 !i113 1
-R5
-R6
+R7
+R8
 velevator_top_tb
 R0
-!s110 1757990874
-!i10b 1
-!s100 M6>zK?jE<JIo7GUJCE8;@1
 R1
-IMW4MW==iAnlSai=;a_I<l1
+!i10b 1
+!s100 A5hZJNb4g8Cje[OoUP7U@0
 R2
-S1
+I]62EzfQhfh=9<MMPIdRI60
 R3
-w1757979095
+S1
+R4
+w1758815442
 8D:/VLSI/Project-1-VLSI-Design/tb_elevator.v
 FD:/VLSI/Project-1-VLSI-Design/tb_elevator.v
-!i122 457
-L0 26 297
-R4
+!i122 462
+L0 26 306
+R5
 r1
 !s85 0
 31
-!s108 1757990872.000000
+R6
 !s107 D:/VLSI/Project-1-VLSI-Design/tb_elevator.v|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|D:/VLSI/Project-1-VLSI-Design/tb_elevator.v|
 !i113 1
-R5
-R6
+R7
+R8
 vfloor_logic_control_unit
 R0
-!s110 1757964384
+!s110 1759021473
 !i10b 1
-!s100 JP?NRO]jzHf]>HOTh@8L80
-R1
-I;l?<ISSJ4Rd10`;BR4QCk2
+!s100 iF2:W@_7moU>PIh9Jb`f33
 R2
-S1
+IGm]G=k2=iX]fTN4AX0Q5V0
 R3
-w1757892074
+S1
+R4
+w1759009032
 8D:/VLSI/Project-1-VLSI-Design/floor_logic.sv
 FD:/VLSI/Project-1-VLSI-Design/floor_logic.sv
-!i122 455
-L0 28 421
-R4
+!i122 463
+L0 29 1263
+R5
 r1
 !s85 0
 31
-!s108 1757964383.000000
+R6
 !s107 D:/VLSI/Project-1-VLSI-Design/floor_logic.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|D:/VLSI/Project-1-VLSI-Design/floor_logic.sv|
 !i113 1
-R5
-R6
+R7
+R8

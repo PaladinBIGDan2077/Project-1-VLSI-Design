@@ -1,22 +1,26 @@
+# Compile of button_debouncer.v was successful.
+# Compile of clk.v was successful.
 # Compile of elevator_fsm.v was successful.
+# Compile of elevator_top.v was successful.
 # Compile of tb_elevator.v was successful.
-# 2 compiles, 0 failed with no errors.
+# Compile of floor_logic.sv was successful with warnings.
+# 6 compiles, 0 failed with no errors.
 vsim -gui work.elevator_top_tb
 # vsim -gui work.elevator_top_tb 
-# Start time: 22:48:34 on Sep 15,2025
+# Start time: 21:04:47 on Sep 27,2025
 # Loading sv_std.std
 # Loading work.elevator_top_tb
 # Loading work.elevator_top
-# Loading work.clk
 # Loading work.button_debouncer
 # Loading work.floor_logic_control_unit
 # Loading work.elevator_fsm
+# Loading work.clk
 add wave -position insertpoint sim:/elevator_top_tb/*
 # ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
 #           File in use by: Danie  Hostname: DLOMIS-P1G6  ProcessID: 26048
-#           Attempting to use alternate WLF file "./wlftfhfj7n".
+#           Attempting to use alternate WLF file "./wlft90znca".
 # ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
-#           Using alternate file: ./wlftfhfj7n
+#           Using alternate file: ./wlft90znca
 run -all
 # === Reset complete ===
 # Floor 3 call button pressed @                  550
@@ -53,8 +57,12 @@ run -all
 # Floor 9 call button pressed @                21410
 # Power switched on @                22110
 # All Floor panel buttons begin pressing @                23110
-# All Floor panel buttons end pressing @                24160
+# === Reset complete ===
+# All Floor panel buttons end pressing @                24210
 # Simulation finished.
-# ** Note: $stop    : D:/VLSI/Project-1-VLSI-Design/tb_elevator.v(320)
-#    Time: 26160 ns  Iteration: 0  Instance: /elevator_top_tb
-# Break in Module elevator_top_tb at D:/VLSI/Project-1-VLSI-Design/tb_elevator.v line 320
+# ** Note: $finish    : D:/VLSI/Project-1-VLSI-Design/tb_elevator.v(329)
+#    Time: 26210 ns  Iteration: 0  Instance: /elevator_top_tb
+# 1
+# Break in Module elevator_top_tb at D:/VLSI/Project-1-VLSI-Design/tb_elevator.v line 329
+# End time: 22:45:49 on Sep 27,2025, Elapsed time: 1:41:02
+# Errors: 0, Warnings: 4
