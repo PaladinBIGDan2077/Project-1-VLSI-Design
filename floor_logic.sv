@@ -162,13 +162,13 @@ end
 
 always @(*) begin
     if (!reset_n) begin
-        elevator_floor_selector = 4'b0;
-        direction_selector = 1'b1;
-        activate_elevator = 1'b0;
+        elevator_floor_selector <= 4'b0;
+        direction_selector <= 1'b1;
+        activate_elevator <= 1'b0;
     end
     else begin
         // Reset activation signal
-        activate_elevator = 1'b0;
+        activate_elevator <= 1'b0;
         
         // Only update target floor when elevator is not moving and has reached current target
         if (!elevator_moving && (elevator_floor_selector == current_floor_state)) begin
@@ -176,32 +176,32 @@ always @(*) begin
             if (elevator_direction) begin // Moving up
                 // Check for requests above current floor
                 case (1'b1)
-                    (current_floor_state > FLOOR_1) && (call_button_lights[0] || panel_button_lights[0]): elevator_floor_selector = FLOOR_1;
-                    (current_floor_state > FLOOR_2) && (call_button_lights[1] || panel_button_lights[1]): elevator_floor_selector = FLOOR_2;
-                    (current_floor_state > FLOOR_3) && (call_button_lights[2] || panel_button_lights[2]): elevator_floor_selector = FLOOR_3;
-                    (current_floor_state > FLOOR_4) && (call_button_lights[3] || panel_button_lights[3]): elevator_floor_selector = FLOOR_4;
-                    (current_floor_state > FLOOR_5) && (call_button_lights[4] || panel_button_lights[4]): elevator_floor_selector = FLOOR_5;
-                    (current_floor_state > FLOOR_6) && (call_button_lights[5] || panel_button_lights[5]): elevator_floor_selector = FLOOR_6;
-                    (current_floor_state > FLOOR_7) && (call_button_lights[6] || panel_button_lights[6]): elevator_floor_selector = FLOOR_7;
-                    (current_floor_state > FLOOR_8) && (call_button_lights[7] || panel_button_lights[7]): elevator_floor_selector = FLOOR_8;
-                    (current_floor_state > FLOOR_9) && (call_button_lights[8] || panel_button_lights[8]): elevator_floor_selector = FLOOR_9;
-                    (current_floor_state > FLOOR_10) && (call_button_lights[9] || panel_button_lights[9]): elevator_floor_selector = FLOOR_10;
-                    (current_floor_state > FLOOR_11) && (call_button_lights[10] || panel_button_lights[10]): elevator_floor_selector = FLOOR_11;
+                    (current_floor_state > FLOOR_1) && (call_button_lights[0] || panel_button_lights[0]): elevator_floor_selector <= FLOOR_1;
+                    (current_floor_state > FLOOR_2) && (call_button_lights[1] || panel_button_lights[1]): elevator_floor_selector <= FLOOR_2;
+                    (current_floor_state > FLOOR_3) && (call_button_lights[2] || panel_button_lights[2]): elevator_floor_selector <= FLOOR_3;
+                    (current_floor_state > FLOOR_4) && (call_button_lights[3] || panel_button_lights[3]): elevator_floor_selector <= FLOOR_4;
+                    (current_floor_state > FLOOR_5) && (call_button_lights[4] || panel_button_lights[4]): elevator_floor_selector <= FLOOR_5;
+                    (current_floor_state > FLOOR_6) && (call_button_lights[5] || panel_button_lights[5]): elevator_floor_selector <= FLOOR_6;
+                    (current_floor_state > FLOOR_7) && (call_button_lights[6] || panel_button_lights[6]): elevator_floor_selector <= FLOOR_7;
+                    (current_floor_state > FLOOR_8) && (call_button_lights[7] || panel_button_lights[7]): elevator_floor_selector <= FLOOR_8;
+                    (current_floor_state > FLOOR_9) && (call_button_lights[8] || panel_button_lights[8]): elevator_floor_selector <= FLOOR_9;
+                    (current_floor_state > FLOOR_10) && (call_button_lights[9] || panel_button_lights[9]): elevator_floor_selector <= FLOOR_10;
+                    (current_floor_state > FLOOR_11) && (call_button_lights[10] || panel_button_lights[10]): elevator_floor_selector <= FLOOR_11;
                     default: begin
                         // If no requests above, check for requests below
                         case (1'b1)
-                            (call_button_lights[0] || panel_button_lights[0]): elevator_floor_selector = FLOOR_1;
-                            (call_button_lights[1] || panel_button_lights[1]): elevator_floor_selector = FLOOR_2;
-                            (call_button_lights[2] || panel_button_lights[2]): elevator_floor_selector = FLOOR_3;
-                            (call_button_lights[3] || panel_button_lights[3]): elevator_floor_selector = FLOOR_4;
-                            (call_button_lights[4] || panel_button_lights[4]): elevator_floor_selector = FLOOR_5;
-                            (call_button_lights[5] || panel_button_lights[5]): elevator_floor_selector = FLOOR_6;
-                            (call_button_lights[6] || panel_button_lights[6]): elevator_floor_selector = FLOOR_7;
-                            (call_button_lights[7] || panel_button_lights[7]): elevator_floor_selector = FLOOR_8;
-                            (call_button_lights[8] || panel_button_lights[8]): elevator_floor_selector = FLOOR_9;
-                            (call_button_lights[9] || panel_button_lights[9]): elevator_floor_selector = FLOOR_10;
-                            (call_button_lights[10] || panel_button_lights[10]): elevator_floor_selector = FLOOR_11;
-                            default: elevator_floor_selector = current_floor_state; // No requests
+                            (call_button_lights[0] || panel_button_lights[0]): elevator_floor_selector <= FLOOR_1;
+                            (call_button_lights[1] || panel_button_lights[1]): elevator_floor_selector <= FLOOR_2;
+                            (call_button_lights[2] || panel_button_lights[2]): elevator_floor_selector <= FLOOR_3;
+                            (call_button_lights[3] || panel_button_lights[3]): elevator_floor_selector <= FLOOR_4;
+                            (call_button_lights[4] || panel_button_lights[4]): elevator_floor_selector <= FLOOR_5;
+                            (call_button_lights[5] || panel_button_lights[5]): elevator_floor_selector <= FLOOR_6;
+                            (call_button_lights[6] || panel_button_lights[6]): elevator_floor_selector <= FLOOR_7;
+                            (call_button_lights[7] || panel_button_lights[7]): elevator_floor_selector <= FLOOR_8;
+                            (call_button_lights[8] || panel_button_lights[8]): elevator_floor_selector <= FLOOR_9;
+                            (call_button_lights[9] || panel_button_lights[9]): elevator_floor_selector <= FLOOR_10;
+                            (call_button_lights[10] || panel_button_lights[10]): elevator_floor_selector <= FLOOR_11;
+                            default: elevator_floor_selector <= current_floor_state; // No requests
                         endcase
                     end
                 endcase
@@ -209,32 +209,32 @@ always @(*) begin
             else begin // Moving down or stationary
                 // Check for requests below current floor first
                 case (1'b1)
-                    (current_floor_state < FLOOR_1) && (call_button_lights[0] || panel_button_lights[0]): elevator_floor_selector = FLOOR_1;
-                    (current_floor_state < FLOOR_2) && (call_button_lights[1] || panel_button_lights[1]): elevator_floor_selector = FLOOR_2;
-                    (current_floor_state < FLOOR_3) && (call_button_lights[2] || panel_button_lights[2]): elevator_floor_selector = FLOOR_3;
-                    (current_floor_state < FLOOR_4) && (call_button_lights[3] || panel_button_lights[3]): elevator_floor_selector = FLOOR_4;
-                    (current_floor_state < FLOOR_5) && (call_button_lights[4] || panel_button_lights[4]): elevator_floor_selector = FLOOR_5;
-                    (current_floor_state < FLOOR_6) && (call_button_lights[5] || panel_button_lights[5]): elevator_floor_selector = FLOOR_6;
-                    (current_floor_state < FLOOR_7) && (call_button_lights[6] || panel_button_lights[6]): elevator_floor_selector = FLOOR_7;
-                    (current_floor_state < FLOOR_8) && (call_button_lights[7] || panel_button_lights[7]): elevator_floor_selector = FLOOR_8;
-                    (current_floor_state < FLOOR_9) && (call_button_lights[8] || panel_button_lights[8]): elevator_floor_selector = FLOOR_9;
-                    (current_floor_state < FLOOR_10) && (call_button_lights[9] || panel_button_lights[9]): elevator_floor_selector = FLOOR_10;
-                    (current_floor_state < FLOOR_11) && (call_button_lights[10] || panel_button_lights[10]): elevator_floor_selector = FLOOR_11;
+                    (current_floor_state < FLOOR_1) && (call_button_lights[0] || panel_button_lights[0]): elevator_floor_selector <= FLOOR_1;
+                    (current_floor_state < FLOOR_2) && (call_button_lights[1] || panel_button_lights[1]): elevator_floor_selector <= FLOOR_2;
+                    (current_floor_state < FLOOR_3) && (call_button_lights[2] || panel_button_lights[2]): elevator_floor_selector <= FLOOR_3;
+                    (current_floor_state < FLOOR_4) && (call_button_lights[3] || panel_button_lights[3]): elevator_floor_selector <= FLOOR_4;
+                    (current_floor_state < FLOOR_5) && (call_button_lights[4] || panel_button_lights[4]): elevator_floor_selector <= FLOOR_5;
+                    (current_floor_state < FLOOR_6) && (call_button_lights[5] || panel_button_lights[5]): elevator_floor_selector <= FLOOR_6;
+                    (current_floor_state < FLOOR_7) && (call_button_lights[6] || panel_button_lights[6]): elevator_floor_selector <= FLOOR_7;
+                    (current_floor_state < FLOOR_8) && (call_button_lights[7] || panel_button_lights[7]): elevator_floor_selector <= FLOOR_8;
+                    (current_floor_state < FLOOR_9) && (call_button_lights[8] || panel_button_lights[8]): elevator_floor_selector <= FLOOR_9;
+                    (current_floor_state < FLOOR_10) && (call_button_lights[9] || panel_button_lights[9]): elevator_floor_selector <= FLOOR_10;
+                    (current_floor_state < FLOOR_11) && (call_button_lights[10] || panel_button_lights[10]): elevator_floor_selector <= FLOOR_11;
                     default: begin
                         // If no requests below, check for requests above
                         case (1'b1)
-                            (call_button_lights[0] || panel_button_lights[0]): elevator_floor_selector = FLOOR_1;
-                            (call_button_lights[1] || panel_button_lights[1]): elevator_floor_selector = FLOOR_2;
-                            (call_button_lights[2] || panel_button_lights[2]): elevator_floor_selector = FLOOR_3;
-                            (call_button_lights[3] || panel_button_lights[3]): elevator_floor_selector = FLOOR_4;
-                            (call_button_lights[4] || panel_button_lights[4]): elevator_floor_selector = FLOOR_5;
-                            (call_button_lights[5] || panel_button_lights[5]): elevator_floor_selector = FLOOR_6;
-                            (call_button_lights[6] || panel_button_lights[6]): elevator_floor_selector = FLOOR_7;
-                            (call_button_lights[7] || panel_button_lights[7]): elevator_floor_selector = FLOOR_8;
-                            (call_button_lights[8] || panel_button_lights[8]): elevator_floor_selector = FLOOR_9;
-                            (call_button_lights[9] || panel_button_lights[9]): elevator_floor_selector = FLOOR_10;
-                            (call_button_lights[10] || panel_button_lights[10]): elevator_floor_selector = FLOOR_11;
-                            default: elevator_floor_selector = current_floor_state; // No requests
+                            (call_button_lights[0] || panel_button_lights[0]): elevator_floor_selector <= FLOOR_1;
+                            (call_button_lights[1] || panel_button_lights[1]): elevator_floor_selector <= FLOOR_2;
+                            (call_button_lights[2] || panel_button_lights[2]): elevator_floor_selector <= FLOOR_3;
+                            (call_button_lights[3] || panel_button_lights[3]): elevator_floor_selector <= FLOOR_4;
+                            (call_button_lights[4] || panel_button_lights[4]): elevator_floor_selector <= FLOOR_5;
+                            (call_button_lights[5] || panel_button_lights[5]): elevator_floor_selector <= FLOOR_6;
+                            (call_button_lights[6] || panel_button_lights[6]): elevator_floor_selector <= FLOOR_7;
+                            (call_button_lights[7] || panel_button_lights[7]): elevator_floor_selector <= FLOOR_8;
+                            (call_button_lights[8] || panel_button_lights[8]): elevator_floor_selector <= FLOOR_9;
+                            (call_button_lights[9] || panel_button_lights[9]): elevator_floor_selector <= FLOOR_10;
+                            (call_button_lights[10] || panel_button_lights[10]): elevator_floor_selector <= FLOOR_11;
+                            default: elevator_floor_selector <= current_floor_state; // No requests
                         endcase
                     end
                 endcase
@@ -242,8 +242,8 @@ always @(*) begin
         end
         // Set direction and activation based on target vs current floor
         if ((power_switch && !emergency_btn && !elevator_moving) && (elevator_floor_selector != current_floor_state)) begin
-            direction_selector = (elevator_floor_selector > current_floor_state);
-            activate_elevator = 1'b1;
+            direction_selector <= (elevator_floor_selector > current_floor_state);
+            activate_elevator <= 1'b1;
         end
     end
 end
