@@ -274,7 +274,7 @@ always @(*) begin
         elevator_floor_selector <= 4'b0;
     end
     else begin
-        if (((|call_button_lights > 0 ) || (|panel_button_lights > 0)) && (next_floor == current_floor_state) && !elevator_moving) begin
+        if (!elevator_moving) begin
             case(1'b0) begin
                 call_button_lights[0] || panel_button_lights[0]: next_floor = FLOOR_1;
                 call_button_lights[1] || panel_button_lights[1]: next_floor = FLOOR_2;
@@ -289,17 +289,6 @@ always @(*) begin
                 call_button_lights[10] || panel_button_lights[10]: next_floor = FLOOR_11;
                 default: next_floor = current_floor_state; // No requests
             endcase
-        end
-        if (!elevator_moving && (|call_button_lights || |panel_button_lights)) begin
-            memory_pointer_temporary = memory_pointer;
-        end
-        if (elevator_moving && (|call_button_lights || |panel_button_lights)) begin
-            memory_pointer_temporary = memory_pointer;
-            remaining_requests = remaining_requests + 1'b1;
-        end
-        if (!elevator_moving && (remaining_requests > 0)) begin
-            remaining_requests = remaining_requests - 1'b1;
-            memory_pointer = memory_pointer - 1'b1;
         end
     end
     elevator_floor_selector = next_floor;
