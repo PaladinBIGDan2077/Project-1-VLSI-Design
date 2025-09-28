@@ -310,13 +310,7 @@ always @(*) begin
                     if (&call_button_lights && &panel_button_lights) next_floor = current_floor_state;
                 end
             endcase
-            if (check_timer < 4'd10) begin
-                check_timer = check_timer + 1;
-            end
-            else begin
-                check_timer = 4'b0;
-                direction_selector = ~direction_selector; // Toggle direction if no requests found after timer expires
-            end
+
             elevator_floor_selector = next_floor;
             activate_elevator = 1'b0;
             if ((power_switch && !emergency_btn && !elevator_moving) && elevator_floor_selector != current_floor_state) begin
@@ -324,6 +318,20 @@ always @(*) begin
             end
         end
     end 
+end
+always @(*) begin
+    if (!reset_n) begin
+        check_timer = 4'b0;
+    end
+    else begin
+        if (check_timer < 4'd10) begin
+            check_timer = check_timer + 1;
+        end
+        else begin
+            check_timer = 4'b0;
+            direction_selector = ~direction_selector; // Toggle direction if no requests found after timer expires
+        end
+    end
 end
 
 // Door control logic
