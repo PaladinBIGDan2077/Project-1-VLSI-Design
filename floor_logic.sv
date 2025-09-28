@@ -439,35 +439,35 @@ always @(*) begin
         if (!elevator_moving && (remaining_requests > 0)) begin
             remaining_requests = remaining_requests - 1'b1;
             stack_pointer = stack_pointer - 1'b1;
-    end
+        end
 
     elevator_floor_selector = current_floor_state;
-    if (power_switch && !elevator_moving) begin
-        if (stack_full) begin // Stack was full
-            stack_pointer = 4'b0;
-            stack_full = 1'b0;
-            stack_empty = 1'b1;
-            elevator_memory = 512'b0; // Clear the entire stack
-        end
-        // When elevator reaches target floor, clear the served floor from stack
-        if (elevator_floor_selector == current_floor_state && activate_elevator) begin
-            if (!stack_empty) begin
-                stack_pointer = stack_pointer - 1;
-                stack_empty = (stack_pointer == 4'd1);
+        if (power_switch && !elevator_moving) begin
+            if (stack_full) begin // Stack was full
+                stack_pointer = 4'b0;
                 stack_full = 1'b0;
-                
-                // Shift stack down to remove the served floor
-                if (stack_pointer > 1) begin
-                    elevator_memory = {4'b0, elevator_memory[43:4]}; // Shift right by 4 bits
-                end 
-                else begin
-                    elevator_memory = 44'b0;
+                stack_empty = 1'b1;
+                elevator_memory = 512'b0; // Clear the entire stack
+            end
+            // When elevator reaches target floor, clear the served floor from stack
+            if (elevator_floor_selector == current_floor_state && activate_elevator) begin
+                if (!stack_empty) begin
+                    stack_pointer = stack_pointer - 1;
+                    stack_empty = (stack_pointer == 4'd1);
+                    stack_full = 1'b0;
+                    
+                    // Shift stack down to remove the served floor
+                    if (stack_pointer > 1) begin
+                        elevator_memory = {4'b0, elevator_memory[43:4]}; // Shift right by 4 bits
+                    end 
+                    else begin
+                        elevator_memory = 44'b0;
+                    end
                 end
             end
         end
     end
-end
-    
+
 // Floor selection logic - pull from stack and set direction
 always @(*) begin
     if (!reset_n) begin
