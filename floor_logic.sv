@@ -125,94 +125,72 @@ always @(posedge clock or negedge reset_n) begin
         // Check elevator panel buttons (internal requests)
         case (1'b1)
             panel_buttons[0] && current_floor_state != FLOOR_1 && !panel_button_lights[0]: begin
-                floor_number = FLOOR_1;
                 panel_button_lights[0] = 1'b1;
             end
             panel_buttons[1] && current_floor_state != FLOOR_2 && !panel_button_lights[1]: begin
-                floor_number = FLOOR_2;
                 panel_button_lights[1] = 1'b1;
             end
             panel_buttons[2] && current_floor_state != FLOOR_3 && !panel_button_lights[2]: begin
-                floor_number = FLOOR_3;
                 panel_button_lights[2] = 1'b1;
             end
             panel_buttons[3] && current_floor_state != FLOOR_4 && !panel_button_lights[3]: begin
-                floor_number = FLOOR_4;
                 panel_button_lights[3] = 1'b1;
             end
             panel_buttons[4] && current_floor_state != FLOOR_5 && !panel_button_lights[4]: begin
-                floor_number = FLOOR_5;
                 panel_button_lights[4] = 1'b1;
             end
             panel_buttons[5] && current_floor_state != FLOOR_6 && !panel_button_lights[5]: begin
-                floor_number = FLOOR_6;
                 panel_button_lights[5] = 1'b1;
             end
             panel_buttons[6] && current_floor_state != FLOOR_7 && !panel_button_lights[6]: begin
-                floor_number = FLOOR_7;
                 panel_button_lights[6] = 1'b1;
             end
             panel_buttons[7] && current_floor_state != FLOOR_8 && !panel_button_lights[7]: begin
-                floor_number = FLOOR_8;
                 panel_button_lights[7] = 1'b1;
             end
             panel_buttons[8] && current_floor_state != FLOOR_9 && !panel_button_lights[8]: begin
-                floor_number = FLOOR_9;
                 panel_button_lights[8] = 1'b1;
             end
             panel_buttons[9] && current_floor_state != FLOOR_10 && !panel_button_lights[9]: begin
-                floor_number = FLOOR_10;
                 panel_button_lights[9] = 1'b1;
             end
             panel_buttons[10] && current_floor_state != FLOOR_11 && !panel_button_lights[10]: begin
-                floor_number = FLOOR_11;
                 panel_button_lights[10] = 1'b1;
             end
         endcase
         // Check floor call buttons (external requests)
         case (1'b1)
             floor_call_buttons[0] && current_floor_state != FLOOR_1 && !call_button_lights[0]: begin
-                floor_number = FLOOR_1;
                 call_button_lights[0] = 1'b1;
             end
             floor_call_buttons[1] && current_floor_state != FLOOR_2 && !call_button_lights[1]: begin
-                floor_number = FLOOR_2;
                 call_button_lights[1] = 1'b1;
             end
             floor_call_buttons[2] && current_floor_state != FLOOR_3 && !call_button_lights[2]: begin
-                floor_number = FLOOR_3;
                 call_button_lights[2] = 1'b1;
             end
             floor_call_buttons[3] && current_floor_state != FLOOR_4 && !call_button_lights[3]: begin
-                floor_number = FLOOR_4;
                 call_button_lights[3] = 1'b1;
             end
             floor_call_buttons[4] && current_floor_state != FLOOR_5 && !call_button_lights[4]: begin
-                floor_number = FLOOR_5;
                 call_button_lights[4] = 1'b1;
             end
             floor_call_buttons[5] && current_floor_state != FLOOR_6 && !call_button_lights[5]: begin
-                floor_number = FLOOR_6;
                 call_button_lights[5] = 1'b1;
             end
             floor_call_buttons[6] && current_floor_state != FLOOR_7 && !call_button_lights[6]: begin
-                floor_number = FLOOR_7;
                 call_button_lights[6] = 1'b1;
             end
             floor_call_buttons[7] && current_floor_state != FLOOR_8 && !call_button_lights[7]: begin
-                floor_number = FLOOR_8;
                 call_button_lights[7] = 1'b1;
             end
             floor_call_buttons[8] && current_floor_state != FLOOR_9 && !call_button_lights[8]: begin
-                floor_number = FLOOR_9;
                 call_button_lights[8] = 1'b1;
             end
             floor_call_buttons[9] && current_floor_state != FLOOR_10 && !call_button_lights[9]: begin
-                floor_number = FLOOR_10;
                 call_button_lights[9] = 1'b1;
             end
             floor_call_buttons[10] && current_floor_state != FLOOR_11 && !call_button_lights[10]: begin
-                floor_number = FLOOR_11;
                 call_button_lights[10] = 1'b1;
             end
         endcase
@@ -267,43 +245,7 @@ always @(posedge clock or negedge reset_n) begin
         end
     end
 end
-// OG Stack - Will need work.
-// always @(*) begin
-//     if (!reset_n) begin
-//         memory_pointer <= 4'b0;
-//         remaining_requests <= 16'b0;
-//         elevator_floor_selector <= 4'b0;
-//         next_floor <= 4'b0;
-//         direction_selector <= 1'b1;
-//         activate_elevator <= 1'b0;
-//     end
-//     else begin
-//         if (!elevator_moving && (elevator_floor_selector == current_floor_state)) begin
-//             if (call_button_lights[0] || panel_button_lights[0]) elevator_floor_selector = FLOOR_1;
-//             if (call_button_lights[1] || panel_button_lights[1]) elevator_floor_selector = FLOOR_2;
-//             if (call_button_lights[2] || panel_button_lights[2]) elevator_floor_selector = FLOOR_3;
-//             if (call_button_lights[3] || panel_button_lights[3]) elevator_floor_selector = FLOOR_4;
-//             if (call_button_lights[4] || panel_button_lights[4]) elevator_floor_selector = FLOOR_5;
-//             if (call_button_lights[5] || panel_button_lights[5]) elevator_floor_selector = FLOOR_6;
-//             if (call_button_lights[6] || panel_button_lights[6]) elevator_floor_selector = FLOOR_7;
-//             if (call_button_lights[7] || panel_button_lights[7]) elevator_floor_selector = FLOOR_8;
-//             if (call_button_lights[8] || panel_button_lights[8]) elevator_floor_selector = FLOOR_9;
-//             if (call_button_lights[9] || panel_button_lights[9]) elevator_floor_selector = FLOOR_10;
-//             if (call_button_lights[10] || panel_button_lights[10]) elevator_floor_selector = FLOOR_11;
-//             //if (&call_button_lights && &panel_button_lights) elevator_floor_selector = current_floor_state;
-//         end
-//         activate_elevator = 1'b0;
-//         if ((power_switch && !emergency_btn && !elevator_moving) && (elevator_floor_selector > current_floor_state)) begin
-//             direction_selector = 1'b1;
-//             activate_elevator = 1'b1;
-//         end
-//         if ((power_switch && !emergency_btn && !elevator_moving) && (elevator_floor_selector < current_floor_state)) begin
-//             direction_selector = 1'b0;
-//             activate_elevator = 1'b1;
-//         end
-//     end
-// end 
-// Corrected floor selection logic
+
 always @(*) begin
     if (!reset_n) begin
         elevator_floor_selector <= 4'b0;
