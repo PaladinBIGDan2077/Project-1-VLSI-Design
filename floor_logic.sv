@@ -314,22 +314,9 @@ always @(*) begin
             if ((power_switch && !emergency_btn && !elevator_moving) && elevator_floor_selector != current_floor_state) begin
                 activate_elevator = 1'b1;
             end
+            direction_selector = ~direction_selector; // Toggle direction if no requests found after timer expires
         end
     end 
-end
-always @(*) begin
-    if (!reset_n) begin
-        check_timer <= 4'b0;
-    end
-    else begin
-        direction_selector = ~direction_selector; // Toggle direction if no requests found after timer expires
-        if (check_timer < 4'hF) begin
-            check_timer = check_timer + 1'b1;
-        end
-        else begin
-            check_timer = 4'b0;
-        end
-    end
 end
 
 // Door control logic
