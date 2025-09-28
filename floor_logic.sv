@@ -280,7 +280,7 @@ always @(*) begin
     end
     else begin
         if (!elevator_moving && (elevator_floor_selector == current_floor_state)) begin
-            case(direction_selector) begin
+            case(direction_selector)
                 1'b1: begin
                     if (call_button_lights[0] || panel_button_lights[0]) next_floor = FLOOR_1;
                     if (call_button_lights[1] || panel_button_lights[1]) next_floor = FLOOR_2;
