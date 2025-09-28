@@ -124,63 +124,27 @@ always @(posedge clock or negedge reset_n) begin
     else if (power_switch && !emergency_btn) begin  // Remove stack_full condition
         // Check elevator panel buttons (internal requests)
         case (1'b1)
-            panel_buttons[0] && current_floor_state != FLOOR_1 && !panel_button_lights[0]: begin
-                panel_button_lights[0] = 1'b1;
-            end
-            panel_buttons[1] && current_floor_state != FLOOR_2 && !panel_button_lights[1]: begin
-                panel_button_lights[1] = 1'b1;
-            end
-            panel_buttons[2] && current_floor_state != FLOOR_3 && !panel_button_lights[2]: begin
-                panel_button_lights[2] = 1'b1;
-            end
-            panel_buttons[3] && current_floor_state != FLOOR_4 && !panel_button_lights[3]: begin
-                panel_button_lights[3] = 1'b1;
-            end
-            panel_buttons[4] && current_floor_state != FLOOR_5 && !panel_button_lights[4]: begin
-                panel_button_lights[4] = 1'b1;
-            end
-            panel_buttons[5] && current_floor_state != FLOOR_6 && !panel_button_lights[5]: begin
-                panel_button_lights[5] = 1'b1;
-            end
-            panel_buttons[6] && current_floor_state != FLOOR_7 && !panel_button_lights[6]: begin
-                panel_button_lights[6] = 1'b1;
-            end
-            panel_buttons[7] && current_floor_state != FLOOR_8 && !panel_button_lights[7]: begin
-                panel_button_lights[7] = 1'b1;
-            end
-            panel_buttons[8] && current_floor_state != FLOOR_9 && !panel_button_lights[8]: begin
-                panel_button_lights[8] = 1'b1;
-            end
-            panel_buttons[9] && current_floor_state != FLOOR_10 && !panel_button_lights[9]: begin
-                panel_button_lights[9] = 1'b1;
-            end
-            panel_buttons[10] && current_floor_state != FLOOR_11 && !panel_button_lights[10]: begin
-                panel_button_lights[10] = 1'b1;
-            end
+            panel_buttons[0] && current_floor_state != FLOOR_1 && !panel_button_lights[0]: panel_button_lights[0] = 1'b1;
+            panel_buttons[1] && current_floor_state != FLOOR_2 && !panel_button_lights[1]: panel_button_lights[1] = 1'b1;
+            panel_buttons[2] && current_floor_state != FLOOR_3 && !panel_button_lights[2]: panel_button_lights[2] = 1'b1;
+            panel_buttons[3] && current_floor_state != FLOOR_4 && !panel_button_lights[3]: panel_button_lights[3] = 1'b1;
+            panel_buttons[4] && current_floor_state != FLOOR_5 && !panel_button_lights[4]: panel_button_lights[4] = 1'b1;
+            panel_buttons[5] && current_floor_state != FLOOR_6 && !panel_button_lights[5]: panel_button_lights[5] = 1'b1;
+            panel_buttons[6] && current_floor_state != FLOOR_7 && !panel_button_lights[6]: panel_button_lights[6] = 1'b1;
+            panel_buttons[7] && current_floor_state != FLOOR_8 && !panel_button_lights[7]: panel_button_lights[7] = 1'b1;
+            panel_buttons[8] && current_floor_state != FLOOR_9 && !panel_button_lights[8]: panel_button_lights[8] = 1'b1;
+            panel_buttons[9] && current_floor_state != FLOOR_10 && !panel_button_lights[9]: panel_button_lights[9] = 1'b1;
+            panel_buttons[10] && current_floor_state != FLOOR_11 && !panel_button_lights[10]: panel_button_lights[10] = 1'b1;
         endcase
         // Check floor call buttons (external requests)
         case (1'b1)
-            floor_call_buttons[0] && current_floor_state != FLOOR_1 && !call_button_lights[0]: begin
-                call_button_lights[0] = 1'b1;
-            end
-            floor_call_buttons[1] && current_floor_state != FLOOR_2 && !call_button_lights[1]: begin
-                call_button_lights[1] = 1'b1;
-            end
-            floor_call_buttons[2] && current_floor_state != FLOOR_3 && !call_button_lights[2]: begin
-                call_button_lights[2] = 1'b1;
-            end
-            floor_call_buttons[3] && current_floor_state != FLOOR_4 && !call_button_lights[3]: begin
-                call_button_lights[3] = 1'b1;
-            end
-            floor_call_buttons[4] && current_floor_state != FLOOR_5 && !call_button_lights[4]: begin
-                call_button_lights[4] = 1'b1;
-            end
-            floor_call_buttons[5] && current_floor_state != FLOOR_6 && !call_button_lights[5]: begin
-                call_button_lights[5] = 1'b1;
-            end
-            floor_call_buttons[6] && current_floor_state != FLOOR_7 && !call_button_lights[6]: begin
-                call_button_lights[6] = 1'b1;
-            end
+            floor_call_buttons[0] && current_floor_state != FLOOR_1 && !call_button_lights[0]: call_button_lights[0] = 1'b1;
+            floor_call_buttons[1] && current_floor_state != FLOOR_2 && !call_button_lights[1]: call_button_lights[1] = 1'b1;
+            floor_call_buttons[2] && current_floor_state != FLOOR_3 && !call_button_lights[2]: call_button_lights[2] = 1'b1;
+            floor_call_buttons[3] && current_floor_state != FLOOR_4 && !call_button_lights[3]: call_button_lights[3] = 1'b1;
+            floor_call_buttons[4] && current_floor_state != FLOOR_5 && !call_button_lights[4]: call_button_lights[4] = 1'b1;
+            floor_call_buttons[5] && current_floor_state != FLOOR_6 && !call_button_lights[5]: call_button_lights[5] = 1'b1;
+            floor_call_buttons[6] && current_floor_state != FLOOR_7 && !call_button_lights[6]: call_button_lights[6] = 1'b1;
             floor_call_buttons[7] && current_floor_state != FLOOR_8 && !call_button_lights[7]: begin
                 call_button_lights[7] = 1'b1;
             end
