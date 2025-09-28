@@ -287,7 +287,6 @@ always @(*) begin
             else if (call_button_lights[9] || panel_button_lights[9]) next_floor = FLOOR_10;
             else if (call_button_lights[10] || panel_button_lights[10]) next_floor = FLOOR_11;
             else next_floor = current_floor_state;
-            endcase
         end
     end
     elevator_floor_selector = next_floor;
