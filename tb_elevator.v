@@ -129,16 +129,16 @@ module elevator_top_tb;
         #50
         raw_panel_buttons[10] = 0;
         // Call to Floor 6
-        #50
+        #100
         raw_panel_buttons[5] = 1;
         $display("Floor 6 call button pressed @ %t", $time);
-        #50
+        #100
         raw_panel_buttons[5] = 0;
         // Call to Floor 8
-        #50
+        #100
         raw_panel_buttons[7] = 1;
         $display("Floor 8 call button pressed @ %t", $time);
-        #50
+        #100
         raw_panel_buttons[7] = 0;
         #2000
         // Reset for next test
