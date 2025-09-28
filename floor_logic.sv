@@ -294,7 +294,7 @@ always @(*) begin
             memory_pointer = 9'b0; 
         end
         // When elevator reaches target floor, clear the served floor from stack
-        if (elevator_floor_selector == current_floor_state && activate_elevator) begin
+        if (elevator_floor_selector == current_floor_state && elevator_moving) begin
             memory_pointer = memory_pointer + 1;
             end
         end
