@@ -128,9 +128,6 @@ always @(*) begin
         elevator_memory <= 44'b0;
     end
     else if (emergency_btn) begin
-
-        //direction_selector <= 1'b1; 
-        //elevator_floor_selector <= EMERGENCY_STATE;
     end
 end
 
@@ -474,6 +471,7 @@ end
 // Floor selection logic - pull from stack and set direction
 always @(*) begin
     if (!reset_n) begin
+        direction_selector = 1'b0;
         activate_elevator = 1'b0;
     end 
     activate_elevator = 1'b0;
