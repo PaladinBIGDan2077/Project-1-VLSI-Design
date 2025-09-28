@@ -66,9 +66,6 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
     reg                         [7:0]                           memory_pointer;
     reg                         [7:0]                           memory_pointer_temporary;
     reg                         [7:0]                           memory_pointer_plus_four;
-
-    reg                                                         stack_full;
-    reg                                                         stack_empty;
     reg                         [15:0]                          remaining_requests;
     reg                         [3:0]                           floor_number;
 
@@ -276,18 +273,12 @@ always @(*) begin
     if (!reset_n) begin
         //elevator_memory <= 512'b0;
         memory_pointer <= 4'b0;
-        stack_full <= 1'b0;
-        stack_empty <= 1'b1;
         remaining_requests <= 16'b0;
         elevator_floor_selector <= 4'b0;
     end
     else begin
-        if (!stack_full) begin
-            elevator_memory[memory_pointer] = floor_number;
-        end
+        elevator_memory[memory_pointer] = floor_number;
         if (!elevator_moving) begin
-            stack_empty = 1'b0;
-            stack_full = (memory_pointer == 12'd512);
             next_floor = elevator_memory[memory_pointer];
         end
         if (elevator_moving && |call_button_lights) begin
@@ -300,29 +291,13 @@ always @(*) begin
         end
 
     elevator_floor_selector = next_floor;
-        if (power_switch && !elevator_moving) begin
-            if (stack_full) begin // Stack was full
-                memory_pointer = 4'b0;
-                stack_full = 1'b0;
-                stack_empty = 1'b1;
-                //elevator_memory = 512'b0; // Clear the entire stack
-            end
-            // When elevator reaches target floor, clear the served floor from stack
-            if (elevator_floor_selector == current_floor_state && activate_elevator) begin
-                memory_pointer = memory_pointer + 1;
-                if (!stack_empty) begin
-                    memory_pointer = memory_pointer - 1;
-                    stack_empty = (memory_pointer == 4'd1);
-                    stack_full = 1'b0;
-                    
-                    // Shift stack down to remove the served floor
-                    if (memory_pointer > 1) begin
-                        //elevator_memory = {4'b0, elevator_memory[512:4]}; // Shift right by 4 bits
-                    end 
-                    else begin
-                        //elevator_memory = 44'b0;
-                    end
-                end
+    if (power_switch && !elevator_moving) begin
+        if (memory_pointer == 9'd512) begin // Stack was full
+            memory_pointer = 9'b0;
+        end
+        // When elevator reaches target floor, clear the served floor from stack
+        if (elevator_floor_selector == current_floor_state && activate_elevator) begin
+            memory_pointer = memory_pointer + 1;
             end
         end
     end
