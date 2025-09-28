@@ -429,7 +429,7 @@ always @(*) begin
                 8'h7E: elevator_memory[507:504] = floor_number;
                 8'h7F: elevator_memory[511:508] = floor_number;
             endcase
-            elevator_memory[memory_pointer] <= floor_number;
+            elevator_memory[memory_pointer] = floor_number;
         end
         if (!elevator_moving) begin
             stack_empty = 1'b0;
