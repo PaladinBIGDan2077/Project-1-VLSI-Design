@@ -274,7 +274,7 @@ always @(*) begin
         elevator_floor_selector <= 4'b0;
     end
     else begin
-        if (!elevator_moving) begin
+        if (!elevator_moving && direction_selector) begin
             if (call_button_lights[0] || panel_button_lights[0])      next_floor = FLOOR_1;
             else if (call_button_lights[1] || panel_button_lights[1]) next_floor = FLOOR_2;
             else if (call_button_lights[2] || panel_button_lights[2]) next_floor = FLOOR_3;
@@ -288,13 +288,22 @@ always @(*) begin
             else if (call_button_lights[10] || panel_button_lights[10]) next_floor = FLOOR_11;
             else next_floor = current_floor_state;
         end
-    end
-    elevator_floor_selector = next_floor;
-    if (power_switch && !elevator_moving) begin
-        if (memory_pointer == 9'h1FF) begin // Stack was full
-            memory_pointer = 9'b0; 
+        else if (!elevator_moving && !direction_selector) begin
+            if (call_button_lights[10] || panel_button_lights[10]) next_floor = FLOOR_11;
+            else if (call_button_lights[9] || panel_button_lights[9]) next_floor = FLOOR_10;
+            else if (call_button_lights[8] || panel_button_lights[8]) next_floor = FLOOR_9;
+            else if (call_button_lights[7] || panel_button_lights[7]) next_floor = FLOOR_8;
+            else if (call_button_lights[6] || panel_button_lights[6]) next_floor = FLOOR_7;
+            else if (call_button_lights[5] || panel_button_lights[5]) next_floor = FLOOR_6;
+            else if (call_button_lights[4] || panel_button_lights[4]) next_floor = FLOOR_5;
+            else if (call_button_lights[3] || panel_button_lights[3]) next_floor = FLOOR_4;
+            else if (call_button_lights[2] || panel_button_lights[2]) next_floor = FLOOR_3;
+            else if (call_button_lights[1] || panel_button_lights[1]) next_floor = FLOOR_2;
+            else if (call_button_lights[0] || panel_button_lights[0]) next_floor = FLOOR_1;
+            else next_floor = current_floor_state;
         end
-    end
+    end 
+    elevator_floor_selector = next_floor;
 end
 // Floor selection logic - pull from stack and set direction
 always @(*) begin
