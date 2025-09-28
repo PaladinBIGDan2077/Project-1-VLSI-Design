@@ -292,6 +292,7 @@ always @(*) begin
         stack_full <= 1'b0;
         stack_empty <= 1'b1;
         remaining_requests <= 16'b0;
+        elevator_floor_selector <= 4'b0;
     end
     else begin
         if (!stack_full) begin
@@ -442,6 +443,7 @@ always @(*) begin
         end
 
     elevator_floor_selector = next_floor;
+    current_floor_state = elevator_floor_selector;
         if (power_switch && !elevator_moving) begin
             if (stack_full) begin // Stack was full
                 memory_pointer = 4'b0;
