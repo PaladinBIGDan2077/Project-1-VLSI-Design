@@ -302,8 +302,9 @@ always @(*) begin
         //     else if (call_button_lights[0] || panel_button_lights[0]) next_floor = FLOOR_1;
         //     else next_floor = current_floor_state;
         // end
+        elevator_floor_selector = next_floor;
     end 
-    elevator_floor_selector = next_floor;
+    
 end
 // Floor selection logic - pull from stack and set direction
 always @(*) begin
