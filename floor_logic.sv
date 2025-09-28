@@ -275,7 +275,7 @@ always @(*) begin
     end
     else begin
         if (!elevator_moving) begin
-            case(1'b0) begin
+            case(1'b1) begin
                 call_button_lights[0] || panel_button_lights[0]: next_floor = FLOOR_1;
                 call_button_lights[1] || panel_button_lights[1]: next_floor = FLOOR_2;
                 call_button_lights[2] || panel_button_lights[2]: next_floor = FLOOR_3;
