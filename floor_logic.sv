@@ -274,7 +274,7 @@ always @(*) begin
         remaining_requests <= 16'b0;
         elevator_floor_selector <= 4'b0;
         next_floor <= 4'b0;
-        direction_selector <= 1'b1
+        direction_selector <= 1'b1;
         activate_elevator <= 1'b0;
         check_timer <= 4'b0;
     end
