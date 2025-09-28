@@ -298,9 +298,9 @@ always @(*) begin
             activate_elevator = 1'b1;
         end
         direction_selector = ~direction_selector; // Toggle direction if no requests found after timer expires
-        end
-    end 
-end
+    end
+end 
+
 
 // Door control logic
 always @(*) begin
