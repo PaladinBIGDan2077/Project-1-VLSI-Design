@@ -290,7 +290,7 @@ always @(*) begin
             if (call_button_lights[8] || panel_button_lights[8]) elevator_floor_selector = FLOOR_9;
             if (call_button_lights[9] || panel_button_lights[9]) elevator_floor_selector = FLOOR_10;
             if (call_button_lights[10] || panel_button_lights[10]) elevator_floor_selector = FLOOR_11;
-            if (&call_button_lights && &panel_button_lights) elevator_floor_selector = current_floor_state;
+            //if (&call_button_lights && &panel_button_lights) elevator_floor_selector = current_floor_state;
         end
         activate_elevator = 1'b0;
         if ((power_switch && !emergency_btn && !elevator_moving) && (elevator_floor_selector > current_floor_state)) begin
