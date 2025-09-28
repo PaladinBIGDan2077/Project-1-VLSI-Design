@@ -322,7 +322,7 @@ always @(*) begin
         check_timer <= 4'b0;
     end
     else begin
-        if (check_timer < 4'd10) begin
+        if (check_timer < 4'hF) begin
             check_timer = check_timer + 1'b1;
         end
         else begin
