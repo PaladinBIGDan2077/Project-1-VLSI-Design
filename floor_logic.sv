@@ -429,11 +429,12 @@ always @(*) begin
                 8'h7E: elevator_memory[507:504] = floor_number;
                 8'h7F: elevator_memory[511:508] = floor_number;
             endcase
+            elevator_memory[memory_pointer] <= floor_number;
         end
         if (!elevator_moving) begin
             stack_empty = 1'b0;
-            stack_full = (memory_pointer == 8'd512);
-            next_floor = elevator_memory[memory_pointer + 4'h3];
+            stack_full = (memory_pointer == 12'd512);
+            next_floor <= elevator_memory[memory_pointer + 4'h3];
         end
         if (elevator_moving && |call_button_lights) begin
             remaining_requests = remaining_requests + 1'b1;
