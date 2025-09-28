@@ -282,9 +282,12 @@ always @(*) begin
                 memory_pointer = memory_pointer + 1;
             end
         end
-        if (elevator_moving && |call_button_lights) begin
-            remaining_requests = remaining_requests + 1'b1;
+        if (!levator_moving && (|call_button_lights || |panel_button_lights)) begin
             memory_pointer_temporary = memory_pointer;
+        end
+        if (levator_moving && (|call_button_lights || |panel_button_lights)) begin
+            memory_pointer_temporary = memory_pointer;
+            remaining_requests = remaining_requests + 1'b1;
         end
         if (!elevator_moving && (remaining_requests > 0)) begin
             remaining_requests = remaining_requests - 1'b1;
