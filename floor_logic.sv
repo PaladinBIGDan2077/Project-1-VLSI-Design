@@ -219,47 +219,47 @@ always @(posedge clock or negedge reset_n) begin
         // Check if elevator arrived at selected floor, clear light
         if (power_switch && !elevator_moving) begin
             case (1'b1)
-                (!activate_elevator) && current_floor_state == FLOOR_1: begin
+                (activate_elevator) && current_floor_state == FLOOR_1: begin
                     panel_button_lights[0] = 1'b0;
                     call_button_lights[0] = 1'b0;
                 end
-                (!activate_elevator) && current_floor_state == FLOOR_2: begin
+                (activate_elevator) && current_floor_state == FLOOR_2: begin
                     panel_button_lights[1] = 1'b0;
                     call_button_lights[1] = 1'b0;
                 end
-                (!activate_elevator) && current_floor_state == FLOOR_3: begin
+                (activate_elevator) && current_floor_state == FLOOR_3: begin
                     panel_button_lights[2] = 1'b0;
                     call_button_lights[2] = 1'b0;
                 end
-                (!activate_elevator) && current_floor_state == FLOOR_4: begin
+                (activate_elevator) && current_floor_state == FLOOR_4: begin
                     panel_button_lights[3] = 1'b0;
                     call_button_lights[3] = 1'b0;
                 end
-                (!activate_elevator) && current_floor_state == FLOOR_5: begin
+                (activate_elevator) && current_floor_state == FLOOR_5: begin
                     panel_button_lights[4] = 1'b0;
                     call_button_lights[4] = 1'b0;
                 end
-                (!activate_elevator) && current_floor_state == FLOOR_6: begin
+                (activate_elevator) && current_floor_state == FLOOR_6: begin
                     panel_button_lights[5] = 1'b0;
                     call_button_lights[5] = 1'b0;
                 end
-                (!activate_elevator) && current_floor_state == FLOOR_7: begin
+                (activate_elevator) && current_floor_state == FLOOR_7: begin
                     panel_button_lights[6] = 1'b0;
                     call_button_lights[6] = 1'b0;
                 end
-                (!activate_elevator) && current_floor_state == FLOOR_8: begin
+                (activate_elevator) && current_floor_state == FLOOR_8: begin
                     panel_button_lights[7] = 1'b0;
                     call_button_lights[7] = 1'b0;
                 end
-                (!activate_elevator) && current_floor_state == FLOOR_9: begin
+                (activate_elevator) && current_floor_state == FLOOR_9: begin
                     panel_button_lights[8] = 1'b0;
                     call_button_lights[8] = 1'b0;
                 end
-                (!activate_elevator) && current_floor_state == FLOOR_10: begin
+                (activate_elevator) && current_floor_state == FLOOR_10: begin
                     panel_button_lights[9] = 1'b0;
                     call_button_lights[9] = 1'b0;
                 end
-                (!activate_elevator) && current_floor_state == FLOOR_11: begin
+                (activate_elevator) && current_floor_state == FLOOR_11: begin
                     panel_button_lights[10] = 1'b0;
                     call_button_lights[10] = 1'b0;
                 end
@@ -278,6 +278,9 @@ always @(*) begin
         elevator_memory[memory_pointer] = floor_number;
         if (!elevator_moving) begin
             next_floor = elevator_memory[memory_pointer];
+            if (|call_button_lights || |panel_button_lights) begin
+                memory_pointer = memory_pointer + 1;
+            end
         end
         if (elevator_moving && |call_button_lights) begin
             remaining_requests = remaining_requests + 1'b1;
@@ -295,7 +298,7 @@ always @(*) begin
         end
         // When elevator reaches target floor, clear the served floor from stack
         if (elevator_floor_selector == current_floor_state && elevator_moving) begin
-            memory_pointer = memory_pointer + 1;
+
             end
         end
     end
