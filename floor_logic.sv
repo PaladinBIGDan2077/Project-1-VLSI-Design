@@ -290,7 +290,6 @@ always @(*) begin
             if (call_button_lights[9] || panel_button_lights[9]) next_floor = FLOOR_10;
             if (call_button_lights[10] || panel_button_lights[10]) next_floor = FLOOR_11;
             if (&call_button_lights && &panel_button_lights) next_floor = current_floor_state;
-            direction_selector <= 1'b0; // Default to down direction
         end
         else if (!elevator_moving && (elevator_floor_selector == current_floor_state) && !direction_selector) begin
             if (call_button_lights[10] || panel_button_lights[10]) next_floor = FLOOR_11;
