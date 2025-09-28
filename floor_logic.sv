@@ -69,10 +69,7 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
 
 integer i;
 
-wire [10:0] requests = call_button_lights | panel_button_lights;
-
-reg any_above = |requests[10:current_floor_state+1]; // any requests above current floor
-reg any_below = |requests[current_floor_state-1:0];  // any requests below current floor
+reg any_above, any_below;
 
     parameter                   STOP_FL1                      = 5'h00,
                                 STOP_FL2                      = 5'h01,
