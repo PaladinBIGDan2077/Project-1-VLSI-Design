@@ -63,9 +63,8 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
 
     // Memory Unit for Elevator Requests
     reg                         [3:0]                           elevator_memory[511:0]; 
-    reg                         [7:0]                           memory_pointer;
-    reg                         [7:0]                           memory_pointer_temporary;
-    reg                         [7:0]                           memory_pointer_plus_four;
+    reg                         [8:0]                           memory_pointer;
+    reg                         [8:0]                           memory_pointer_temporary;
     reg                         [15:0]                          remaining_requests;
     reg                         [3:0]                           floor_number;
 
