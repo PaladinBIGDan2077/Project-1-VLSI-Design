@@ -62,7 +62,6 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
     reg                         [3:0]                           next_floor;
 
     // Memory Unit for Elevator Requests
-    reg                         [3:0]                           elevator_memory[511:0]; 
     reg                         [8:0]                           memory_pointer;
     reg                         [8:0]                           memory_pointer_temporary;
     reg                         [15:0]                          remaining_requests;
@@ -275,15 +274,21 @@ always @(*) begin
         elevator_floor_selector <= 4'b0;
     end
     else begin
-        elevator_memory[memory_pointer] = floor_number;
-        if (!elevator_moving) begin
-            next_floor = elevator_memory[memory_pointer];
-            if (|call_button_lights || |panel_button_lights) begin
-                memory_pointer = memory_pointer + 1;
-            end
-        end
         if (((|call_button_lights > 0 ) || (|panel_button_lights > 0)) && (next_floor == current_floor_state) && !elevator_moving) begin
-            memory_pointer = memory_pointer_temporary;
+            case(1'b0) begin
+                call_button_lights[0] || panel_button_lights[0]: next_floor = FLOOR_1;
+                call_button_lights[1] || panel_button_lights[1]: next_floor = FLOOR_2;
+                call_button_lights[2] || panel_button_lights[2]: next_floor = FLOOR_3;
+                call_button_lights[3] || panel_button_lights[3]: next_floor = FLOOR_4;
+                call_button_lights[4] || panel_button_lights[4]: next_floor = FLOOR_5;
+                call_button_lights[5] || panel_button_lights[5]: next_floor = FLOOR_6;
+                call_button_lights[6] || panel_button_lights[6]: next_floor = FLOOR_7;
+                call_button_lights[7] || panel_button_lights[7]: next_floor = FLOOR_8;
+                call_button_lights[8] || panel_button_lights[8]: next_floor = FLOOR_9;
+                call_button_lights[9] || panel_button_lights[9]: next_floor = FLOOR_10;
+                call_button_lights[10] || panel_button_lights[10]: next_floor = FLOOR_11;
+                default: next_floor = current_floor_state; // No requests
+            endcase
         end
         if (!elevator_moving && (|call_button_lights || |panel_button_lights)) begin
             memory_pointer_temporary = memory_pointer;
