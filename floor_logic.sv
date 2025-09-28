@@ -66,7 +66,7 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
     reg                         [8:0]                           memory_pointer;
     reg                         [8:0]                           memory_pointer_temporary;
     reg                         [15:0]                          remaining_requests;
-    reg                         [3:0]                           floosr_number;
+    reg                         [3:0]                           floor_number;
 
     parameter                   STOP_FL1                      = 5'h00,
                                 STOP_FL2                      = 5'h01,
