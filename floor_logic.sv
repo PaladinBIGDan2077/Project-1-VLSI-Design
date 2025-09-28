@@ -290,8 +290,8 @@ always @(*) begin
 
     elevator_floor_selector = next_floor;
     if (power_switch && !elevator_moving) begin
-        if (memory_pointer == 12'h0200) begin // Stack was full
-            memory_pointer = 12'h0000;
+        if (memory_pointer == 9'h1FF) begin // Stack was full
+            memory_pointer = 9'b0; 
         end
         // When elevator reaches target floor, clear the served floor from stack
         if (elevator_floor_selector == current_floor_state && activate_elevator) begin
