@@ -322,12 +322,12 @@ always @(*) begin
         check_timer <= 4'b0;
     end
     else begin
+        direction_selector = ~direction_selector; // Toggle direction if no requests found after timer expires
         if (check_timer < 4'hF) begin
             check_timer = check_timer + 1'b1;
         end
         else begin
             check_timer = 4'b0;
-            direction_selector = ~direction_selector; // Toggle direction if no requests found after timer expires
         end
     end
 end
