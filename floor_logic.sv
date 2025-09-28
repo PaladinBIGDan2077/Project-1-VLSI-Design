@@ -118,21 +118,6 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
                                 FLOOR_11                      = 4'hA,
                                 EMERGENCY_STATE               = 4'hF;                               
 
-
-// Emergency handling - clear all requests
-always @(*) begin
-    if (!reset_n) begin
-       // direction_selector <= 1'b1; 
-        //door_open_allowed <= 1'b0;
-        //door_close_allowed <= 1'b0;
-    end 
-    else if (!power_switch) begin
-
-    end
-    else if (emergency_btn) begin
-    end
-end
-
 // Button reader - push floor requests onto stack (FIXED)
 always @(posedge clock or negedge reset_n) begin
     if (!reset_n) begin
@@ -144,143 +129,143 @@ always @(posedge clock or negedge reset_n) begin
         // Check elevator panel buttons (internal requests)
         case (1'b1)
             panel_buttons[0] && current_floor_state != FLOOR_1 && !panel_button_lights[0]: begin
-                floor_number = 4'd0;
-                panel_button_lights[0] <= 1'b1;
+                floor_number = FLOOR_1;
+                panel_button_lights[0] = 1'b1;
             end
             panel_buttons[1] && current_floor_state != FLOOR_2 && !panel_button_lights[1]: begin
-                floor_number = 4'd1;
-                panel_button_lights[1] <= 1'b1;
+                floor_number = FLOOR_2;
+                panel_button_lights[1] = 1'b1;
             end
             panel_buttons[2] && current_floor_state != FLOOR_3 && !panel_button_lights[2]: begin
-                floor_number = 4'd2;
-                panel_button_lights[2] <= 1'b1;
+                floor_number = FLOOR_3;
+                panel_button_lights[2] = 1'b1;
             end
             panel_buttons[3] && current_floor_state != FLOOR_4 && !panel_button_lights[3]: begin
-                floor_number = 4'd3;
-                panel_button_lights[3] <= 1'b1;
+                floor_number = FLOOR_4;
+                panel_button_lights[3] = 1'b1;
             end
             panel_buttons[4] && current_floor_state != FLOOR_5 && !panel_button_lights[4]: begin
-                floor_number = 4'd4;
-                panel_button_lights[4] <= 1'b1;
+                floor_number = FLOOR_5;
+                panel_button_lights[4] = 1'b1;
             end
             panel_buttons[5] && current_floor_state != FLOOR_6 && !panel_button_lights[5]: begin
-                floor_number = 4'd5;
-                panel_button_lights[5] <= 1'b1;
+                floor_number = FLOOR_6;
+                panel_button_lights[5] = 1'b1;
             end
             panel_buttons[6] && current_floor_state != FLOOR_7 && !panel_button_lights[6]: begin
-                floor_number = 4'd6;
-                panel_button_lights[6] <= 1'b1;
+                floor_number = FLOOR_7;
+                panel_button_lights[6] = 1'b1;
             end
             panel_buttons[7] && current_floor_state != FLOOR_8 && !panel_button_lights[7]: begin
-                floor_number = 4'd7;
-                panel_button_lights[7] <= 1'b1;
+                floor_number = FLOOR_8;
+                panel_button_lights[7] = 1'b1;
             end
             panel_buttons[8] && current_floor_state != FLOOR_9 && !panel_button_lights[8]: begin
-                floor_number = 4'd8;
-                panel_button_lights[8] <= 1'b1;
+                floor_number = FLOOR_9;
+                panel_button_lights[8] = 1'b1;
             end
             panel_buttons[9] && current_floor_state != FLOOR_10 && !panel_button_lights[9]: begin
-                floor_number = 4'd9;
-                panel_button_lights[9] <= 1'b1;
+                floor_number = FLOOR_10;
+                panel_button_lights[9] = 1'b1;
             end
             panel_buttons[10] && current_floor_state != FLOOR_11 && !panel_button_lights[10]: begin
-                floor_number = 4'd10;
-                panel_button_lights[10] <= 1'b1;
+                floor_number = FLOOR_11;
+                panel_button_lights[10] = 1'b1;
             end
         endcase
         // Check floor call buttons (external requests)
         case (1'b1)
             floor_call_buttons[0] && current_floor_state != FLOOR_1 && !call_button_lights[0]: begin
                 floor_number = FLOOR_1;
-                call_button_lights[0] <= 1'b1;
+                call_button_lights[0] = 1'b1;
             end
             floor_call_buttons[1] && current_floor_state != FLOOR_2 && !call_button_lights[1]: begin
                 floor_number = FLOOR_2;
-                call_button_lights[1] <= 1'b1;
+                call_button_lights[1] = 1'b1;
             end
             floor_call_buttons[2] && current_floor_state != FLOOR_3 && !call_button_lights[2]: begin
                 floor_number = FLOOR_3;
-                call_button_lights[2] <= 1'b1;
+                call_button_lights[2] = 1'b1;
             end
             floor_call_buttons[3] && current_floor_state != FLOOR_4 && !call_button_lights[3]: begin
                 floor_number = FLOOR_4;
-                call_button_lights[3] <= 1'b1;
+                call_button_lights[3] = 1'b1;
             end
             floor_call_buttons[4] && current_floor_state != FLOOR_5 && !call_button_lights[4]: begin
                 floor_number = FLOOR_5;
-                call_button_lights[4] <= 1'b1;
+                call_button_lights[4] = 1'b1;
             end
             floor_call_buttons[5] && current_floor_state != FLOOR_6 && !call_button_lights[5]: begin
                 floor_number = FLOOR_6;
-                call_button_lights[5] <= 1'b1;
+                call_button_lights[5] = 1'b1;
             end
             floor_call_buttons[6] && current_floor_state != FLOOR_7 && !call_button_lights[6]: begin
-                floor_number =FLOOR_7;
-                call_button_lights[6] <= 1'b1;
+                floor_number = FLOOR_7;
+                call_button_lights[6] = 1'b1;
             end
             floor_call_buttons[7] && current_floor_state != FLOOR_8 && !call_button_lights[7]: begin
                 floor_number = FLOOR_8;
-                call_button_lights[7] <= 1'b1;
+                call_button_lights[7] = 1'b1;
             end
             floor_call_buttons[8] && current_floor_state != FLOOR_9 && !call_button_lights[8]: begin
                 floor_number = FLOOR_9;
-                call_button_lights[8] <= 1'b1;
+                call_button_lights[8] = 1'b1;
             end
             floor_call_buttons[9] && current_floor_state != FLOOR_10 && !call_button_lights[9]: begin
                 floor_number = FLOOR_10;
-                call_button_lights[9] <= 1'b1;
+                call_button_lights[9] = 1'b1;
             end
             floor_call_buttons[10] && current_floor_state != FLOOR_11 && !call_button_lights[10]: begin
                 floor_number = FLOOR_11;
-                call_button_lights[10] <= 1'b1;
+                call_button_lights[10] = 1'b1;
             end
         endcase
         // Check if elevator arrived at selected floor, clear light
         if (power_switch && !stack_full && !elevator_moving) begin
             case (1'b1)
                 (!activate_elevator) && current_floor_state == FLOOR_1: begin
-                    panel_button_lights[0] <= 1'b0;
-                    call_button_lights[0] <= 1'b0;
+                    panel_button_lights[0] = 1'b0;
+                    call_button_lights[0] = 1'b0;
                 end
                 (!activate_elevator) && current_floor_state == FLOOR_2: begin
-                    panel_button_lights[1] <= 1'b0;
-                    call_button_lights[1] <= 1'b0;
+                    panel_button_lights[1] = 1'b0;
+                    call_button_lights[1] = 1'b0;
                 end
                 (!activate_elevator) && current_floor_state == FLOOR_3: begin
-                    panel_button_lights[2] <= 1'b0;
-                    call_button_lights[2] <= 1'b0;
+                    panel_button_lights[2] = 1'b0;
+                    call_button_lights[2] = 1'b0;
                 end
                 (!activate_elevator) && current_floor_state == FLOOR_4: begin
-                    panel_button_lights[3] <= 1'b0;
-                    call_button_lights[3] <= 1'b0;
+                    panel_button_lights[3] = 1'b0;
+                    call_button_lights[3] = 1'b0;
                 end
                 (!activate_elevator) && current_floor_state == FLOOR_5: begin
-                    panel_button_lights[4] <= 1'b0;
-                    call_button_lights[4] <= 1'b0;
+                    panel_button_lights[4] = 1'b0;
+                    call_button_lights[4] = 1'b0;
                 end
                 (!activate_elevator) && current_floor_state == FLOOR_6: begin
-                    panel_button_lights[5] <= 1'b0;
-                    call_button_lights[5] <= 1'b0;
+                    panel_button_lights[5] = 1'b0;
+                    call_button_lights[5] = 1'b0;
                 end
                 (!activate_elevator) && current_floor_state == FLOOR_7: begin
-                    panel_button_lights[6] <= 1'b0;
-                    call_button_lights[6] <= 1'b0;
+                    panel_button_lights[6] = 1'b0;
+                    call_button_lights[6] = 1'b0;
                 end
                 (!activate_elevator) && current_floor_state == FLOOR_8: begin
-                    panel_button_lights[7] <= 1'b0;
-                    call_button_lights[7] <= 1'b0;
+                    panel_button_lights[7] = 1'b0;
+                    call_button_lights[7] = 1'b0;
                 end
                 (!activate_elevator) && current_floor_state == FLOOR_9: begin
-                    panel_button_lights[8] <= 1'b0;
-                    call_button_lights[8] <= 1'b0;
+                    panel_button_lights[8] = 1'b0;
+                    call_button_lights[8] = 1'b0;
                 end
                 (!activate_elevator) && current_floor_state == FLOOR_10: begin
-                    panel_button_lights[9] <= 1'b0;
-                    call_button_lights[9] <= 1'b0;
+                    panel_button_lights[9] = 1'b0;
+                    call_button_lights[9] = 1'b0;
                 end
                 (!activate_elevator) && current_floor_state == FLOOR_11: begin
-                    panel_button_lights[10] <= 1'b0;
-                    call_button_lights[10] <= 1'b0;
+                    panel_button_lights[10] = 1'b0;
+                    call_button_lights[10] = 1'b0;
                 end
             endcase
         end
@@ -291,7 +276,6 @@ always @(*) begin
     if (!reset_n) begin
         //elevator_memory <= 512'b0;
         memory_pointer <= 4'b0;
-        memory_pointer_plus_four <= 4'h3;
         stack_full <= 1'b0;
         stack_empty <= 1'b1;
         remaining_requests <= 16'b0;
@@ -299,136 +283,6 @@ always @(*) begin
     end
     else begin
         if (!stack_full) begin
-            // case (memory_pointer)
-            //     8'h00: elevator_memory[3:0] = floor_number;
-            //     8'h01: elevator_memory[7:4] = floor_number;
-            //     8'h02: elevator_memory[11:8] = floor_number;
-            //     8'h03: elevator_memory[15:12] = floor_number;
-            //     8'h04: elevator_memory[19:16] = floor_number;
-            //     8'h05: elevator_memory[23:20] = floor_number;
-            //     8'h06: elevator_memory[27:24] = floor_number;
-            //     8'h07: elevator_memory[31:28] = floor_number;
-            //     8'h08: elevator_memory[35:32] = floor_number;
-            //     8'h09: elevator_memory[39:36] = floor_number;
-            //     8'h0A: elevator_memory[43:40] = floor_number;
-            //     8'h0B: elevator_memory[47:44] = floor_number;
-            //     8'h0C: elevator_memory[51:48] = floor_number;
-            //     8'h0D: elevator_memory[55:52] = floor_number;
-            //     8'h0E: elevator_memory[59:56] = floor_number;
-            //     8'h0F: elevator_memory[63:60] = floor_number;
-            //     8'h10: elevator_memory[67:64] = floor_number;
-            //     8'h11: elevator_memory[71:68] = floor_number;
-            //     8'h12: elevator_memory[75:72] = floor_number;
-            //     8'h13: elevator_memory[79:76] = floor_number;
-            //     8'h14: elevator_memory[83:80] = floor_number;
-            //     8'h15: elevator_memory[87:84] = floor_number;
-            //     8'h16: elevator_memory[91:88] = floor_number;
-            //     8'h17: elevator_memory[95:92] = floor_number;
-            //     8'h18: elevator_memory[99:96] = floor_number;
-            //     8'h19: elevator_memory[103:100] = floor_number;
-            //     8'h1A: elevator_memory[107:104] = floor_number;
-            //     8'h1B: elevator_memory[111:108] = floor_number;
-            //     8'h1C: elevator_memory[115:112] = floor_number;
-            //     8'h1D: elevator_memory[119:116] = floor_number;
-            //     8'h1E: elevator_memory[123:120] = floor_number;
-            //     8'h1F: elevator_memory[127:124] = floor_number;
-            //     8'h20: elevator_memory[131:128] = floor_number;
-            //     8'h21: elevator_memory[135:132] = floor_number;
-            //     8'h22: elevator_memory[139:136] = floor_number;
-            //     8'h23: elevator_memory[143:140] = floor_number;
-            //     8'h24: elevator_memory[147:144] = floor_number;
-            //     8'h25: elevator_memory[151:148] = floor_number;
-            //     8'h26: elevator_memory[155:152] = floor_number;
-            //     8'h27: elevator_memory[159:156] = floor_number;
-            //     8'h28: elevator_memory[163:160] = floor_number;
-            //     8'h29: elevator_memory[167:164] = floor_number;
-            //     8'h2A: elevator_memory[171:168] = floor_number;
-            //     8'h2B: elevator_memory[175:172] = floor_number;
-            //     8'h2C: elevator_memory[179:176] = floor_number;
-            //     8'h2D: elevator_memory[183:180] = floor_number;
-            //     8'h2E: elevator_memory[187:184] = floor_number;
-            //     8'h2F: elevator_memory[191:188] = floor_number;
-            //     8'h30: elevator_memory[195:192] = floor_number;
-            //     8'h31: elevator_memory[199:196] = floor_number;
-            //     8'h32: elevator_memory[203:200] = floor_number;
-            //     8'h33: elevator_memory[207:204] = floor_number;
-            //     8'h34: elevator_memory[211:208] = floor_number;
-            //     8'h35: elevator_memory[215:212] = floor_number;
-            //     8'h36: elevator_memory[219:216] = floor_number;
-            //     8'h37: elevator_memory[223:220] = floor_number;
-            //     8'h38: elevator_memory[227:224] = floor_number;
-            //     8'h39: elevator_memory[231:228] = floor_number;
-            //     8'h3A: elevator_memory[235:232] = floor_number;
-            //     8'h3B: elevator_memory[239:236] = floor_number;
-            //     8'h3C: elevator_memory[243:240] = floor_number;
-            //     8'h3D: elevator_memory[247:244] = floor_number;
-            //     8'h3E: elevator_memory[251:248] = floor_number;
-            //     8'h3F: elevator_memory[255:252] = floor_number;
-            //     8'h40: elevator_memory[259:256] = floor_number;
-            //     8'h41: elevator_memory[263:260] = floor_number;
-            //     8'h42: elevator_memory[267:264] = floor_number;
-            //     8'h43: elevator_memory[271:268] = floor_number;
-            //     8'h44: elevator_memory[275:272] = floor_number;
-            //     8'h45: elevator_memory[279:276] = floor_number;
-            //     8'h46: elevator_memory[283:280] = floor_number;
-            //     8'h47: elevator_memory[287:284] = floor_number;
-            //     8'h48: elevator_memory[291:288] = floor_number;
-            //     8'h49: elevator_memory[295:292] = floor_number;
-            //     8'h4A: elevator_memory[299:296] = floor_number;
-            //     8'h4B: elevator_memory[303:300] = floor_number;
-            //     8'h4C: elevator_memory[307:304] = floor_number;
-            //     8'h4D: elevator_memory[311:308] = floor_number;
-            //     8'h4E: elevator_memory[315:312] = floor_number;
-            //     8'h4F: elevator_memory[319:316] = floor_number;
-            //     8'h50: elevator_memory[323:320] = floor_number;
-            //     8'h51: elevator_memory[327:324] = floor_number;
-            //     8'h52: elevator_memory[331:328] = floor_number;
-            //     8'h53: elevator_memory[335:332] = floor_number;
-            //     8'h54: elevator_memory[339:336] = floor_number;
-            //     8'h55: elevator_memory[343:340] = floor_number;
-            //     8'h56: elevator_memory[347:344] = floor_number;
-            //     8'h57: elevator_memory[351:348] = floor_number;
-            //     8'h58: elevator_memory[355:352] = floor_number;
-            //     8'h59: elevator_memory[359:356] = floor_number;
-            //     8'h5A: elevator_memory[363:360] = floor_number;
-            //     8'h5B: elevator_memory[367:364] = floor_number;
-            //     8'h5C: elevator_memory[371:368] = floor_number;
-            //     8'h5D: elevator_memory[375:372] = floor_number;
-            //     8'h5E: elevator_memory[379:376] = floor_number;
-            //     8'h5F: elevator_memory[383:380] = floor_number;
-            //     8'h60: elevator_memory[387:384] = floor_number;
-            //     8'h61: elevator_memory[391:388] = floor_number;
-            //     8'h62: elevator_memory[395:392] = floor_number;
-            //     8'h63: elevator_memory[399:396] = floor_number;
-            //     8'h64: elevator_memory[403:400] = floor_number;
-            //     8'h65: elevator_memory[407:404] = floor_number;
-            //     8'h66: elevator_memory[411:408] = floor_number;
-            //     8'h67: elevator_memory[415:412] = floor_number;
-            //     8'h68: elevator_memory[419:416] = floor_number;
-            //     8'h69: elevator_memory[423:420] = floor_number;
-            //     8'h6A: elevator_memory[427:424] = floor_number;
-            //     8'h6B: elevator_memory[431:428] = floor_number;
-            //     8'h6C: elevator_memory[435:432] = floor_number;
-            //     8'h6D: elevator_memory[439:436] = floor_number;
-            //     8'h6E: elevator_memory[443:440] = floor_number;
-            //     8'h6F: elevator_memory[447:444] = floor_number;
-            //     8'h70: elevator_memory[451:448] = floor_number;
-            //     8'h71: elevator_memory[455:452] = floor_number;
-            //     8'h72: elevator_memory[459:456] = floor_number;
-            //     8'h73: elevator_memory[463:460] = floor_number;
-            //     8'h74: elevator_memory[467:464] = floor_number;
-            //     8'h75: elevator_memory[471:468] = floor_number;
-            //     8'h76: elevator_memory[475:472] = floor_number;
-            //     8'h77: elevator_memory[479:476] = floor_number;
-            //     8'h78: elevator_memory[483:480] = floor_number;
-            //     8'h79: elevator_memory[487:484] = floor_number;
-            //     8'h7A: elevator_memory[491:488] = floor_number;
-            //     8'h7B: elevator_memory[495:492] = floor_number;
-            //     8'h7C: elevator_memory[499:496] = floor_number;
-            //     8'h7D: elevator_memory[503:500] = floor_number;
-            //     8'h7E: elevator_memory[507:504] = floor_number;
-            //     8'h7F: elevator_memory[511:508] = floor_number;
-            // endcase
             elevator_memory[memory_pointer] = floor_number;
         end
         if (!elevator_moving) begin
@@ -476,8 +330,8 @@ end
 // Floor selection logic - pull from stack and set direction
 always @(*) begin
     if (!reset_n) begin
-        direction_selector = 1'b0;
-        activate_elevator = 1'b0;
+        direction_selector <= 1'b0;
+        activate_elevator <= 1'b0;
     end 
     activate_elevator = 1'b0;
     if (power_switch && !emergency_btn && !elevator_moving) begin
