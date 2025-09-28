@@ -442,7 +442,7 @@ always @(*) begin
     end
 
     elevator_floor_selector = current_floor_state;
-    if (power_switch && () begin
+    if (power_switch && !elevator_moving) begin
         if (stack_full) begin // Stack was full
             stack_pointer = 4'b0;
             stack_full = 1'b0;
