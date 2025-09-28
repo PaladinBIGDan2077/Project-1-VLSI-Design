@@ -302,8 +302,7 @@ always @(*) begin
         end
         elevator_floor_selector = next_floor;
     end 
-    
-end
+
 // Floor selection logic - pull from stack and set direction
 always @(*) begin
     if (!reset_n) begin
