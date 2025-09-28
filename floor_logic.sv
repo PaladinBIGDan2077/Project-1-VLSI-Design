@@ -309,8 +309,8 @@ always @(*) begin
         activate_elevator = 1'b0;
         if ((power_switch && !emergency_btn && !elevator_moving) && elevator_floor_selector != current_floor_state) begin
             activate_elevator = 1'b1;
-            if (elevator_floor_selector > current_floor_state) begin
-                direction_selector = 1'b1; // Up direction
+            if (elevator_floor_selector < current_floor_state) begin
+                direction_selector = 1'b0; // Up direction
             end
         end
     end 
