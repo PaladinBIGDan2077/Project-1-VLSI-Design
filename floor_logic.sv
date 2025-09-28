@@ -318,13 +318,13 @@ always @(*) begin
         end
     end 
 end
-always @(posedge clk or negedge reset_n) begin
+always @(*) begin
     if (!reset_n) begin
         check_timer <= 4'b0;
     end
     else begin
         if (check_timer < 4'd10) begin
-            check_timer = check_timer + 1;
+            check_timer = check_timer + 1'b1;
         end
         else begin
             check_timer = 4'b0;
