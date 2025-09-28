@@ -297,7 +297,7 @@ always @(*) begin
             direction_selector = 1'b1;
             activate_elevator = 1'b1;
         end
-        else if ((power_switch && !emergency_btn && !elevator_moving) && (elevator_floor_selector < current_floor_state)) begin
+        if ((power_switch && !emergency_btn && !elevator_moving) && (elevator_floor_selector < current_floor_state)) begin
             direction_selector = 1'b0;
             activate_elevator = 1'b1;
         end
