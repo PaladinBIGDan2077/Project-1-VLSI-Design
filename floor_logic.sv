@@ -282,9 +282,9 @@ always @(*) begin
                 memory_pointer = memory_pointer + 1;
             end
         end
-        //if (|call_button_lights || |panel_button_lights && (elevator_floor_selector == current_floor_state) && !elevator_moving) begin
-        //    memory_pointer = memory_pointer_temporary;
-        //end
+        if ((|call_button_lights || |panel_button_lights) && (elevator_floor_selector == current_floor_state) && !elevator_moving) begin
+            memory_pointer = memory_pointer_temporary;
+        end
         if (!elevator_moving && (|call_button_lights || |panel_button_lights)) begin
             memory_pointer_temporary = memory_pointer;
         end
