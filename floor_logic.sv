@@ -443,7 +443,6 @@ always @(*) begin
         end
 
     elevator_floor_selector = next_floor;
-    current_floor_state = elevator_floor_selector;
         if (power_switch && !elevator_moving) begin
             if (stack_full) begin // Stack was full
                 memory_pointer = 4'b0;
@@ -460,7 +459,7 @@ always @(*) begin
                     
                     // Shift stack down to remove the served floor
                     if (memory_pointer > 1) begin
-                        elevator_memory = {4'b0, elevator_memory[43:4]}; // Shift right by 4 bits
+                        elevator_memory = {4'b0, elevator_memory[512:4]}; // Shift right by 4 bits
                     end 
                     else begin
                         elevator_memory = 44'b0;
