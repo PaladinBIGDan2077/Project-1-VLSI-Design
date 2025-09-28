@@ -287,7 +287,7 @@ always @(*) begin
                 call_button_lights[8] || panel_button_lights[8]: next_floor = FLOOR_9;
                 call_button_lights[9] || panel_button_lights[9]: next_floor = FLOOR_10;
                 call_button_lights[10] || panel_button_lights[10]: next_floor = FLOOR_11;
-                default: next_floor = current_floor_state; // No requests
+                //default: next_floor = current_floor_state; // No requests
             endcase
         end
     end
