@@ -287,7 +287,7 @@ always @(posedge clock or negedge reset_n) begin
     end
 end
 // OG Stack - Will need work.
-always_ff @(*) begin
+always @(*) begin
     if (!reset_n) begin
         //elevator_memory <= 512'b0;
         memory_pointer <= 4'b0;
@@ -434,7 +434,7 @@ always_ff @(*) begin
         if (!elevator_moving) begin
             stack_empty = 1'b0;
             stack_full = (memory_pointer == 12'd512);
-            next_floor <= elevator_memory[memory_pointer + 4'h3];
+            next_floor = elevator_memory[memory_pointer];
         end
         if (elevator_moving && |call_button_lights) begin
             remaining_requests = remaining_requests + 1'b1;
