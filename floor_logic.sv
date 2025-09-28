@@ -276,7 +276,6 @@ always @(*) begin
         next_floor <= 4'b0;
         direction_selector <= 1'b1;
         activate_elevator <= 1'b0;
-        check_timer <= 4'b0;
     end
     else begin
         if (!elevator_moving && (elevator_floor_selector == current_floor_state)) begin
@@ -324,7 +323,7 @@ always @(*) begin
     end
     else begin
         if (check_timer < 4'd10) begin
-            check_timer <= check_timer + 1'b1;
+            check_timer = check_timer + 1'b1;
         end
         else begin
             check_timer = 4'b0;
