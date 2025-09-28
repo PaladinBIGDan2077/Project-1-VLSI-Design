@@ -275,7 +275,7 @@ always @(*) begin
     end
     else begin
         if (!elevator_moving) begin
-            case(1'b1) begin
+            case(call_button_lights) begin
                 call_button_lights[0] || panel_button_lights[0]: next_floor = FLOOR_1;
                 call_button_lights[1] || panel_button_lights[1]: next_floor = FLOOR_2;
                 call_button_lights[2] || panel_button_lights[2]: next_floor = FLOOR_3;
@@ -287,7 +287,7 @@ always @(*) begin
                 call_button_lights[8] || panel_button_lights[8]: next_floor = FLOOR_9;
                 call_button_lights[9] || panel_button_lights[9]: next_floor = FLOOR_10;
                 call_button_lights[10] || panel_button_lights[10]: next_floor = FLOOR_11;
-                //default: next_floor = current_floor_state; // No requests
+                default: next_floor = current_floor_state; // No requests
             endcase
         end
     end
