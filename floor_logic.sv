@@ -163,12 +163,9 @@ end
 always @(*) begin
     if (!reset_n) begin
         elevator_floor_selector <= 4'b0;
-        direction_selector <= 1'b1;
-        activate_elevator <= 1'b0;
     end
     else begin
         // Reset activation signal
-        activate_elevator <= 1'b0;
         
         // Only update target floor when elevator is not moving and has reached current target
         if (!elevator_moving && (elevator_floor_selector == current_floor_state)) begin
@@ -241,10 +238,35 @@ always @(*) begin
             end
         end
         // Set direction and activation based on target vs current floor
-        if ((power_switch && !emergency_btn && !elevator_moving) && (elevator_floor_selector != current_floor_state)) begin
-            direction_selector <= (elevator_floor_selector > current_floor_state);
-            activate_elevator <= 1'b1;
+    end
+end
+
+always @(*) begin
+    if (!reset_n) begin
+        direction_selector = 1'b1; // Default to up
+        activate_elevator = 1'b0;
+    end
+    else if (power_switch && !emergency_btn) begin
+        if (elevator_floor_selector > current_floor_state) begin
+            direction_selector = 1'b1; // Up
+            if (elevator_floor_selector != current_floor_state)
+                activate_elevator = 1'b1;
+            else
+                activate_elevator = 1'b0;
         end
+        else if (elevator_floor_selector < current_floor_state) begin
+            direction_selector = 1'b0; // Down
+            if (elevator_floor_selector != current_floor_state)
+                activate_elevator = 1'b1;
+            else
+                activate_elevator = 1'b0;
+        end
+        else begin
+            activate_elevator = 1'b0; // No movement needed
+        end
+    end
+    else begin
+        activate_elevator = 1'b0; // Power off or emergency, do not activate
     end
 end
 
