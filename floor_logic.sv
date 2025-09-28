@@ -276,6 +276,7 @@ always @(*) begin
         next_floor <= 4'b0;
         direction_selector <= 1'b0;
         activate_elevator <= 1'b0;
+        check_timer <= 4'b0;
     end
     else begin
         if (!elevator_moving && (elevator_floor_selector == current_floor_state)) begin
@@ -294,7 +295,6 @@ always @(*) begin
                     if (call_button_lights[10] || panel_button_lights[10]) next_floor = FLOOR_11;
                     if (&call_button_lights && &panel_button_lights) next_floor = current_floor_state;
                 end
-                //direction_selector = 1'b0; // Default to up direction
                 1'b0: begin
                     if (call_button_lights[10] || panel_button_lights[10]) next_floor = FLOOR_11;
                     if (call_button_lights[9] || panel_button_lights[9]) next_floor = FLOOR_10;
@@ -310,21 +310,21 @@ always @(*) begin
                     if (&call_button_lights && &panel_button_lights) next_floor = current_floor_state;
                 end
             endcase
-        if (check_timer < 4'd10) begin
-            check_timer = check_timer + 1;
-        end
-        else begin
-            check_timer = 4'b0;
-            direction_selector = ~direction_selector; // Toggle direction if no requests found after timer expires
-        end
-        elevator_floor_selector = next_floor;
-        activate_elevator = 1'b0;
-        if ((power_switch && !emergency_btn && !elevator_moving) && elevator_floor_selector != current_floor_state) begin
-            activate_elevator = 1'b1;
+            if (check_timer < 4'd10) begin
+                check_timer = check_timer + 1;
+            end
+            else begin
+                check_timer = 4'b0;
+                direction_selector = ~direction_selector; // Toggle direction if no requests found after timer expires
+            end
+            elevator_floor_selector = next_floor;
+            activate_elevator = 1'b0;
+            if ((power_switch && !emergency_btn && !elevator_moving) && elevator_floor_selector != current_floor_state) begin
+                activate_elevator = 1'b1;
+            end
         end
     end 
 end
-
 
 // Door control logic
 always @(*) begin
