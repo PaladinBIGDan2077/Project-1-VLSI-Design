@@ -66,6 +66,7 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
     reg                         [8:0]                           memory_pointer_temporary;
     reg                         [15:0]                          remaining_requests;
     reg                         [3:0]                           floor_number;
+wire [10:0] requests = call_button_lights | panel_button_lights;
 
 integer i;
 
