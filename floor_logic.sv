@@ -62,7 +62,7 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
     reg                         [3:0]                           next_floor;
 
     // Memory Unit for Elevator Requests
-    reg                         [512:0]                         elevator_memory; 
+    reg                         [511:0]                         elevator_memory; 
     reg                         [7:0]                           memory_pointer;
     reg                         [7:0]                           memory_pointer_temporary;
     reg                         [7:0]                           memory_pointer_plus_four;
@@ -291,6 +291,7 @@ always @(*) begin
     if (!reset_n) begin
         elevator_memory <= 512'b0;
         memory_pointer <= 4'b0;
+        memory_pointer_plus_four <= 4'h3;
         stack_full <= 1'b0;
         stack_empty <= 1'b1;
         remaining_requests <= 16'b0;
@@ -432,8 +433,7 @@ always @(*) begin
         if (!elevator_moving) begin
             stack_empty = 1'b0;
             stack_full = (memory_pointer == 4'd512);
-            memory_pointer_plus_four = memory_pointer + 4'h4;
-            next_floor = elevator_memory[memory_pointer_plus_four:memory_pointer];
+            next_floor = elevator_memory[memory_pointer + 4'h3:memory_pointer];
         end
         if (elevator_moving && |call_button_lights) begin
             remaining_requests = remaining_requests + 1'b1;
