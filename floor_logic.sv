@@ -274,7 +274,7 @@ always @(*) begin
         elevator_floor_selector <= 4'b0;
     end
     else begin
-        if (!elevator_moving && direction_selector) begin
+        if (!elevator_moving && direction_selector && (elevator_floor_selector != current_floor_state)) begin
             if (call_button_lights[0] || panel_button_lights[0])      next_floor = FLOOR_1;
             else if (call_button_lights[1] || panel_button_lights[1]) next_floor = FLOOR_2;
             else if (call_button_lights[2] || panel_button_lights[2]) next_floor = FLOOR_3;
