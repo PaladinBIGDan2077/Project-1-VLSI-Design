@@ -451,7 +451,7 @@ always @(*) begin
                 memory_pointer = 4'b0;
                 stack_full = 1'b0;
                 stack_empty = 1'b1;
-                elevator_memory = 512'b0; // Clear the entire stack
+                //elevator_memory = 512'b0; // Clear the entire stack
             end
             // When elevator reaches target floor, clear the served floor from stack
             if (elevator_floor_selector == current_floor_state && activate_elevator) begin
@@ -463,10 +463,10 @@ always @(*) begin
                     
                     // Shift stack down to remove the served floor
                     if (memory_pointer > 1) begin
-                        elevator_memory = {4'b0, elevator_memory[512:4]}; // Shift right by 4 bits
+                        //elevator_memory = {4'b0, elevator_memory[512:4]}; // Shift right by 4 bits
                     end 
                     else begin
-                        elevator_memory = 44'b0;
+                        //elevator_memory = 44'b0;
                     end
                 end
             end
