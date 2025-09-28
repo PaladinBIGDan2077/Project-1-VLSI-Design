@@ -162,9 +162,9 @@ end
 
 always @(*) begin
     if (!reset_n) begin
-        elevator_floor_selector <= 4'b0;
-        direction_selector <= 1'b1;
-        activate_elevator <= 1'b0;
+        elevator_floor_selector = 4'b0;
+        direction_selector = 1'b1;
+        activate_elevator = 1'b0;
     end
     else begin
         // Reset activation signal
