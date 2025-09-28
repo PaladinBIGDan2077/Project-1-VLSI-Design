@@ -217,7 +217,7 @@ always @(posedge clock or negedge reset_n) begin
             end
         endcase
         // Check if elevator arrived at selected floor, clear light
-        if (power_switch && !stack_full && !elevator_moving) begin
+        if (power_switch && !elevator_moving) begin
             case (1'b1)
                 (!activate_elevator) && current_floor_state == FLOOR_1: begin
                     panel_button_lights[0] = 1'b0;
@@ -270,7 +270,6 @@ end
 // OG Stack - Will need work.
 always @(*) begin
     if (!reset_n) begin
-        //elevator_memory <= 512'b0;
         memory_pointer <= 4'b0;
         remaining_requests <= 16'b0;
         elevator_floor_selector <= 4'b0;
@@ -291,7 +290,7 @@ always @(*) begin
 
     elevator_floor_selector = next_floor;
     if (power_switch && !elevator_moving) begin
-        if (memory_pointer == 9'd512) begin // Stack was full
+        if (memory_pointer == 9'h0200) begin // Stack was full
             memory_pointer = 9'b0;
         end
         // When elevator reaches target floor, clear the served floor from stack
