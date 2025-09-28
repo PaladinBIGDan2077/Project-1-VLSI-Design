@@ -284,7 +284,7 @@ always @(*) begin
             end
         end
         if (((|call_button_lights > 0 ) || (|panel_button_lights > 0)) && (elevator_floor_selector == current_floor_state) && !elevator_moving) begin
-            memory_pointer = memory_pointer_temporary;
+            //memory_pointer = memory_pointer_temporary;
         end
         if (!elevator_moving && (remaining_requests > 0)) begin
             remaining_requests = remaining_requests - 1'b1;
