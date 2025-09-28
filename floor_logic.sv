@@ -290,16 +290,11 @@ always @(*) begin
             remaining_requests = remaining_requests - 1'b1;
             memory_pointer = memory_pointer - 1'b1;
         end
-
+    end
     elevator_floor_selector = next_floor;
     if (power_switch && !elevator_moving) begin
         if (memory_pointer == 9'h1FF) begin // Stack was full
             memory_pointer = 9'b0; 
-        end
-        // When elevator reaches target floor, clear the served floor from stack
-        if (elevator_floor_selector == current_floor_state && elevator_moving) begin
-
-            end
         end
     end
 end
@@ -310,7 +305,7 @@ always @(*) begin
         activate_elevator <= 1'b0;
     end 
     activate_elevator = 1'b0;
-    if (power_switch && !emergency_btn && !elevator_moving) begin
+    if ((power_switch && !emergency_btn && !elevator_moving) && elevator_floor_selector == current_floor_state) begin
         activate_elevator = 1'b1;
         if (elevator_floor_selector > current_floor_state) begin
             direction_selector = 1'b1; // Up direction
