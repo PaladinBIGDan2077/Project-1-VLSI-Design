@@ -66,11 +66,7 @@ module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_button
     reg                         [8:0]                           memory_pointer_temporary;
     reg                         [15:0]                          remaining_requests;
     reg                         [3:0]                           floor_number;
-wire [10:0] requests = call_button_lights | panel_button_lights;
-
-integer i;
-
-reg any_above, any_below;
+    reg                         [3:0]                           check_timer;
 
     parameter                   STOP_FL1                      = 5'h00,
                                 STOP_FL2                      = 5'h01,
@@ -282,43 +278,44 @@ always @(*) begin
         activate_elevator <= 1'b0;
     end
     else begin
-        if (direction_selector) begin
-            // Going up
-            if (!any_above && any_below)
-                direction_selector = 1'b0; // flip to down
-        end else begin
-            // Going down
-            if (!any_below && any_above)
-                direction_selector = 1'b1; // flip to up
+        if (!elevator_moving && (elevator_floor_selector == current_floor_state)) begin
+            case(direction_selector) begin
+                1'b1: begin
+                    if (call_button_lights[0] || panel_button_lights[0]) next_floor = FLOOR_1;
+                    if (call_button_lights[1] || panel_button_lights[1]) next_floor = FLOOR_2;
+                    if (call_button_lights[2] || panel_button_lights[2]) next_floor = FLOOR_3;
+                    if (call_button_lights[3] || panel_button_lights[3]) next_floor = FLOOR_4;
+                    if (call_button_lights[4] || panel_button_lights[4]) next_floor = FLOOR_5;
+                    if (call_button_lights[5] || panel_button_lights[5]) next_floor = FLOOR_6;
+                    if (call_button_lights[6] || panel_button_lights[6]) next_floor = FLOOR_7;
+                    if (call_button_lights[7] || panel_button_lights[7]) next_floor = FLOOR_8;
+                    if (call_button_lights[8] || panel_button_lights[8]) next_floor = FLOOR_9;
+                    if (call_button_lights[9] || panel_button_lights[9]) next_floor = FLOOR_10;
+                    if (call_button_lights[10] || panel_button_lights[10]) next_floor = FLOOR_11;
+                    if (&call_button_lights && &panel_button_lights) next_floor = current_floor_state;
+                end
+                //direction_selector = 1'b0; // Default to up direction
+                1'b0: begin
+                    if (call_button_lights[10] || panel_button_lights[10]) next_floor = FLOOR_11;
+                    if (call_button_lights[9] || panel_button_lights[9]) next_floor = FLOOR_10;
+                    if (call_button_lights[8] || panel_button_lights[8]) next_floor = FLOOR_9;
+                    if (call_button_lights[7] || panel_button_lights[7]) next_floor = FLOOR_8;
+                    if (call_button_lights[6] || panel_button_lights[6]) next_floor = FLOOR_7;
+                    if (call_button_lights[5] || panel_button_lights[5]) next_floor = FLOOR_6;
+                    if (call_button_lights[4] || panel_button_lights[4]) next_floor = FLOOR_5;
+                    if (call_button_lights[3] || panel_button_lights[3]) next_floor = FLOOR_4;
+                    if (call_button_lights[2] || panel_button_lights[2]) next_floor = FLOOR_3;
+                    if (call_button_lights[1] || panel_button_lights[1]) next_floor = FLOOR_2;
+                    if (call_button_lights[0] || panel_button_lights[0]) next_floor = FLOOR_1;
+                    if (&call_button_lights && &panel_button_lights) next_floor = current_floor_state;
+                end
+            endcase
+        if (check_timer < 4'd10) begin
+            check_timer = check_timer + 1;
         end
-        if (!elevator_moving && (elevator_floor_selector == current_floor_state) && direction_selector) begin
-            if (call_button_lights[0] || panel_button_lights[0]) next_floor = FLOOR_1;
-            if (call_button_lights[1] || panel_button_lights[1]) next_floor = FLOOR_2;
-            if (call_button_lights[2] || panel_button_lights[2]) next_floor = FLOOR_3;
-            if (call_button_lights[3] || panel_button_lights[3]) next_floor = FLOOR_4;
-            if (call_button_lights[4] || panel_button_lights[4]) next_floor = FLOOR_5;
-            if (call_button_lights[5] || panel_button_lights[5]) next_floor = FLOOR_6;
-            if (call_button_lights[6] || panel_button_lights[6]) next_floor = FLOOR_7;
-            if (call_button_lights[7] || panel_button_lights[7]) next_floor = FLOOR_8;
-            if (call_button_lights[8] || panel_button_lights[8]) next_floor = FLOOR_9;
-            if (call_button_lights[9] || panel_button_lights[9]) next_floor = FLOOR_10;
-            if (call_button_lights[10] || panel_button_lights[10]) next_floor = FLOOR_11;
-            if (&call_button_lights && &panel_button_lights) next_floor = current_floor_state;
-        end
-        //direction_selector = 1'b0; // Default to up direction
-        else if (!elevator_moving && (elevator_floor_selector == current_floor_state) && !direction_selector) begin
-            if (call_button_lights[10] || panel_button_lights[10]) next_floor = FLOOR_11;
-            if (call_button_lights[9] || panel_button_lights[9]) next_floor = FLOOR_10;
-            if (call_button_lights[8] || panel_button_lights[8]) next_floor = FLOOR_9;
-            if (call_button_lights[7] || panel_button_lights[7]) next_floor = FLOOR_8;
-            if (call_button_lights[6] || panel_button_lights[6]) next_floor = FLOOR_7;
-            if (call_button_lights[5] || panel_button_lights[5]) next_floor = FLOOR_6;
-            if (call_button_lights[4] || panel_button_lights[4]) next_floor = FLOOR_5;
-            if (call_button_lights[3] || panel_button_lights[3]) next_floor = FLOOR_4;
-            if (call_button_lights[2] || panel_button_lights[2]) next_floor = FLOOR_3;
-            if (call_button_lights[1] || panel_button_lights[1]) next_floor = FLOOR_2;
-            if (call_button_lights[0] || panel_button_lights[0]) next_floor = FLOOR_1;
-            if (&call_button_lights && &panel_button_lights) next_floor = current_floor_state;
+        else begin
+            check_timer = 4'b0;
+            direction_selector = ~direction_selector; // Toggle direction if no requests found after timer expires
         end
         elevator_floor_selector = next_floor;
         activate_elevator = 1'b0;
@@ -328,14 +325,6 @@ always @(*) begin
     end 
 end
 
-always @(*) begin
-  any_above = 1'b0;
-  any_below = 1'b0;
-  for (i = current_floor_state+1; i < 11; i = i + 1)
-    if (requests[i]) any_above = 1'b1;
-  for (i = 0; i < current_floor_state; i = i + 1)
-    if (requests[i]) any_below = 1'b1;
-end
 
 // Door control logic
 always @(*) begin
