@@ -272,6 +272,7 @@ always @(*) begin
         memory_pointer <= 4'b0;
         remaining_requests <= 16'b0;
         elevator_floor_selector <= 4'b0;
+        next_floor <= 4'b0;
     end
     else begin
         if (!elevator_moving && (elevator_floor_selector != current_floor_state)) begin
