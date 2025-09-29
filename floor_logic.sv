@@ -246,7 +246,7 @@ always @(*) begin
         direction_selector = 1'b1; // Default to up
         activate_elevator = 1'b0;
     end
-    else if (power_switch && !emergency_btn) begin
+    else if (power_switch && !emergency_btn && !elevator_moving) begin
         if (elevator_floor_selector > current_floor_state) begin
             direction_selector = 1'b1; // Up
             if (elevator_floor_selector != current_floor_state)
