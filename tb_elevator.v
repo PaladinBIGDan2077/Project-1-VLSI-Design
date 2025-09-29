@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Title:                           Elevator System Top Module Testbench
 // Filename:                        elevator_top_tb.v
-// Version:                         2
+// Version:                         3
 // Author:                          Daniel J. Lomis, Sammy Craypoff
 // Date:                            9/13/2025  
 // Location:                        Blacksburg, Virginia 
@@ -21,6 +21,7 @@
 //                                  ============================================  
 //                                  9/13/2025   DJL  1        Original Testbench Code
 //                                  9/14/2025   DJL  2        Added additional testing
+//                                  9/28/2025   SC   3        Increased delay timings to better match real-world elevator behavior
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 `timescale 1ns/1ns
 module elevator_top_tb;
@@ -219,12 +220,11 @@ module elevator_top_tb;
         
 
         // Test Door Open while moving (should be ignored)
-        #500
         raw_panel_buttons[5] = 1; // Request floor 6
         $display("Floor 6 call button pressed @ %t", $time);
-        #50
+        #100
         raw_panel_buttons[5] = 0;
-        #50// Wait for elevator to start moving
+        #300// Wait for elevator to start moving
         raw_door_open_btn = 1;
         $display("Door Open button pressed while moving @ %t", $time);
         #50

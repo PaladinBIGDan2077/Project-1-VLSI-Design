@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Title:                           Elevator Floor Logic Controller
 // Filename:                        floor_logic.sv
-// Version:                         6
+// Version:                         10
 // Author:                          Daniel J. Lomis, Sammy Craypoff
 // Date:                            9/7/2025 
 // Location:                        Blacksburg, Virginia 
@@ -24,6 +24,10 @@
 //                                  9/14/2025   DJL  4        Streamlined Code
 //                                  9/14/2025   DJL  5        Updated code for iVerilog Compatibility
 //                                  9/15/2025   DJL  6        Added stack-based floor selection logic
+//                                  9/20/2025   DJL  7        Fixed minor bugs and improved comments
+//                                  9/25/2025   DJL  8        Further review and cleanup
+//                                  9/27/2025   DJL  9        Converted to fully hardware synthesizable logic
+//                                  9/28/2025   DJL  10       Final submission for Project 2
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 module floor_logic_control_unit(clock, reset_n, floor_call_buttons, panel_buttons, door_open_btn, door_close_btn, emergency_btn, power_switch, current_floor_state, elevator_state, elevator_moving, elevator_direction, elevator_floor_selector, direction_selector, activate_elevator, call_button_lights, panel_button_lights, door_open_allowed, door_close_allowed);
