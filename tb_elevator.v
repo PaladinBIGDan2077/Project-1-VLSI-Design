@@ -74,59 +74,59 @@ module elevator_top_tb;
         $display("=== Reset complete ===");
         // Outside Elevator Testing
         // Request from Floor 3
-        #500
+        #1000
         raw_floor_call_buttons[2] = 1;
         $display("Floor 3 call button pressed @ %t", $time);
-        #200 
+        #2000 
         raw_floor_call_buttons[2] = 0; // release button
 
         // Request from Floor 7
-        #500
+        #1000
         raw_floor_call_buttons[6] = 1;
         $display("Floor 7 call button pressed @ %t", $time);
-        #200 
+        #2000 
         raw_floor_call_buttons[6] = 0;
 
         // Request from  Floor 2
-        #500
+        #1000
         raw_floor_call_buttons[1] = 1;
         $display("Floor 1 call button pressed @ %t", $time);
-        #200 
+        #2000
         raw_floor_call_buttons[1] = 0;
 
         // Inside Elevator Testing
         // Call to Floor 5
-      #500
-        raw_panel_buttons[4] = 1;
+        #1000
+        raw_panel_buttons[] = 1;
         $display("Floor 5 call button pressed @ %t", $time);
-        #200
+        #2000
         raw_panel_buttons[4] = 0;
         // Call to Floor 10
-      #500
+        #1000
         raw_panel_buttons[9] = 1;
         $display("Floor 10 call button pressed @ %t", $time);
-        #200
+        #2000
         raw_panel_buttons[9] = 0;
         // Call to Floor 8
-        #500
+        #1000
         raw_panel_buttons[7] = 1;
         $display("Floor 8 call button pressed @ %t", $time);
-        #200
+        #2000
         raw_panel_buttons[7] = 0;
 
         // Return to first floor
-        #500
+        #1000
         raw_panel_buttons[0] = 1;
         $display("Floor 1 call button pressed @ %t", $time);
-        #200
+        #2000
         raw_panel_buttons[0] = 0;
 
         // Inside Elevator Testing -- Select Destination, then select a destination while moving
         // Call to Floor 11
-        #500
+        #1000
         raw_panel_buttons[10] = 1;
         $display("Floor 11 call button pressed @ %t", $time);
-        #50
+        #200
         raw_panel_buttons[10] = 0;
         // Call to Floor 6
         #100
@@ -149,25 +149,25 @@ module elevator_top_tb;
 
         // Emergency Conditions - Weight
         // Go to Floor 4
-        #500
+        #1000
         raw_panel_buttons[3] = 1;
         $display("Floor 4 call button pressed @ %t", $time);
-        #200
+        #2000
         raw_panel_buttons[3] = 0;
-        #500
+        #1000
         weight_sensor = 1;
         $display("Weight Sensor activated @ %t", $time);
-        #100
+        #200
 
         // Attempt to go to Floor 2
         raw_panel_buttons[1] = 1;
         $display("Floor 2 call button pressed @ %t", $time);
-        #60
+        #1000
         raw_panel_buttons[1] = 0;
-        #500
+        #2000
 
         weight_sensor = 0;
-        #300
+        #1000
         // Reset for next test
         reset_n = 0;
         #50
@@ -176,7 +176,7 @@ module elevator_top_tb;
 
         // Emergency Conditions - Emergency Button
         // Go to Floor 4
-        #500
+        #1000
         raw_panel_buttons[3] = 1;
         $display("Floor 4 call button pressed @ %t", $time);
         #200
@@ -200,19 +200,19 @@ module elevator_top_tb;
         reset_n = 1;
         $display("=== Reset complete ===");
         // Test Door Close Button
-        #500
+        #1000
         raw_door_close_btn = 1;
         $display("Door Close button pressed @ %t", $time);
-        #200
+        #2000
         raw_door_close_btn = 0;
         $display("Door Close button released @ %t", $time);
         #1000; // Wait to observe door behavior
         
         // Test Door Open Button
-        #500
+        #1000
         raw_door_open_btn = 1;
         $display("Door Open button pressed @ %t", $time);
-        #200
+        #2000
         raw_door_open_btn = 0;
         $display("Door Open button released @ %t", $time);
         #1000; // Wait to observe door behavior
@@ -224,7 +224,7 @@ module elevator_top_tb;
         $display("Floor 6 call button pressed @ %t", $time);
         #50
         raw_panel_buttons[5] = 0;
-        #100 // Wait for elevator to start moving
+        #1000 // Wait for elevator to start moving
         raw_door_open_btn = 1;
         $display("Door Open button pressed while moving @ %t", $time);
         #200
@@ -233,13 +233,13 @@ module elevator_top_tb;
         #2000; // Wait to observe that door doesn't open while moving
         
         // Test Door Close while stopped (should work)
-        #500
+        #1000
         raw_door_close_btn = 1;
         $display("Door Close button pressed while stopped @ %t", $time);
-        #200
+        #2000
         raw_door_close_btn = 0;
         $display("Door Close button released @ %t", $time);
-        #500;
+        #1000;
 
         // Power Switch Functionaility
         // Reset for final test
@@ -248,12 +248,12 @@ module elevator_top_tb;
         reset_n = 1;
         $display("=== Reset complete ===");
         // Test Power Switch Button
-        #500
+        #1000
         raw_panel_buttons[5] = 1;
         $display("Floor 6 call button pressed @ %t", $time);
-        #200
+        #2000
         raw_panel_buttons[5] = 0;
-        #500
+        #1000
         raw_power_switch = 0;
         $display("Power switched off @ %t", $time);
         #100
@@ -262,10 +262,10 @@ module elevator_top_tb;
         // Attempt to move floors
         raw_panel_buttons[8] = 1;
         $display("Floor 9 call button pressed @ %t", $time);
-        #200
+        #1000
         raw_door_open_btn = 0;
         raw_panel_buttons[8] = 0;
-        #500
+        #2000
         raw_power_switch = 1;
         $display("Power switched on @ %t", $time);
         #1000; // Wait to observe door behavior
@@ -280,47 +280,47 @@ module elevator_top_tb;
         $display("=== Reset complete ===");
 
         raw_panel_buttons[10:0] = 11'b10000000000; // Request floor 11
-        #150
-        raw_panel_buttons[10:0] = 11'b00000000000;     
-        #150        
+        #100
+        raw_panel_buttons[10:0] = 11'b00000000000;
+        #1500
         raw_panel_buttons[10:0] = 11'b01000000000; // Request floor 10
-        #150
+        #100
         raw_panel_buttons[10:0] = 11'b00000000000;
-        #150;
+        #1500
         raw_panel_buttons[10:0] = 11'b00100000000; // Request floor 9
-        #150
+        #100
         raw_panel_buttons[10:0] = 11'b00000000000;     
-        #150        
+        #1500
         raw_panel_buttons[10:0] = 11'b00010000000; // Request floor 8
-        #150
+        #100
         raw_panel_buttons[10:0] = 11'b00000000000;
-        #150;
+        #1500
         raw_panel_buttons[10:0] = 11'b00001000000; // Request floor 7
-        #150
+        #100
         raw_panel_buttons[10:0] = 11'b00000000000;     
-        #150        
+        #1500
         raw_panel_buttons[10:0] = 11'b00000100000; // Request floor 6
-        #150
+        #100
         raw_panel_buttons[10:0] = 11'b00000000000;
-        #150;
+        #1500
         raw_panel_buttons[10:0] = 11'b00000010000; // Request floor 5
-        #150
+        #100
         raw_panel_buttons[10:0] = 11'b00000000000;     
-        #150        
+        #1500
         raw_panel_buttons[10:0] = 11'b00000001000; // Request floor 4
-        #150
+        #100
         raw_panel_buttons[10:0] = 11'b00000000000;
-        #150;
+        #1500
         raw_panel_buttons[10:0] = 11'b00000000100; // Request floor 3
-        #150
+        #100
         raw_panel_buttons[10:0] = 11'b00000000000;     
-        #150        
+        #1500
         raw_panel_buttons[10:0] = 11'b01000000010; // Request floor 2
-        #150
+        #100
         raw_panel_buttons[10:0] = 11'b00000000000;
-        #150;
+        #1500
         raw_panel_buttons[10:0] = 11'b00000000001; // Request floor 1
-        #150
+        #100
         raw_panel_buttons[10:0] = 11'b00000000000;     
         $display("All Floor panel buttons end pressing @ %t", $time);
 
