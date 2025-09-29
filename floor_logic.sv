@@ -261,6 +261,7 @@ always @(*) begin
             //else
             //    activate_elevator = 1'b0;
         end
+        els
         else begin
             activate_elevator = 1'b0; // No movement needed
         end

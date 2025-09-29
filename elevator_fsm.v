@@ -91,7 +91,7 @@ module elevator_fsm(clock, reset_n, elevator_floor_selector, emergency_stop, act
         end
     end
 
-    always @(counter_state, activate_elevator, power_switch, emergency_stop, direction_selector, weight_sensor) begin
+    always @(*) begin
         case(counter_state)
             STOP_FL1:         next_counter_state = ((activate_elevator) & (power_switch) & (!emergency_stop) & (direction_selector) & (!weight_sensor) ) ? UP_F1_F2                                                                                                                           : (emergency_stop) ? EMERGENCY : STOP_FL1;
             UP_F1_F2:         next_counter_state = ((elevator_floor_selector == FLOOR_2) & (direction_selector)                                        ) ? STOP_FL2     : ((direction_selector)                                                                               ) ? UP_F2_F3    : (emergency_stop) ? EMERGENCY : UP_F1_F2;

@@ -97,7 +97,7 @@ module elevator_top_tb;
         // Inside Elevator Testing
         // Call to Floor 5
         #1000
-        raw_panel_buttons[] = 1;
+        raw_panel_buttons[4] = 1;
         $display("Floor 5 call button pressed @ %t", $time);
         #2000
         raw_panel_buttons[4] = 0;
