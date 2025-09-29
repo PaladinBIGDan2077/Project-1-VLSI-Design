@@ -224,10 +224,10 @@ module elevator_top_tb;
         $display("Floor 6 call button pressed @ %t", $time);
         #50
         raw_panel_buttons[5] = 0;
-        #1000 // Wait for elevator to start moving
+        #50// Wait for elevator to start moving
         raw_door_open_btn = 1;
         $display("Door Open button pressed while moving @ %t", $time);
-        #200
+        #50
         raw_door_open_btn = 0;
         $display("Door Open button released @ %t", $time);
         #2000; // Wait to observe that door doesn't open while moving
