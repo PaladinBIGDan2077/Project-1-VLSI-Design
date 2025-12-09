@@ -20,10 +20,10 @@
 //                                  9/13/2025    DJL  1        Original Code
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-module elevator_top(clock, reset_n, raw_floor_call_buttons, raw_panel_buttons, raw_door_open_btn, raw_door_close_btn, raw_emergency_btn, raw_power_switch, weight_sensor, call_button_lights, panel_button_lights, door_open, elevator_control_output, safety_interlock, floor_indicator_lamps, elevator_upward_indicator_lamp, elevator_downward_indicator_lamp, alarm, weight_overload_lamp);
+module elevator_top(clks, reset_n, raw_floor_call_buttons, raw_panel_buttons, raw_door_open_btn, raw_door_close_btn, raw_emergency_btn, raw_power_switch, weight_sensor, call_button_lights, panel_button_lights, door_open, elevator_control_output, safety_interlock, floor_indicator_lamps, elevator_upward_indicator_lamp, elevator_downward_indicator_lamp, alarm, weight_overload_lamp);
     // Primary inputs
     input                                           reset_n;                    // Active-low reset
-    input                                           clock;
+    input                                           clks;
 
     // Button inputs (raw buttons - will be debounced)
     input                   [10:0]                  raw_floor_call_buttons;  // External call buttons
@@ -57,7 +57,7 @@ module elevator_top(clock, reset_n, raw_floor_call_buttons, raw_panel_buttons, r
     wire                                            door_open_logic_check;
     wire                                            door_close_logic_check;
     wire                                            reset_n;
-    wire                                            clock;
+    wire                                            clks;
 
 
     // Internal wires between modules
@@ -75,45 +75,45 @@ module elevator_top(clock, reset_n, raw_floor_call_buttons, raw_panel_buttons, r
     
     // Debounce all button inputs
     // Floor call button debouncers (11 buttons)
-    button_debouncer floor_call_debouncer0 (clock, reset_n, ~raw_floor_call_buttons[0], floor_call_buttons[0]);
-    button_debouncer floor_call_debouncer1 (clock, reset_n, ~raw_floor_call_buttons[1], floor_call_buttons[1]);
-    button_debouncer floor_call_debouncer2 (clock, reset_n, ~raw_floor_call_buttons[2], floor_call_buttons[2]);
-    button_debouncer floor_call_debouncer3 (clock, reset_n, ~raw_floor_call_buttons[3], floor_call_buttons[3]);
-    button_debouncer floor_call_debouncer4 (clock, reset_n, ~raw_floor_call_buttons[4], floor_call_buttons[4]);
-    button_debouncer floor_call_debouncer5 (clock, reset_n, ~raw_floor_call_buttons[5], floor_call_buttons[5]);
-    button_debouncer floor_call_debouncer6 (clock, reset_n, ~raw_floor_call_buttons[6], floor_call_buttons[6]);
-    button_debouncer floor_call_debouncer7 (clock, reset_n, ~raw_floor_call_buttons[7], floor_call_buttons[7]);
-    button_debouncer floor_call_debouncer8 (clock, reset_n, ~raw_floor_call_buttons[8], floor_call_buttons[8]);
-    button_debouncer floor_call_debouncer9 (clock, reset_n, ~raw_floor_call_buttons[9], floor_call_buttons[9]);
-    button_debouncer floor_call_debouncer10 (clock, reset_n, ~raw_floor_call_buttons[10], floor_call_buttons[10]);
+    button_debouncer floor_call_debouncer0 (clks, reset_n, ~raw_floor_call_buttons[0], floor_call_buttons[0]);
+    button_debouncer floor_call_debouncer1 (clks, reset_n, ~raw_floor_call_buttons[1], floor_call_buttons[1]);
+    button_debouncer floor_call_debouncer2 (clks, reset_n, ~raw_floor_call_buttons[2], floor_call_buttons[2]);
+    button_debouncer floor_call_debouncer3 (clks, reset_n, ~raw_floor_call_buttons[3], floor_call_buttons[3]);
+    button_debouncer floor_call_debouncer4 (clks, reset_n, ~raw_floor_call_buttons[4], floor_call_buttons[4]);
+    button_debouncer floor_call_debouncer5 (clks, reset_n, ~raw_floor_call_buttons[5], floor_call_buttons[5]);
+    button_debouncer floor_call_debouncer6 (clks, reset_n, ~raw_floor_call_buttons[6], floor_call_buttons[6]);
+    button_debouncer floor_call_debouncer7 (clks, reset_n, ~raw_floor_call_buttons[7], floor_call_buttons[7]);
+    button_debouncer floor_call_debouncer8 (clks, reset_n, ~raw_floor_call_buttons[8], floor_call_buttons[8]);
+    button_debouncer floor_call_debouncer9 (clks, reset_n, ~raw_floor_call_buttons[9], floor_call_buttons[9]);
+    button_debouncer floor_call_debouncer10 (clks, reset_n, ~raw_floor_call_buttons[10], floor_call_buttons[10]);
 
     // Panel button debouncers (11 buttons)
-    button_debouncer panel_debouncer0 (clock, reset_n, ~raw_panel_buttons[0], panel_buttons[0]);
-    button_debouncer panel_debouncer1 (clock, reset_n, ~raw_panel_buttons[1], panel_buttons[1]);
-    button_debouncer panel_debouncer2 (clock, reset_n, ~raw_panel_buttons[2], panel_buttons[2]);
-    button_debouncer panel_debouncer3 (clock, reset_n, ~raw_panel_buttons[3], panel_buttons[3]);
-    button_debouncer panel_debouncer4 (clock, reset_n, ~raw_panel_buttons[4], panel_buttons[4]);
-    button_debouncer panel_debouncer5 (clock, reset_n, ~raw_panel_buttons[5], panel_buttons[5]);
-    button_debouncer panel_debouncer6 (clock, reset_n, ~raw_panel_buttons[6], panel_buttons[6]);
-    button_debouncer panel_debouncer7 (clock, reset_n, ~raw_panel_buttons[7], panel_buttons[7]);
-    button_debouncer panel_debouncer8 (clock, reset_n, ~raw_panel_buttons[8], panel_buttons[8]);
-    button_debouncer panel_debouncer9 (clock, reset_n, ~raw_panel_buttons[9], panel_buttons[9]);
-    button_debouncer panel_debouncer10 (clock, reset_n, ~raw_panel_buttons[10], panel_buttons[10]);
+    button_debouncer panel_debouncer0 (clks, reset_n, ~raw_panel_buttons[0], panel_buttons[0]);
+    button_debouncer panel_debouncer1 (clks, reset_n, ~raw_panel_buttons[1], panel_buttons[1]);
+    button_debouncer panel_debouncer2 (clks, reset_n, ~raw_panel_buttons[2], panel_buttons[2]);
+    button_debouncer panel_debouncer3 (clks, reset_n, ~raw_panel_buttons[3], panel_buttons[3]);
+    button_debouncer panel_debouncer4 (clks, reset_n, ~raw_panel_buttons[4], panel_buttons[4]);
+    button_debouncer panel_debouncer5 (clks, reset_n, ~raw_panel_buttons[5], panel_buttons[5]);
+    button_debouncer panel_debouncer6 (clks, reset_n, ~raw_panel_buttons[6], panel_buttons[6]);
+    button_debouncer panel_debouncer7 (clks, reset_n, ~raw_panel_buttons[7], panel_buttons[7]);
+    button_debouncer panel_debouncer8 (clks, reset_n, ~raw_panel_buttons[8], panel_buttons[8]);
+    button_debouncer panel_debouncer9 (clks, reset_n, ~raw_panel_buttons[9], panel_buttons[9]);
+    button_debouncer panel_debouncer10 (clks, reset_n, ~raw_panel_buttons[10], panel_buttons[10]);
 
     
     // Debounce control buttons
-    button_debouncer door_open_debouncer (clock, reset_n, ~raw_door_open_btn, door_open_btn);
-    button_debouncer door_close_debouncer (clock, reset_n, ~raw_door_close_btn, door_close_btn);
-    button_debouncer emergency_debouncer (clock, reset_n, ~raw_emergency_btn, emergency_btn);
+    button_debouncer door_open_debouncer (clks, reset_n, ~raw_door_open_btn, door_open_btn);
+    button_debouncer door_close_debouncer (clks, reset_n, ~raw_door_close_btn, door_close_btn);
+    button_debouncer emergency_debouncer (clks, reset_n, ~raw_emergency_btn, emergency_btn);
     assign power_switch = raw_power_switch; // No debouncing for power switch
 
     // Floor logic controller
-    floor_logic_control_unit floor_logic_inst (clock, reset_n, floor_call_buttons, panel_buttons, door_open_btn, door_close_btn, emergency_btn, power_switch, floor_indicator_lamps, elevator_state, elevator_movement, elevator_direction, elevator_floor_selector, direction_selector, activate_elevator, call_button_lights, panel_button_lights, door_open_logic_check, door_close_logic_check);
+    floor_logic_control_unit floor_logic_inst (clks, reset_n, floor_call_buttons, panel_buttons, door_open_btn, door_close_btn, emergency_btn, power_switch, floor_indicator_lamps, elevator_state, elevator_movement, elevator_direction, elevator_floor_selector, direction_selector, activate_elevator, call_button_lights, panel_button_lights, door_open_logic_check, door_close_logic_check);
 
     
     
     // Elevator finite state machine
-    elevator_fsm elevator_fsm_inst (clock, reset_n, elevator_floor_selector, emergency_btn, activate_elevator, weight_sensor, power_switch, direction_selector, elevator_state, elevator_control_output);
+    elevator_fsm elevator_fsm_inst (clks, reset_n, elevator_floor_selector, emergency_btn, activate_elevator, weight_sensor, power_switch, direction_selector, elevator_state, elevator_control_output);
 
     assign safety_interlock = elevator_control_output[0];
     assign elevator_movement = elevator_control_output[1];
