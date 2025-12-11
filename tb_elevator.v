@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Title:                           Elevator System Top Module Testbench
 // Filename:                        elevator_top_tb.v
-// Version:                         3
+// Version:                         4
 // Author:                          Daniel J. Lomis, Sammy Craypoff
 // Date:                            9/13/2025  
 // Location:                        Blacksburg, Virginia 
@@ -10,7 +10,7 @@
 // Instructor:                      Doctor Jeffrey Walling 
 //   
 // Hardware Description Language:   Verilog 2001 (IEEE 1364-2001)  
-// Simulation Tool:                 iVerilog 12.0 
+// Simulation Tool:                 Xcelium XRUN 
 // 
 // Description:                     Testbench for elevator_top.v. 
 //                                  Provides basic simulation environment to verify floor button requests
@@ -22,6 +22,7 @@
 //                                  9/13/2025   DJL  1        Original Testbench Code
 //                                  9/14/2025   DJL  2        Added additional testing
 //                                  9/28/2025   SC   3        Increased delay timings to better match real-world elevator behavior
+//                                  12/9/2025   DJL  4        Updated Testbench Functionaility for Innovus Synthesis
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 `timescale 1ns/1ns
 module elevator_top_tb;
@@ -279,49 +280,71 @@ module elevator_top_tb;
         reset_n = 1;
         $display("=== Reset complete ===");
 
-        raw_panel_buttons[10:0] = 11'b10000000000; // Request floor 11
-        #100
+        // 1. Request floor 11 (High)
+        raw_panel_buttons[10:0] = 11'b10000000000; 
+        #1000
         raw_panel_buttons[10:0] = 11'b00000000000;
         #1500
-        raw_panel_buttons[10:0] = 11'b01000000000; // Request floor 10
-        #100
+        
+        // 2. Request floor 1 (Low)
+        raw_panel_buttons[10:0] = 11'b00000000001;
+        #1000
         raw_panel_buttons[10:0] = 11'b00000000000;
         #1500
-        raw_panel_buttons[10:0] = 11'b00100000000; // Request floor 9
-        #100
-        raw_panel_buttons[10:0] = 11'b00000000000;     
-        #1500
-        raw_panel_buttons[10:0] = 11'b00010000000; // Request floor 8
-        #100
+        
+        // 3. Request floor 10 (High)
+        raw_panel_buttons[10:0] = 11'b01000000000; 
+        #1000
         raw_panel_buttons[10:0] = 11'b00000000000;
         #1500
-        raw_panel_buttons[10:0] = 11'b00001000000; // Request floor 7
-        #100
-        raw_panel_buttons[10:0] = 11'b00000000000;     
-        #1500
-        raw_panel_buttons[10:0] = 11'b00000100000; // Request floor 6
-        #100
+        
+        // 4. Request floor 2 (Low)
+        raw_panel_buttons[10:0] = 11'b00000000010;
+        #1000
         raw_panel_buttons[10:0] = 11'b00000000000;
         #1500
-        raw_panel_buttons[10:0] = 11'b00000010000; // Request floor 5
-        #100
-        raw_panel_buttons[10:0] = 11'b00000000000;     
-        #1500
-        raw_panel_buttons[10:0] = 11'b00000001000; // Request floor 4
-        #100
+        
+        // 5. Request floor 9 (High)
+        raw_panel_buttons[10:0] = 11'b00100000000;
+        #1000
         raw_panel_buttons[10:0] = 11'b00000000000;
         #1500
-        raw_panel_buttons[10:0] = 11'b00000000100; // Request floor 3
-        #100
-        raw_panel_buttons[10:0] = 11'b00000000000;     
-        #1500
-        raw_panel_buttons[10:0] = 11'b01000000010; // Request floor 2
-        #100
+        
+        // 6. Request floor 3 (Low)
+        raw_panel_buttons[10:0] = 11'b00000000100;
+        #1000
         raw_panel_buttons[10:0] = 11'b00000000000;
         #1500
-        raw_panel_buttons[10:0] = 11'b00000000001; // Request floor 1
-        #100
-        raw_panel_buttons[10:0] = 11'b00000000000;     
+
+        // 7. Request floor 8 (High)
+        raw_panel_buttons[10:0] = 11'b00010000000;
+        #1000
+        raw_panel_buttons[10:0] = 11'b00000000000;
+        #1500
+        
+        // 8. Request floor 4 (Low)
+        raw_panel_buttons[10:0] = 11'b00000001000;
+        #1000
+        raw_panel_buttons[10:0] = 11'b00000000000;
+        #1500
+        
+        // 9. Request floor 7 (High)
+        raw_panel_buttons[10:0] = 11'b00001000000;
+        #1000
+        raw_panel_buttons[10:0] = 11'b00000000000;
+        #1500
+        
+        // 10. Request floor 5 (Low)
+        raw_panel_buttons[10:0] = 11'b00000010000;
+        #1000
+        raw_panel_buttons[10:0] = 11'b00000000000;
+        #1500
+        
+        // 11. Request floor 6 (Middle)
+        raw_panel_buttons[10:0] = 11'b00000100000;
+        #1000
+        raw_panel_buttons[10:0] = 11'b00000000000;
+        #1500
         $display("All Floor panel buttons end pressing @ %t", $time);
 
         #2000;
