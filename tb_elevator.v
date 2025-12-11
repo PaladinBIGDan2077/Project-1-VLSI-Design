@@ -279,71 +279,49 @@ module elevator_top_tb;
         reset_n = 1;
         $display("=== Reset complete ===");
 
-        // 1. Request floor 11 (High)
-        raw_panel_buttons[10:0] = 11'b10000000000; 
-        #1000
+        raw_panel_buttons[10:0] = 11'b10000000000; // Request floor 11
+        #100
         raw_panel_buttons[10:0] = 11'b00000000000;
         #1500
-        
-        // 2. Request floor 1 (Low)
-        raw_panel_buttons[10:0] = 11'b00000000001;
-        #1000
+        raw_panel_buttons[10:0] = 11'b01000000000; // Request floor 10
+        #100
         raw_panel_buttons[10:0] = 11'b00000000000;
         #1500
-        
-        // 3. Request floor 10 (High)
-        raw_panel_buttons[10:0] = 11'b01000000000; 
-        #1000
+        raw_panel_buttons[10:0] = 11'b00100000000; // Request floor 9
+        #100
+        raw_panel_buttons[10:0] = 11'b00000000000;     
+        #1500
+        raw_panel_buttons[10:0] = 11'b00010000000; // Request floor 8
+        #100
         raw_panel_buttons[10:0] = 11'b00000000000;
         #1500
-        
-        // 4. Request floor 2 (Low)
-        raw_panel_buttons[10:0] = 11'b00000000010;
-        #1000
+        raw_panel_buttons[10:0] = 11'b00001000000; // Request floor 7
+        #100
+        raw_panel_buttons[10:0] = 11'b00000000000;     
+        #1500
+        raw_panel_buttons[10:0] = 11'b00000100000; // Request floor 6
+        #100
         raw_panel_buttons[10:0] = 11'b00000000000;
         #1500
-        
-        // 5. Request floor 9 (High)
-        raw_panel_buttons[10:0] = 11'b00100000000;
-        #1000
+        raw_panel_buttons[10:0] = 11'b00000010000; // Request floor 5
+        #100
+        raw_panel_buttons[10:0] = 11'b00000000000;     
+        #1500
+        raw_panel_buttons[10:0] = 11'b00000001000; // Request floor 4
+        #100
         raw_panel_buttons[10:0] = 11'b00000000000;
         #1500
-        
-        // 6. Request floor 3 (Low)
-        raw_panel_buttons[10:0] = 11'b00000000100;
-        #1000
+        raw_panel_buttons[10:0] = 11'b00000000100; // Request floor 3
+        #100
+        raw_panel_buttons[10:0] = 11'b00000000000;     
+        #1500
+        raw_panel_buttons[10:0] = 11'b01000000010; // Request floor 2
+        #100
         raw_panel_buttons[10:0] = 11'b00000000000;
         #1500
-
-        // 7. Request floor 8 (High)
-        raw_panel_buttons[10:0] = 11'b00010000000;
-        #1000
-        raw_panel_buttons[10:0] = 11'b00000000000;
-        #1500
-        
-        // 8. Request floor 4 (Low)
-        raw_panel_buttons[10:0] = 11'b00000001000;
-        #1000
-        raw_panel_buttons[10:0] = 11'b00000000000;
-        #1500
-        
-        // 9. Request floor 7 (High)
-        raw_panel_buttons[10:0] = 11'b00001000000;
-        #1000
-        raw_panel_buttons[10:0] = 11'b00000000000;
-        #1500
-        
-        // 10. Request floor 5 (Low)
-        raw_panel_buttons[10:0] = 11'b00000010000;
-        #1000
-        raw_panel_buttons[10:0] = 11'b00000000000;
-        #1500
-        
-        // 11. Request floor 6 (Middle)
-        raw_panel_buttons[10:0] = 11'b00000100000;
-        #1000
-        raw_panel_buttons[10:0] = 11'b00000000000;
-        #1500
+        raw_panel_buttons[10:0] = 11'b00000000001; // Request floor 1
+        #100
+        raw_panel_buttons[10:0] = 11'b00000000000;     
         $display("All Floor panel buttons end pressing @ %t", $time);
 
         #2000;
